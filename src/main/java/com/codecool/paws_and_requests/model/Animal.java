@@ -2,6 +2,8 @@ package com.codecool.paws_and_requests.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,9 +27,11 @@ public class Animal {
     @Column(nullable = false)
     private int age;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Gender gender;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Species species;
 
