@@ -90,7 +90,7 @@
             <artifactId>jjwt-api</artifactId>
             <version>0.13.0</version>
         </dependency>
-        
+
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-impl</artifactId>
@@ -114,7 +114,6 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-
             <!-- Explicit annotation processor path so Lombok's @Getter/@Setter etc. actually run -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -129,7 +128,6 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-
 
             <!-- Checkstyle -->
             <plugin>
