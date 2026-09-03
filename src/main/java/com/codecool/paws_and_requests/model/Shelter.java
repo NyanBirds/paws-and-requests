@@ -13,8 +13,7 @@ import lombok.Setter;
 @Setter
 public class Shelter {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String orgNr;
 
     @Column(nullable = false)
     private String shelterName;
