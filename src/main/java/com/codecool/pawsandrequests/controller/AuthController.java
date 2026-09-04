@@ -3,17 +3,12 @@ package com.codecool.pawsandrequests.controller;
 import com.codecool.pawsandrequests.dto.LoginRequest;
 import com.codecool.pawsandrequests.dto.RegistrationRequest;
 import com.codecool.pawsandrequests.dto.TokenResponse;
-import com.codecool.pawsandrequests.exception.ShelterNotFoundException;
-import com.codecool.pawsandrequests.exception.UsernameTakenException;
 import com.codecool.pawsandrequests.service.AuthService;
 import jakarta.validation.Valid;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-
 
 @RestController
 @RequestMapping("/api/auth")
@@ -46,38 +41,5 @@ public class AuthController {
     public TokenResponse registration(
             final @RequestBody @Valid RegistrationRequest request) {
         return authService.registration(request);
-    }
-
-    /**
-     * Handles authentication failures caused by invalid credentials.
-     *
-     * @param ex thrown exception
-     * @return String error message
-     */
-    @ExceptionHandler(BadCredentialsException.class)
-    public String handleBadCredentials(final BadCredentialsException ex) {
-        return ex.getMessage();
-    }
-
-    /**
-     * Handles registration failures  caused by username already taken
-     *
-     * @param ex thrown exception
-     * @return String error message
-     */
-    @ExceptionHandler(UsernameTakenException.class)
-    public String handleUsernameTaken(final UsernameTakenException ex) {
-        return ex.getMessage();
-    }
-
-    /**
-     * Handles shelter not found
-     *
-     * @param ex thrown exception
-     * @return String error message
-     */
-    @ExceptionHandler(ShelterNotFoundException.class)
-    public String handleShelterNotFound(final ShelterNotFoundException ex) {
-        return ex.getMessage();
     }
 }
