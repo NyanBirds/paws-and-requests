@@ -14,10 +14,10 @@ VALUES
     ('Sara', 'Banana', 'Sara@hotmail.com', '12344321', 'password',
      'USER', 'https://www.reddit.com/media?url=https%3A%2F%2Fpreview.redd.it%2Fcute-duck-in-a-cheerful-yellow-sun-hat-v0-c7xnlawjylhg1.jpeg%3Fwidth%3D640%26crop%3Dsmart%26auto%3Dwebp%26s%3D6f1c966c77d11b6049037b9ad3a0923f99d8a414', NULL);
 
-INSERT INTO Animal (name, age, gender, species, user_id)
+INSERT INTO Animal (name, age, gender, species, org_nr)
 VALUES
-    ('Maja', 2, 'FEMALE', 'DOG', 2),
-    ('John', 4, 'MALE', 'CAT', 3);
+    ('Maja', 2, 'FEMALE', 'DOG', '1'),
+    ('John', 4, 'MALE', 'CAT', '1');
 
 INSERT INTO Post (title, description, user_id) VALUES
     ('GET YOUR PET', 'This dog is looking for a forever home, as she lost her family due to moving.', 2);
