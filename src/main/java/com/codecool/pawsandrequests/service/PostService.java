@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public final class PawsAndRequestService {
+public final class PostService {
 
     private final PostRepository postRepository;
 
-    public PawsAndRequestService(final PostRepository pr) {
+    public PostService(final PostRepository pr) {
         this.postRepository = pr;
     }
 
@@ -21,8 +21,4 @@ public final class PawsAndRequestService {
                         post.getDescription()))
                 .toList();
     }
-
 }
-
-
-
