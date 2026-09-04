@@ -1,13 +1,11 @@
 package com.codecool.pawsandrequests.service;
 
+import com.codecool.pawsandrequests.model.CustomUserDetails;
 import com.codecool.pawsandrequests.repository.UserRepository;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class AppUserDetailsService implements UserDetailsService {
@@ -25,11 +23,6 @@ public class AppUserDetailsService implements UserDetailsService {
                         "User not found: " + email)
                 );
 
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getEmail())
-                .password(user.getPassword())
-                .authorities(List.of(
-                        new SimpleGrantedAuthority("ROLE_" + user.getRole())))
-                .build();
+        return new CustomUserDetails(user);
     }
 }

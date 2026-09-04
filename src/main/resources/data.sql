@@ -8,7 +8,7 @@ VALUES
     ('Vegard', 'Eple', 'Vegard@hotmail.com', '12345678', 'verysercurepassword',
      'ADMIN', 'https://i.pinimg.com/474x/f6/51/0c/f6510c7eeab1d3db3b16684244665f7d.jpg', NULL),
 
-    ('Lisbeth', 'Mango', 'Lisbeth@hotmail.com', '87654321', 'veryunsecurepassword',
+    ('Lisbeth', 'Mango', 'Lisbeth@hotmail.com', '87654321', 'password',
      'SHELTER', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8LqCs6k1rtI_Jh7YmCbTl9woInyTY6skKWtGQZGQ5xEblEN98V38-qBs&s=10','1'),
 
     ('Sara', 'Banana', 'Sara@hotmail.com', '12344321', 'password',
