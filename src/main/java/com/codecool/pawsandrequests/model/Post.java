@@ -1,5 +1,6 @@
 package com.codecool.pawsandrequests.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -37,7 +38,7 @@ public class Post {
     @JoinColumn(name = "animal_id", nullable = false)
     private Animal animal;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade =  CascadeType.REMOVE)
     private List<Picture> pictures;
 
 
