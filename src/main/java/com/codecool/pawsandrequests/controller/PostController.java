@@ -1,12 +1,15 @@
 package com.codecool.pawsandrequests.controller;
 
-import com.codecool.pawsandrequests.dto.PostSummaryDto;
+import com.codecool.pawsandrequests.dto.PostResponse;
+import com.codecool.pawsandrequests.dto.PostSummaryResponse;
 import com.codecool.pawsandrequests.service.PostService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/posts")
@@ -19,7 +22,14 @@ public final class PostController {
     }
 
     @GetMapping()
-    public List<PostSummaryDto> getAllPosts() {
+    public List<PostSummaryResponse> getAllPosts() {
         return service.getAllPosts();
     }
+
+    @GetMapping("/{postId}")
+    public PostResponse getOnePost(@PathVariable final UUID postId) {
+        return service.getOnePost(postId);
+    }
+
+
 }
