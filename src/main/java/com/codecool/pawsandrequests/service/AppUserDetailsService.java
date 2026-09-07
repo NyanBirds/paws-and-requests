@@ -2,6 +2,7 @@ package com.codecool.pawsandrequests.service;
 
 import com.codecool.pawsandrequests.model.CustomUserDetails;
 import com.codecool.pawsandrequests.repository.UserRepository;
+import org.jspecify.annotations.NonNull;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +18,7 @@ public class AppUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public final UserDetails loadUserByUsername(final String email) {
+    public final UserDetails loadUserByUsername(final @NonNull String email) {
         var user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(
                         "User not found: " + email)
