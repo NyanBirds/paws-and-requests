@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AnimalService {
@@ -51,5 +52,14 @@ public class AnimalService {
         Shelter shelter = shelterRepository.findByOrgNr(orgNr).get();
         Animal animal = animalMapper.toAnimal(request, shelter);
         animalRepository.save(animal);
+    }
+
+    public final void removeAnimal(
+            final String orgNr,
+            final UUID id
+    ) {
+        shelterRepository.findByOrgNr(orgNr).get().getAnimals().stream()
+                .filter(animal -> animal.getId().equals(id))
+                .findFirst().ifPresent(animalRepository::delete);
     }
 }

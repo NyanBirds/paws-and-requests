@@ -14,13 +14,13 @@ VALUES
     ('Sara', 'Banana', 'Sara@hotmail.com', '12344321', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
      'USER', 'https://www.reddit.com/media?url=https%3A%2F%2Fpreview.redd.it%2Fcute-duck-in-a-cheerful-yellow-sun-hat-v0-c7xnlawjylhg1.jpeg%3Fwidth%3D640%26crop%3Dsmart%26auto%3Dwebp%26s%3D6f1c966c77d11b6049037b9ad3a0923f99d8a414', NULL);
 
-INSERT INTO Animal (name, age, gender, species, org_nr)
+INSERT INTO Animal (id, name, age, gender, species, org_nr)
 VALUES
-    ('Maja', 2, 'FEMALE', 'DOG', '1'),
-    ('John', 4, 'MALE', 'CAT', '1');
+    ('a1b2c3d4-1111-2222-3333-444455556667', 'Maja', 2, 'FEMALE', 'DOG', '1'),
+    ('a1b2c3d4-1111-2222-3333-444455556677', 'John', 4, 'MALE', 'CAT', '1');
 
 INSERT INTO Post (id, title, description, user_id, animal_id) VALUES
-    ('a1b2c3d4-1111-2222-3333-444455556666', 'GET YOUR PET', 'This dog is looking for a forever home, as she lost her family due to moving.', 2, 1);
+    ('a1b2c3d4-1111-2222-3333-444455556666', 'GET YOUR PET', 'This dog is looking for a forever home, as she lost her family due to moving.', 2, 'a1b2c3d4-1111-2222-3333-444455556667');
 
 INSERT INTO Picture (post_id, url) VALUES
     ('a1b2c3d4-1111-2222-3333-444455556666', 'https://hips.hearstapps.com/ghk.h-cdn.co/assets/17/30/dachshund.jpg?crop=1.00xw:0.668xh;0,0.260xh');
