@@ -34,6 +34,11 @@ public final class AnimalController {
         return animalService.getMyAnimals(userDetails.getOrgNr());
     }
 
+    @GetMapping("/{id}")
+    public AnimalResponse getAnimal(@PathVariable final UUID id) {
+        return animalService.getAnimal(id);
+    }
+
     @PostMapping()
     public void addAnimal(
             @AuthenticationPrincipal final CustomUserDetails userDetails,

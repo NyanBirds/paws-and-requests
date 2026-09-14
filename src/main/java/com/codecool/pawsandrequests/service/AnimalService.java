@@ -36,13 +36,13 @@ public class AnimalService {
                 .filter(animal -> animal.getShelter()
                         .equals(shelterRepository.findByOrgNr(orgNr).get())
                 )
-                .map(animal -> new AnimalResponse(
-                        animal.getName(),
-                        animal.getAge(),
-                        animal.getGender(),
-                        animal.getSpecies()
-                ))
+                .map(animalMapper::toAnimalResponse)
                 .toList();
+    }
+
+    public final AnimalResponse getAnimal(final UUID id) {
+        Animal animal = animalRepository.findById(id).get();
+        return animalMapper.toAnimalResponse(animal);
     }
 
     public final void addAnimal(
