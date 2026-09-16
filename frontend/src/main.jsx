@@ -7,6 +7,7 @@ import HomePage from "./pages/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import AnimalProfilePage from './pages/AnimalProfilePage.jsx';
+import AdoptionPage from "./pages/AdoptionPage.jsx";
 
 const router = createBrowserRouter([
     {
@@ -16,7 +17,8 @@ const router = createBrowserRouter([
             { index: true, Component: HomePage },
             { path: 'registration', Component: RegisterPage },
             { path: 'login', Component: LoginPage },
-            { path: 'animalProfilePage', Component: AnimalProfilePage }
+            { path: 'animalProfilePage', Component: AnimalProfilePage },
+            { path: 'adoption', Component: AdoptionPage }
         ]
     }
 ]);

@@ -11,6 +11,8 @@ function App() {
         <NavLink to="/registration">Register</NavLink>
         {" | "}
         <NavLink to="/login">Login</NavLink>
+        {" | "}
+        <NavLink to="/adoption">Adoption</NavLink>
       </nav>
       <Outlet/>
     </>
