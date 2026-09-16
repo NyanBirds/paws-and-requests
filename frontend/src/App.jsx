@@ -12,7 +12,7 @@ function App() {
         {" | "}
         <NavLink to="/login">Login</NavLink>
         {" | "}
-        <NavLink to="/adoption">Adoption</NavLink>
+        <NavLink to="/posts">Posts</NavLink>
       </nav>
       <Outlet/>
     </>

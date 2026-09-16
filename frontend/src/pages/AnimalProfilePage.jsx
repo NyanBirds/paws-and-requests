@@ -45,6 +45,7 @@ export default function AnimalProfilePage() {
             <Divider/>
             <p>Shelter: {post.shelterName}</p>
             <p>Address: {post.address}</p>
+            <button>Adopt</button>
         </section>
     );
 }
