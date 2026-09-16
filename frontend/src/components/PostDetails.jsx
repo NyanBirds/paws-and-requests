@@ -1,8 +1,8 @@
 import { Link } from "react-router";
 
-export default function PostDetails({postId, title, age, gender, species}) {
+export default function PostDetails({id, title, age, gender, species}) {
     return(
-        <Link to={`/posts/${postId}`}>
+        <Link to={`/posts/${id}`}>
             <div>
                 <h2>{title ?? "N/A"}</h2>
                 <h3>Age: {age ?? "N/A"}</h3>
