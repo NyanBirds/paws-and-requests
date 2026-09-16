@@ -1,0 +1,27 @@
+import {useEffect, useState} from "react";
+import PostDetails from "../components/PostDetails.jsx";
+
+export default function AdoptionPage() {
+
+    const [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+        async function fetchPosts() {
+            const response = await fetch("/posts");
+            const data = await response.json();
+
+            setPosts(data);
+        }
+
+        fetchPosts();
+    }, []);
+
+    return(
+        <section>
+            <h1>Look at all these cuties!</h1>
+            <ul>
+                {posts.map(post => <PostDetails {...post}/>)}
+            </ul>
+        </section>
+    );
+}
