@@ -9,18 +9,18 @@ export default function RegistrationPage() {
     const navigate = useNavigate();
 
     const inputFields = [
-        {key: 'firstname', type: 'text', label: 'First name:'},
-        {key: 'lastname', type: 'text', label: 'Last name:'},
-        {key: 'email', type: 'text', label: 'Email:'},
-        {key: 'phonenumber', type: 'text', label: 'Phone number:'},
-        {key: 'password', type: 'password', label: 'Password:'},
+        {key: 'firstname', type: 'text', label: 'First name:', required: true},
+        {key: 'lastname', type: 'text', label: 'Last name:', required: true},
+        {key: 'email', type: 'text', label: 'Email:', required: true},
+        {key: 'phonenumber', type: 'text', label: 'Phone number:', required: true},
+        {key: 'password', type: 'password', label: 'Password:', required: true},
     ]
 
     function onChange(key, value) {
         setFormData({...formData, [key]: value})
     }
 
-    function handleSubmit(event) {
+    function onSubmit(event) {
         event.preventDefault()
         register(formData)
             .then(res => {
@@ -34,13 +34,14 @@ export default function RegistrationPage() {
     return (
     <div>
         <p>{error.message}</p>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onSubmit}>
             {inputFields.map((inputField) => (
                 <InputField
                     key = {inputField.key}
                     name = {inputField.key}
                     type = {inputField.type}
                     label = {inputField.label}
+                    required = {inputField.required}
                     onChange = {onChange}/>
             ))}
             <button type="submit">Submit</button>

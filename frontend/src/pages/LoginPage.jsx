@@ -9,15 +9,15 @@ export default function LoginPage() {
     const navigate = useNavigate();
 
     const inputFields = [
-        {key: 'email', type: 'text', label: 'Email:'},
-        {key: 'password', type: 'password', label: 'Password:'},
+        {key: 'email', type: 'text', label: 'Email:', required: true},
+        {key: 'password', type: 'password', label: 'Password:', required: true},
     ]
 
     function onChange(key, value) {
         setFormData({...formData, [key]: value})
     }
 
-    function handleSubmit(event) {
+    function onSubmit(event) {
         setError("")
         event.preventDefault()
         login(formData)
@@ -31,7 +31,7 @@ export default function LoginPage() {
 
     return (
     <div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onSubmit}>
             <p>{error.message}</p>
             {inputFields.map((inputField) => (
                 <InputField
@@ -39,6 +39,7 @@ export default function LoginPage() {
                     name = {inputField.key}
                     type = {inputField.type}
                     label = {inputField.label}
+                    required = {inputField.required}
                     onChange = {onChange}/>
             ))}
             <button type="submit">Submit</button>
