@@ -96,7 +96,7 @@ public final class PostService {
 
         switch (user.getRole()) {
             case ADMIN ->  { }        // admin can delete any post
-            case SHELTER -> {
+            case SHELTERUSER -> {
                 if (user.getShelter() == null
                         || !user.getShelter().getOrgNr().equals(
                                 post.getAnimal().getShelter().getOrgNr()

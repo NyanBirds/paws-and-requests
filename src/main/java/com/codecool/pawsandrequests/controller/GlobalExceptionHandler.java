@@ -1,7 +1,7 @@
 package com.codecool.pawsandrequests.controller;
 
 import com.codecool.pawsandrequests.exception.ShelterNotFoundException;
-import com.codecool.pawsandrequests.exception.UsernameTakenException;
+import com.codecool.pawsandrequests.exception.EmailTakenException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -28,9 +28,9 @@ public class GlobalExceptionHandler {
      * @param ex thrown exception
      * @return String error message
      */
-    @ExceptionHandler(UsernameTakenException.class)
+    @ExceptionHandler(EmailTakenException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public String handleUsernameTaken(final UsernameTakenException ex) {
+    public String handleUsernameTaken(final EmailTakenException ex) {
         return ex.getMessage();
     }
 
