@@ -12,7 +12,6 @@ function App() {
         {" | "}
         <NavLink to="/login">Login</NavLink>
       </nav>
-      <h1>Paws and Requests</h1>
       <Outlet/>
     </>
   )
