@@ -2,10 +2,13 @@ package com.codecool.pawsandrequests.service;
 
 import com.codecool.pawsandrequests.dto.PostResponse;
 import com.codecool.pawsandrequests.dto.PostSummaryResponse;
+import com.codecool.pawsandrequests.mapper.PostMapper;
 import com.codecool.pawsandrequests.model.Animal;
+import com.codecool.pawsandrequests.model.Gender;
 import com.codecool.pawsandrequests.model.Picture;
 import com.codecool.pawsandrequests.model.Post;
 import com.codecool.pawsandrequests.model.Shelter;
+import com.codecool.pawsandrequests.model.Species;
 import com.codecool.pawsandrequests.model.User;
 import com.codecool.pawsandrequests.repository.PostRepository;
 import com.codecool.pawsandrequests.repository.UserRepository;
@@ -21,22 +24,50 @@ public final class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final PostMapper postMapper;
 
-    public PostService(final PostRepository pr, final UserRepository ur) {
+    public PostService(
+            final PostRepository pr,
+            final UserRepository ur,
+            final PostMapper pm
+    ) {
         this.postRepository = pr;
         this.userRepository = ur;
+        this.postMapper = pm;
     }
 
-    public List<PostSummaryResponse> getAllPosts() {
+    public List<PostSummaryResponse> getAllPosts(
+            final Gender gender,
+            final Species species
+    ) {
+
+        if (gender != null && species != null) {
+            return postRepository
+                    .findByAnimalGenderAndAnimalSpecies(gender, species)
+                    .stream()
+                    .map(postMapper::toPostSummaryResponse)
+                    .toList();
+        }
+
+        if (gender != null) {
+            return postRepository
+                    .findByAnimalGender(gender)
+                    .stream()
+                    .map(postMapper::toPostSummaryResponse)
+                    .toList();
+        }
+
+        if (species != null) {
+            return postRepository
+                    .findByAnimalSpecies(species)
+                    .stream()
+                    .map(postMapper::toPostSummaryResponse)
+                    .toList();
+        }
+
         return postRepository.findAll().stream()
-                .map(post1 -> new PostSummaryResponse(
-                        post1.getTitle(),
-                        post1.getAnimal().getAge(),
-                        post1.getAnimal().getGender(),
-                        post1.getAnimal().getSpecies()))
+                .map(postMapper::toPostSummaryResponse)
                 .toList();
-
-
     }
 
     public PostResponse getOnePost(final UUID postId) {
@@ -46,24 +77,7 @@ public final class PostService {
                         HttpStatus.NOT_FOUND, "post not found")
                 );
 
-        Animal animal = post.getAnimal();
-        Shelter shelter = animal.getShelter();
-
-        List<String> pictureUrls = post.getPictures().stream()
-                .map(Picture::getUrl)
-                .toList();
-
-        return new PostResponse(
-                post.getTitle(),
-                post.getDescription(),
-                shelter.getShelterName(),
-                shelter.getAddress(),
-                pictureUrls,
-                animal.getAge(),
-                animal.getGender(),
-                animal.getSpecies(),
-                animal.getName()
-        );
+        return postMapper.toPostResponse(post);
     }
 
 

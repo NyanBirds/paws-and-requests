@@ -2,6 +2,8 @@ package com.codecool.pawsandrequests.controller;
 
 import com.codecool.pawsandrequests.dto.PostResponse;
 import com.codecool.pawsandrequests.dto.PostSummaryResponse;
+import com.codecool.pawsandrequests.model.Gender;
+import com.codecool.pawsandrequests.model.Species;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.codecool.pawsandrequests.service.PostService;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,8 +29,11 @@ public final class PostController {
     }
 
     @GetMapping()
-    public List<PostSummaryResponse> getAllPosts() {
-        return service.getAllPosts();
+    public List<PostSummaryResponse> getAllPosts(
+            final @RequestParam(required = false) Gender gender,
+            final @RequestParam(required = false) Species species
+    ) {
+        return service.getAllPosts(gender, species);
     }
 
     @GetMapping("/{postId}")
