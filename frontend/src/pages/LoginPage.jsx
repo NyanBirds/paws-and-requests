@@ -33,7 +33,6 @@ export default function LoginPage() {
     return (
     <div>
         <form onSubmit={onSubmit}>
-            <p>{error.message}</p>
             {inputFields.map((inputField) => (
                 <InputField
                     key = {inputField.key}
@@ -44,6 +43,7 @@ export default function LoginPage() {
                     onChange = {onChange}/>
             ))}
             <button type="submit">Submit</button>
+            <p>{error.message}</p>
         </form>
     </div>
   )
