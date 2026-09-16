@@ -7,6 +7,7 @@ export default function RegistrationPage() {
     const [formData, setFormData] = useState({})
     const [error, setError] = useState("")
     const navigate = useNavigate();
+    const [shelterRegistration, setShelterRegistration] = useState(false)
 
     const inputFields = [
         {key: 'firstname', type: 'text', label: 'First name:', required: true},
@@ -14,6 +15,10 @@ export default function RegistrationPage() {
         {key: 'email', type: 'text', label: 'Email:', required: true},
         {key: 'phonenumber', type: 'text', label: 'Phone number:', required: true},
         {key: 'password', type: 'password', label: 'Password:', required: true},
+    ]
+
+    const shelterFields = [
+        {key: 'shelterOrg', type: 'text', label: 'Shelter Org', required: true}
     ]
 
     function onChange(key, value) {
@@ -31,11 +36,8 @@ export default function RegistrationPage() {
             })
     }
 
-    return (
-    <div>
-        <p>{error.message}</p>
-        <form onSubmit={onSubmit}>
-            {inputFields.map((inputField) => (
+    const toInputField = 
+        (inputField) => (
                 <InputField
                     key = {inputField.key}
                     name = {inputField.key}
@@ -43,7 +45,17 @@ export default function RegistrationPage() {
                     label = {inputField.label}
                     required = {inputField.required}
                     onChange = {onChange}/>
-            ))}
+            )
+
+    return (
+    <div>
+        <button
+            onClick={() => setShelterRegistration(!shelterRegistration)}
+        >{shelterRegistration ? (<span>User registration</span>) : (<span>Shelter registration</span>)}</button>
+        <p>{error.message}</p>
+        <form onSubmit={onSubmit}>
+            {inputFields.map(toInputField)}
+            {shelterRegistration && shelterFields.map(toInputField)}
             <button type="submit">Submit</button>
         </form>
     </div>
