@@ -4,7 +4,7 @@ import com.codecool.pawsandrequests.dto.LoginRequest;
 import com.codecool.pawsandrequests.dto.RegistrationRequest;
 import com.codecool.pawsandrequests.dto.TokenResponse;
 import com.codecool.pawsandrequests.exception.ShelterNotFoundException;
-import com.codecool.pawsandrequests.exception.UsernameTakenException;
+import com.codecool.pawsandrequests.exception.EmailTakenException;
 import com.codecool.pawsandrequests.model.Role;
 import com.codecool.pawsandrequests.model.Shelter;
 import com.codecool.pawsandrequests.model.User;
@@ -64,7 +64,7 @@ public class AuthService {
 
     public final TokenResponse registration(final RegistrationRequest request) {
         if (userRepository.existsByEmail(request.email())) {
-            throw new UsernameTakenException(request.email());
+            throw new EmailTakenException(request.email());
         } else {
             User user = new User();
             user.setFirstName(request.firstname());
@@ -80,6 +80,7 @@ public class AuthService {
                         .findById(request.shelterOrg()).orElseThrow(
                                 () -> new ShelterNotFoundException(org)
                         );
+                user.setRole(Role.SHELTERUSER);
                 user.setShelter(shelter);
             }
             userRepository.save(user);
