@@ -53,11 +53,11 @@ export default function RegistrationPage() {
         <button
             onClick={() => setShelterRegistration(!shelterRegistration)}
         >{shelterRegistration ? (<span>User registration</span>) : (<span>Shelter registration</span>)}</button>
-        <p>{error.message}</p>
         <form onSubmit={onSubmit}>
             {inputFields.map(toInputField)}
             {shelterRegistration && shelterFields.map(toInputField)}
             <button type="submit">Submit</button>
+            <p>{error.message}</p>
         </form>
     </div>
   )
