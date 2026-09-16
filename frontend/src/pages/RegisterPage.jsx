@@ -1,46 +1,51 @@
 import { useState } from "react"
 import InputField from "../components/InputField"
+import { register } from "../api/auth"
+import { useNavigate } from "react-router"
 
 export default function RegistrationPage() {
     const [formData, setFormData] = useState({})
-    const [submitted, setSubmitted] = useState(false)
+    const [error, setError] = useState("")
+    const navigate = useNavigate();
 
     const inputFields = [
-        {key: 'firstName', type: 'text', label: 'First name:'},
-        {key: 'lastName', type: 'text', label: 'Last name:'},
-        {key: 'email', type: 'text', label: 'Email:'},
-        {key: 'phoneNumber', type: 'text', label: 'Phone number:'},
-        {key: 'password', type: 'password', label: 'Password:'},
-        {key: 'profilePicture', type: 'file', label: 'Profile picture:'},
+        {key: 'firstname', type: 'text', label: 'First name:', required: true},
+        {key: 'lastname', type: 'text', label: 'Last name:', required: true},
+        {key: 'email', type: 'text', label: 'Email:', required: true},
+        {key: 'phonenumber', type: 'text', label: 'Phone number:', required: true},
+        {key: 'password', type: 'password', label: 'Password:', required: true},
     ]
 
     function onChange(key, value) {
         setFormData({...formData, [key]: value})
     }
 
-    function handleSubmit(event) {
+    function onSubmit(event) {
         event.preventDefault()
-        setSubmitted(true)
-        // handle registration logic
+        register(formData)
+            .then(res => {
+                localStorage.setItem("authToken", res.token)
+                navigate('/')
+            }, (err) => {
+                setError(err)
+            })
     }
 
     return (
     <div>
-        {submitted ? (
-            <h2>Thank you for registering on our page!</h2>
-        ) : (
-            <form onSubmit={handleSubmit}>
-                {inputFields.map((inputField) => (
-                    <InputField
-                        key = {inputField.key}
-                        name = {inputField.key}
-                        type = {inputField.type}
-                        label = {inputField.label}
-                        onChange = {onChange}/>
-                ))}
-                <button type="submit">Submit</button>
-            </form>
-        )}
+        <p>{error.message}</p>
+        <form onSubmit={onSubmit}>
+            {inputFields.map((inputField) => (
+                <InputField
+                    key = {inputField.key}
+                    name = {inputField.key}
+                    type = {inputField.type}
+                    label = {inputField.label}
+                    required = {inputField.required}
+                    onChange = {onChange}/>
+            ))}
+            <button type="submit">Submit</button>
+        </form>
     </div>
   )
 }

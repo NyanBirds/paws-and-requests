@@ -4,6 +4,13 @@ function getToken() {
   return localStorage.getItem("authToken");
 }
 
+class ApiError extends Error {
+    constructor(status, message) {
+        super(message);
+        this.status = status;
+    }
+}
+
 async function request(path, options = {}) {
     console.log(`${BASE_URL}${path}`)
     const res = await fetch(`${BASE_URL}${path}`, {
@@ -16,8 +23,10 @@ async function request(path, options = {}) {
     });
 
     if (!res.ok) {
-        const body = await res.json().catch(() => null);
-        throw new ApiError(res.status, body?.message || res.statusText);
+        const message = await res.text()
+        console.log(message);
+        
+        throw new ApiError(res.status, message || res.statusText);
     }
 
     return res.status === 204 ? null : res.json();
