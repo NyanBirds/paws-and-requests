@@ -56,9 +56,11 @@ public class SecurityConfig {
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(HttpMethod.DELETE, "/posts/**")
-                    .authenticated()
-                    .anyRequest().permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/auth/login",
+                            "/api/auth/registration").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/posts",
+                            "/posts/**").permitAll()
+                    .anyRequest().authenticated()
             )
             .headers(headers -> headers
                 .frameOptions(frameOptions -> frameOptions.sameOrigin())
