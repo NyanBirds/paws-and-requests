@@ -30,6 +30,7 @@ export default function RegistrationPage() {
         register(formData)
             .then(res => {
                 localStorage.setItem("authToken", res.token)
+                window.dispatchEvent(new Event("authorization-request"))
                 navigate('/')
             }, (err) => {
                 setError(err)

@@ -20,7 +20,7 @@ export default function AdoptionPage() {
         <section>
             <h1>Look at all these cuties!</h1>
             <ul>
-                {posts.map(post => <PostDetails key={post.postId} {...post}/>)}
+                {posts.map(post => <PostDetails key={post.id} {...post}/>)}
             </ul>
         </section>
     );
