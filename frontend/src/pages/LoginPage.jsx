@@ -23,6 +23,7 @@ export default function LoginPage() {
         login(formData)
             .then(res => {
                 localStorage.setItem("authToken", res.token)
+                window.dispatchEvent(new Event("authorization-request"));
                 navigate('/')
             }, (err) => {
                 setError(err)
