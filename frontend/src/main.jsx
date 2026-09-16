@@ -17,7 +17,7 @@ const router = createBrowserRouter([
             { index: true, Component: HomePage },
             { path: 'registration', Component: RegisterPage },
             { path: 'login', Component: LoginPage },
-            { path: 'animalProfilePage', Component: AnimalProfilePage },
+            { path: 'post/:postId', Component: AnimalProfilePage },
             { path: 'adoption', Component: AdoptionPage }
         ]
     }
