@@ -7,7 +7,7 @@ export default function AdoptionPage() {
 
     useEffect(() => {
         async function fetchPosts() {
-            const response = await fetch("/posts");
+            const response = await fetch("http://localhost:8080/posts");
             const data = await response.json();
 
             setPosts(data);
