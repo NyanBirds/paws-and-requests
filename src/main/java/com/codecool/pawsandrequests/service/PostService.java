@@ -8,12 +8,10 @@ import com.codecool.pawsandrequests.model.Animal;
 import com.codecool.pawsandrequests.model.Gender;
 import com.codecool.pawsandrequests.model.Picture;
 import com.codecool.pawsandrequests.model.Post;
-import com.codecool.pawsandrequests.model.Shelter;
 import com.codecool.pawsandrequests.model.Species;
 import com.codecool.pawsandrequests.model.User;
 import com.codecool.pawsandrequests.repository.AnimalRepository;
 import com.codecool.pawsandrequests.repository.PostRepository;
-import com.codecool.pawsandrequests.repository.ShelterRepository;
 import com.codecool.pawsandrequests.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -27,20 +25,17 @@ public final class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-    private final ShelterRepository shelterRepository;
     private final AnimalRepository animalRepository;
     private final PostMapper postMapper;
 
     public PostService(
             final PostRepository pr,
             final UserRepository ur,
-            final ShelterRepository sr,
             final AnimalRepository ar,
             final PostMapper pm
     ) {
         this.postRepository = pr;
         this.userRepository = ur;
-        this.shelterRepository = sr;
         this.animalRepository = ar;
         this.postMapper = pm;
 
@@ -132,7 +127,6 @@ public final class PostService {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "user not found")
                 );
-        Shelter shelter = shelterRepository.findByOrgNr(orgNr).get();
         Animal animal = animalRepository.findById(postRequest.animalId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "animal not found"));
