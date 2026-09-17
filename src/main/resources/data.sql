@@ -3,6 +3,8 @@
 INSERT INTO Shelter (org_nr, shelter_name, address)
 VALUES ('1', 'sheltername', 'oslo');
 
+-- REVIEW(bug): the ADMIN and SHELTER passwords below are stored in plain text while login runs passwordEncoder.matches(). BCrypt will never match a non-BCrypt string, so those two seeded accounts can never log in. Only Sara's row (a real $2a$ hash) works. Generate hashes for all of them.
+-- REVIEW(sec): seeded credentials in a public repo. Fine for a throwaway dev fixture, but this file must not be on the startup path of the deployed app.
 INSERT INTO users (first_name, last_name, email, phone_number, password, role, profile_picture, org_nr)
 VALUES
     ('Vegard', 'Eple', 'Vegard@hotmail.com', '12345678', 'verysercurepassword',

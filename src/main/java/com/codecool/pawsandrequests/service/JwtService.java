@@ -20,6 +20,7 @@ public class JwtService {
     private final long expirationMinutes;
 
     public JwtService(final JwtProperties properties) {
+        // REVIEW(bug): Keys.hmacShaKeyFor throws WeakKeyException if the decoded secret is under 32 bytes, and Base64.getDecoder().decode throws if the value is not valid base64. Both happen at startup, inside a constructor, which in a container reads as an unexplained crash loop. Validate the length in JwtProperties and say what the format is in the README.
         this.key = Keys.hmacShaKeyFor(
                 Base64.getDecoder().decode(properties.secret())
         );

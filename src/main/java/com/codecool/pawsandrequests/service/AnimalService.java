@@ -23,9 +23,12 @@ public class AnimalService {
 
     public AnimalService(
             final AnimalRepository animalRepo,
+            // REVIEW(api): the caller passes an orgNr string, so the safety of this method depends entirely on the controller having taken it from the principal. That is fine today but fragile. Passing the authenticated user (or the Shelter) makes it impossible to call wrongly.
             final ShelterRepository shelterRepo,
             final AnimalMapper mapper
     ) {
+        // REVIEW(efficiency): this loads every animal in the database into memory and filters in Java, and re-queries the shelter once per animal. With a few hundred rows it is already slow, and it is the single worst pattern to demo to a reviewer. Let the database do it: add List<Animal> findByShelterOrgNr(String orgNr) to AnimalRepository and delete this whole stream.
+        // REVIEW(bug): .get() on the Optional with no check. If orgNr does not resolve to a shelter this throws NoSuchElementException, which your GlobalExceptionHandler does not handle, so the client gets a raw 500.
         this.animalRepository = animalRepo;
         this.shelterRepository = shelterRepo;
         this.animalMapper = mapper;

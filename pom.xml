@@ -71,6 +71,7 @@
         <!-- H2-console -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <!-- REVIEW(azure): the H2 console starter is a compile-scope dependency, so it ships in the production jar. Move H2 and this starter to test scope, or at least keep the console off outside the dev profile. -->
             <artifactId>spring-boot-h2console</artifactId>
         </dependency>
 
@@ -79,6 +80,7 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <!-- REVIEW(noob): pinning hibernate-validator to an explicit version fights the Spring Boot parent, which already manages a compatible version. Use spring-boot-starter-validation and drop the version tag. Hand-pinning a version that Boot also manages is how you get a NoSuchMethodError at runtime that nobody can explain. -->
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
@@ -123,6 +125,7 @@
             <!-- Explicit annotation processor path so Lombok's @Getter/@Setter etc. actually run -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <!-- REVIEW(noob): ${lombok.version} is not defined in this pom. It resolves because the Boot parent happens to declare it, which is fine, but it means bumping the parent silently bumps your annotation processor too. -->
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <annotationProcessorPaths>

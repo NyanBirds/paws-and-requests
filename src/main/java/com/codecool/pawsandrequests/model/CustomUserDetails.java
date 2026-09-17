@@ -15,6 +15,7 @@ public final class CustomUserDetails implements UserDetails {
         this.user = u;
     }
 
+    // REVIEW(bug): user.getShelter() is nullable (every USER and ADMIN registers with shelter == null), so this NPEs. AnimalController calls it on whoever is logged in, so a plain user hitting GET /animals gets a 500. Return Optional<String>, or null-check and let the caller decide.
     public String getOrgNr() {
         return user.getShelter().getOrgNr();
     }

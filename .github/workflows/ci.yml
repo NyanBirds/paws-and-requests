@@ -25,5 +25,7 @@ jobs:
       - name: Checkstyle
         run: mvn -B checkstyle:check
 
+      # REVIEW(noob): there is not a single test in src/test, so 'mvn test' passes because it runs nothing. The rubric asks for tests; this workflow currently certifies an empty suite.
+      # REVIEW(azure): CI never builds a container image. If the plan is to deploy to Azure, the pipeline should at least run 'mvn -B verify' and 'docker build' so a broken Dockerfile fails here rather than in the deploy.
       - name: Run unit tests
         run: mvn -B test

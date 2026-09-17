@@ -28,6 +28,7 @@ public final class PostService {
 
     public PostService(
             final PostRepository pr,
+            // REVIEW(efficiency): classic N+1. findAll() runs one query, then post.getAnimal() lazily fires another per post. Use a @Query with a join fetch, or better a projection interface, so this is one round trip.
             final UserRepository ur,
             final PostMapper pm
     ) {
@@ -49,6 +50,7 @@ public final class PostService {
                     .toList();
         }
 
+        // REVIEW(efficiency): same N+1 for pictures, plus animal and shelter. One post is cheap enough that this is fine, but know that it is three queries.
         if (gender != null) {
             return postRepository
                     .findByAnimalGender(gender)
@@ -67,6 +69,7 @@ public final class PostService {
 
         return postRepository.findAll().stream()
                 .map(postMapper::toPostSummaryResponse)
+                // REVIEW(api): the service re-loads the user by email although the filter already loaded it. Passing CustomUserDetails (which holds the User) would save the query.
                 .toList();
     }
 
@@ -80,6 +83,8 @@ public final class PostService {
         return postMapper.toPostResponse(post);
     }
 
+// REVIEW(good): the ownership check is here, in the service, and it compares the requester's shelter to the post's shelter rather than trusting anything from the request. This is the right pattern and it is what the other repos are missing.
+// REVIEW(noob): a user whose role is SHELTER but whose shelter is null falls into the first branch and gets a 403 with a misleading message. Minor, but worth a distinct message.
 
     public void deletePost(final UUID postId, final String requesterEmail) {
 

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
+// REVIEW(noob): implement OncePerRequestFilter rather than the raw servlet Filter. A plain Filter can run more than once per request (forwards, async dispatches, error dispatches), and you then redo the JWT parse and the user lookup each time. OncePerRequestFilter is the Spring Security idiom and gives you doFilterInternal plus shouldNotFilter.
 public class JwtAuthenticationFilter implements Filter {
 
     private static final String HEADER = "Authorization";
@@ -60,6 +61,7 @@ public class JwtAuthenticationFilter implements Filter {
             if (username != null && SecurityContextHolder
                     .getContext().getAuthentication() == null) {
 
+                // REVIEW(efficiency): every single authenticated request hits the database to load the user. That is acceptable, but it is why people put the role (and here the orgNr) in the token claims. Worth knowing you made that trade.
                 var userDetails = userDetailsService
                         .loadUserByUsername(username);
 
@@ -79,6 +81,7 @@ public class JwtAuthenticationFilter implements Filter {
                             .setAuthentication(authentication);
                 }
             }
+        // REVIEW(sec): catching bare Exception and carrying on means a tampered, expired or malformed token is silently indistinguishable from sending no token at all. The request continues as anonymous and, with .permitAll() upstairs, usually still succeeds. At minimum log it at debug so it is diagnosable, and catch JwtException specifically rather than Exception.
         } catch (Exception e) {
             SecurityContextHolder.clearContext();
         }

@@ -41,6 +41,8 @@ public class AuthService {
         this.shelterRepository = shelterRepo;
     }
 
+    // REVIEW(noob): AuthenticationManager with a UsernamePasswordAuthenticationToken is the idiomatic Spring way to do this. Loading the UserDetails and calling passwordEncoder.matches() by hand works, but it bypasses the account-locked / disabled checks that UserDetails already models.
+    // REVIEW(good): returning the same 'Invalid credentials' message for an unknown user and a wrong password is exactly right. It stops the endpoint being used to enumerate which emails are registered.
     public final TokenResponse login(final LoginRequest request) {
         try {
             var user = userDetailsService.loadUserByUsername(
@@ -74,6 +76,8 @@ public class AuthService {
             user.setPassword(passwordEncoder.encode(request.password()));
             user.setRole(Role.USER);
             user.setProfilePicture(request.profilePicture());
+            // REVIEW(sec): shelterOrg comes straight from the registration body, so anyone who knows or guesses an org number can attach their new account to that shelter. This is the classic 'the client sent an id it has no business choosing' problem. Shelter membership is something the shelter grants, not something the registrant claims: either have an existing shelter user invite them, or write it to a pending state an admin approves.
+            // REVIEW(sec): the role is hardcoded to USER two lines up, which is what currently stops this being exploitable. That is one line away from a privilege escalation, and it also means a shelter employee registering here can never actually act for their shelter.
             String org = request.shelterOrg();
             if (org != null && !org.isBlank()) {
                 Shelter shelter = shelterRepository
@@ -84,6 +88,7 @@ public class AuthService {
                 user.setShelter(shelter);
             }
             userRepository.save(user);
+// REVIEW(efficiency): you just saved the user, then load it again through the UserDetailsService to mint the token. new CustomUserDetails(user) is right there.
 
             var uDetails = userDetailsService.loadUserByUsername(
                     request.email()

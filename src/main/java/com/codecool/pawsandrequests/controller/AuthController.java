@@ -26,6 +26,7 @@ public class AuthController {
      * @param request the login request containing the user's credentials
      * @return a {@link TokenResponse} containing the issued access token
      */
+    // REVIEW(noob): @Valid is missing here but present on registration. Right now it makes no difference because LoginRequest has no constraints, which is itself the bug: a null email reaches the database layer before anything complains.
     @PostMapping("/login")
     public TokenResponse login(final @RequestBody LoginRequest request) {
         return authService.login(request);
@@ -37,6 +38,7 @@ public class AuthController {
      * @param request the login request containing the user's credentials
      * @return a {@link TokenResponse} containing the issued access token
      */
+    // REVIEW(noob): @Valid is applied but RegistrationRequest declares no constraints at all, so it validates nothing. Put @NotBlank / @Email / @Size on the record components and this starts earning its keep.
     @PostMapping("/registration")
     public TokenResponse registration(
             final @RequestBody @Valid RegistrationRequest request) {

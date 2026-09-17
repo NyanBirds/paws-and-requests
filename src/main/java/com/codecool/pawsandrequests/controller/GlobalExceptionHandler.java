@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+// REVIEW(api): every handler returns a bare string, so clients get text/plain for errors and JSON for successes and cannot parse either uniformly. Return a ProblemDetail (built into Spring 6) or a small ErrorResponse record so the shape is consistent.
+// REVIEW(noob): no handler for MethodArgumentNotValidException, so once you add validation constraints the 400 body will be Spring's default stack-trace-ish blob. No fallback handler for Exception either, which means unexpected failures leak whatever the container prints.
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     /**

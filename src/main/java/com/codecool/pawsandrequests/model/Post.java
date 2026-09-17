@@ -38,6 +38,7 @@ public class Post {
     @JoinColumn(name = "animal_id", nullable = false)
     private Animal animal;
 
+    // REVIEW(noob): cascade = REMOVE without orphanRemoval = true means removing a Picture from this list does not delete the row. Also every @ManyToOne here defaults to EAGER, which is where the N+1 in PostService comes from. Make them FetchType.LAZY and fetch explicitly when you need them.
     @OneToMany(mappedBy = "post", cascade =  CascadeType.REMOVE)
     private List<Picture> pictures;
 }

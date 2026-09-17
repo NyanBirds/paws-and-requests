@@ -20,7 +20,9 @@ import java.util.UUID;
 @RequestMapping("/animals")
 public final class AnimalController {
 
+    // REVIEW(sec): this endpoint is called getMyAnimals but SecurityConfig permits all requests, so it is reachable without a token. Then userDetails is null and line 28 NPEs into a 500. Two bugs with one fix: make the chain deny by default.
     private final AnimalService animalService;
+// REVIEW(good): taking the identity from @AuthenticationPrincipal instead of a path variable or a query parameter is exactly the right instinct. Keep doing this everywhere: the client should never get to say which user or which shelter it is.
 
     public AnimalController(final AnimalService service) {
         this.animalService = service;

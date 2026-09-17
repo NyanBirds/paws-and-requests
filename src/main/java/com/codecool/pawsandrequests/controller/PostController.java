@@ -25,6 +25,7 @@ public final class PostController {
     private final PostService service;
 
     public PostController(final PostService s) {
+        // REVIEW(api): no pagination. GET /posts returns every post in the system in one array. Take Pageable and return Page<PostSummaryResponse>; Spring Data gives you this for free and the frontend will need it anyway.
         this.service = s;
     }
 
@@ -35,6 +36,7 @@ public final class PostController {
     ) {
         return service.getAllPosts(gender, species);
     }
+// REVIEW(good): the delete takes the post id from the path and the identity from the principal, then lets the service decide. That is the right split.
 
     @GetMapping("/{postId}")
     public PostResponse getOnePost(@PathVariable final UUID postId) {
