@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-public class AdoptionFormController {
+public final class AdoptionFormController {
     private final AdoptionFormService adoptionFormService;
 
     public  AdoptionFormController(final AdoptionFormService service) {
