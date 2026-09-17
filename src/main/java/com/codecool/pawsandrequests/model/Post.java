@@ -38,6 +38,7 @@ public class Post {
     @JoinColumn(name = "animal_id", nullable = false)
     private Animal animal;
 
-    @OneToMany(mappedBy = "post", cascade =  CascadeType.REMOVE)
+    @OneToMany(mappedBy = "post", cascade = {CascadeType.REMOVE,
+            CascadeType.PERSIST})
     private List<Picture> pictures;
 }
