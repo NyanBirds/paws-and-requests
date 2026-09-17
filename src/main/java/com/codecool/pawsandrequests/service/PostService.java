@@ -3,11 +3,8 @@ package com.codecool.pawsandrequests.service;
 import com.codecool.pawsandrequests.dto.PostResponse;
 import com.codecool.pawsandrequests.dto.PostSummaryResponse;
 import com.codecool.pawsandrequests.mapper.PostMapper;
-import com.codecool.pawsandrequests.model.Animal;
 import com.codecool.pawsandrequests.model.Gender;
-import com.codecool.pawsandrequests.model.Picture;
 import com.codecool.pawsandrequests.model.Post;
-import com.codecool.pawsandrequests.model.Shelter;
 import com.codecool.pawsandrequests.model.Species;
 import com.codecool.pawsandrequests.model.User;
 import com.codecool.pawsandrequests.repository.PostRepository;
@@ -110,5 +107,4 @@ public final class PostService {
         }
         postRepository.delete(post);
     }
-
 }
