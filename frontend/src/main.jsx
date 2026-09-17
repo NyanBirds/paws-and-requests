@@ -8,6 +8,7 @@ import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import AnimalProfilePage from './pages/AnimalProfilePage.jsx';
 import AdoptionPage from "./pages/PostPage.jsx";
+import ShelterPage from './pages/ShelterPage.jsx';
 
 const router = createBrowserRouter([
     {
@@ -18,7 +19,8 @@ const router = createBrowserRouter([
             { path: 'registration', Component: RegisterPage },
             { path: 'login', Component: LoginPage },
             { path: 'posts/:postId', Component: AnimalProfilePage },
-            { path: 'posts', Component: AdoptionPage }
+            { path: 'posts', Component: AdoptionPage },
+            { path: 'shelters/:orgNr', Component: ShelterPage}
         ]
     }
 ]);
