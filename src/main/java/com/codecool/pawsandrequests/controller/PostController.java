@@ -51,11 +51,8 @@ public final class PostController {
     public ResponseEntity<PostResponse> createPost(
             @AuthenticationPrincipal final CustomUserDetails customUserDetails,
             @RequestBody final PostRequest postRequest) {
-        PostResponse response = postService.createPost(postRequest.title(),
-                postRequest.description(),
-                postRequest.url(),
+        PostResponse response = postService.createPost(postRequest,
                 customUserDetails.getOrgNr(),
-                postRequest.animalId(),
                 customUserDetails.getUsername()
         );
         return ResponseEntity.ok(response);
