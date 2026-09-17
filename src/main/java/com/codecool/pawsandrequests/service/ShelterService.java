@@ -23,6 +23,11 @@ public final class ShelterService {
         mapper = m;
     }
 
+    public List<ShelterResponse> getAllShelters() {
+        List<Shelter> shelters = repository.findAll();
+        return shelters.stream().map(mapper::toShelterInfo).toList();
+    }
+
     public ShelterResponse getShelter(final String orgNr) {
         log.info("service");
         Shelter shelter = repository.findByOrgNr(orgNr)

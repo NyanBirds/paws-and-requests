@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/shelters")
@@ -19,9 +21,13 @@ public final class ShelterController {
         this.service = s;
     }
 
+    @GetMapping
+    public List<ShelterResponse> getShelters() {
+        return service.getAllShelters();
+    }
+
     @GetMapping("/{orgNr}")
     public ShelterResponse getShelter(@PathVariable final String orgNr) {
-        log.info("controller");
         return service.getShelter(orgNr);
     }
 }
