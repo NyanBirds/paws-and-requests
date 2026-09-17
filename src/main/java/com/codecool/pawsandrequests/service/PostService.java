@@ -15,7 +15,6 @@ import com.codecool.pawsandrequests.repository.PostRepository;
 import com.codecool.pawsandrequests.repository.ShelterRepository;
 import com.codecool.pawsandrequests.repository.UserRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 

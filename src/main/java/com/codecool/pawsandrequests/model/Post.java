@@ -13,6 +13,7 @@ import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,22 +24,19 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
     @Column(nullable = false)
     private String title;
-
     @Column(nullable = false)
     private String description;
-
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
     @ManyToOne
     @JoinColumn(name = "animal_id", nullable = false)
     private Animal animal;
-
     @OneToMany(mappedBy = "post", cascade = {CascadeType.REMOVE,
             CascadeType.PERSIST})
-    private List<Picture> pictures;
+    private List<Picture> pictures = new ArrayList<>();
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<AdoptionForm> adoptionForms =  new ArrayList<>();
 }
