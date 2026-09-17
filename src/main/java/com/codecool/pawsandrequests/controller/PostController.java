@@ -51,7 +51,7 @@ public final class PostController {
     public ResponseEntity<PostResponse> createPost(
             @AuthenticationPrincipal final CustomUserDetails customUserDetails,
             @RequestBody final PostRequest postRequest) {
-        PostResponse response = service.createPost(postRequest.title(),
+        PostResponse response = postService.createPost(postRequest.title(),
                 postRequest.description(),
                 postRequest.url(),
                 customUserDetails.getOrgNr(),
