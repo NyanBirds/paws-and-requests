@@ -111,4 +111,11 @@ public final class PostService {
         postRepository.delete(post);
     }
 
+    public List<PostSummaryResponse> getShelterPosts(final String orgNr) {
+        List<Post> posts = postRepository.findByUserShelterOrgNr(orgNr);
+
+        return posts.stream()
+                    .map(postMapper::toPostSummaryResponse)
+                    .toList();
+    }
 }

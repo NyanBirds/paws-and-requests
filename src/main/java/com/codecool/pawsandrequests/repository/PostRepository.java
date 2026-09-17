@@ -18,4 +18,5 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
             Gender gender,
             Species species
     );
+    List<Post> findByUserShelterOrgNr(String userShelterOrgNr);
 }
