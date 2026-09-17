@@ -1,7 +1,7 @@
 -- INSERTION
 
-INSERT INTO Shelter (org_nr, shelter_name, address)
-VALUES ('1', 'sheltername', 'oslo');
+INSERT INTO Shelter (org_nr, shelter_name, address, description)
+VALUES ('1', 'FARLIG DYREHAGE', 'oslo', 'An Oslo-based animal shelter dedicated to giving dogs and cats in need a safe place to stay while they find their forever homes');
 
 INSERT INTO users (first_name, last_name, email, phone_number, password, role, profile_picture, org_nr)
 VALUES

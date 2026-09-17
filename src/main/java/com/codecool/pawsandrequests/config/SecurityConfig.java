@@ -60,6 +60,8 @@ public class SecurityConfig {
                             "/api/auth/registration").permitAll()
                     .requestMatchers(HttpMethod.GET, "/posts",
                             "/posts/**").permitAll()
+                    .requestMatchers(HttpMethod.GET,
+                            "/shelters/**").permitAll()
                     .anyRequest().authenticated()
             )
             .headers(headers -> headers

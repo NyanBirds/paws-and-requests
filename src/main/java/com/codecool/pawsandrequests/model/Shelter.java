@@ -20,6 +20,7 @@ public class Shelter {
     @Column(nullable = false)
     private String shelterName;
     private String address;
+    private String description;
 
     @OneToMany(mappedBy = "shelter")
     private List<User> users = new ArrayList<>();
