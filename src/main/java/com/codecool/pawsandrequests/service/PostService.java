@@ -1,5 +1,6 @@
 package com.codecool.pawsandrequests.service;
 
+import com.codecool.pawsandrequests.dto.PostRequest;
 import com.codecool.pawsandrequests.dto.PostResponse;
 import com.codecool.pawsandrequests.dto.PostSummaryResponse;
 import com.codecool.pawsandrequests.mapper.PostMapper;
@@ -121,9 +122,9 @@ public final class PostService {
     }
 
     public PostResponse createPost(
-            final String title, final String description,
-            final List<String> url, final String orgNr,
-            final UUID animalId, final String requesterEmail
+            final PostRequest postRequest,
+            final String orgNr,
+            final String requesterEmail
     ) {
 
         // If user does not exist
@@ -132,7 +133,7 @@ public final class PostService {
                         HttpStatus.NOT_FOUND, "user not found")
                 );
         Shelter shelter = shelterRepository.findByOrgNr(orgNr).get();
-        Animal animal = animalRepository.findById(animalId)
+        Animal animal = animalRepository.findById(postRequest.animalId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "animal not found"));
 
@@ -141,9 +142,8 @@ public final class PostService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     "This animal doesnt belong to this shelter");
         }
-
-        Post newPost = new Post();
-        List<Picture> pictures = url.stream()
+        Post newPost = postMapper.toPost(postRequest, user, animal);
+        List<Picture> pictures = postRequest.url().stream()
                 .map(singleUrl -> {
                     Picture picture = new Picture();
                     picture.setUrl(singleUrl);
@@ -152,12 +152,8 @@ public final class PostService {
                 })
                 .toList();
 
-        // adding all elements to the newPost
-        newPost.setUser(user);
-        newPost.setTitle(title);
-        newPost.setDescription(description);
-        newPost.setAnimal(animal);
         newPost.setPictures(pictures);
+
         postRepository.save(newPost);
 
         return postMapper.toPostResponse(newPost);
