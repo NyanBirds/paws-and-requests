@@ -4,5 +4,6 @@ public record ShelterResponse(
         String orgNr,
         String shelterName,
         String address,
-        String description
+        String description,
+        String logo
 ) { }

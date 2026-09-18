@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,9 @@ public class Shelter {
     private String shelterName;
     private String address;
     private String description;
+
+    @Column(length = 1_000)
+    private String logo;
 
     @OneToMany(mappedBy = "shelter")
     private List<User> users = new ArrayList<>();
