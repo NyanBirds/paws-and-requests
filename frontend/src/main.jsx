@@ -10,6 +10,7 @@ import AnimalProfilePage from './pages/AnimalProfilePage.jsx';
 import PostsPage from "./pages/PostsPage.jsx";
 import ShelterPage from './pages/ShelterPage.jsx';
 import ShelterListPage from './pages/ShelterListPage.jsx';
+import {AdoptionPage} from "./pages/AdoptionPage.jsx";
 
 const router = createBrowserRouter([
     {
@@ -19,10 +20,11 @@ const router = createBrowserRouter([
             { index: true, Component: HomePage },
             { path: 'registration', Component: RegisterPage },
             { path: 'login', Component: LoginPage },
-            { path: 'posts/:postId', Component: AnimalProfilePage },
             { path: 'posts', Component: PostsPage },
+            { path: 'posts/:postId', Component: AnimalProfilePage },
             { path: 'shelters', Component: ShelterListPage},
-            { path: 'shelters/:orgNr', Component: ShelterPage}
+            { path: 'shelters/:orgNr', Component: ShelterPage},
+            { path: 'posts/:postId/adoption', Component: AdoptionPage }
         ]
     }
 ]);
