@@ -10,6 +10,6 @@ public record PostSummaryResponse(
         String title,
         int age,
         Gender gender,
-        Species species
-
+        Species species,
+        String picture
  ) { }
