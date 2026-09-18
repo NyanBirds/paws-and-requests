@@ -1,5 +1,4 @@
 import {useEffect, useState} from "react";
-import PostDetails from "../components/PostDetails.jsx";
 import CardGrid from "../components/CardGrid.jsx";
 import PostCard from "../components/PostCard.jsx";
 

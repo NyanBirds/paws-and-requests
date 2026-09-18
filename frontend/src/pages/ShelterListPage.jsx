@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/client";
-import ShelterDetails from "../components/ShelterDetails";
 import ShelterCard from "../components/ShelterCard";
 import CardGrid from "../components/CardGrid";
 
