@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import {useNavigate, useParams} from "react-router";
 import { animalProfile } from "../api/pages.js";
 import Divider from "../components/Divider.jsx";
 
 export default function AnimalProfilePage() {
+    const navigate = useNavigate();
     const { postId } = useParams();
     const [post, setPost] = useState(null);
     const [error, setError] = useState(null);
@@ -45,7 +46,7 @@ export default function AnimalProfilePage() {
             <Divider/>
             <p>Shelter: {post.shelterName}</p>
             <p>Address: {post.address}</p>
-            <button>Adopt</button>
+            <button onClick={() => navigate(`/posts/${postId}/adoption`)}>Adopt</button>
         </section>
     );
 }

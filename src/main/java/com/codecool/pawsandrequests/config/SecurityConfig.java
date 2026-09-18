@@ -60,6 +60,8 @@ public class SecurityConfig {
                             "/api/auth/registration").permitAll()
                     .requestMatchers(HttpMethod.GET, "/posts",
                             "/posts/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/posts")
+                    .hasRole("SHELTERUSER")
                     .anyRequest().authenticated()
             )
             .headers(headers -> headers
