@@ -34,8 +34,6 @@ function App() {
             />
         </Link>
           <nav>
-              <NavLink to="/">Home</NavLink>
-              {" | "}
               <NavLink to="/posts">Posts</NavLink>
               {" | "}
               {isLoggedIn ? (
