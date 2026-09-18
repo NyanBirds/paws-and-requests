@@ -1,14 +1,24 @@
 package com.codecool.pawsandrequests.controller;
 
+import com.codecool.pawsandrequests.dto.PostRequest;
 import com.codecool.pawsandrequests.dto.PostResponse;
 import com.codecool.pawsandrequests.dto.PostSummaryResponse;
+import com.codecool.pawsandrequests.model.CustomUserDetails;
 import com.codecool.pawsandrequests.model.Gender;
 import com.codecool.pawsandrequests.model.Species;
-import org.springframework.security.core.userdetails.UserDetails;
 import com.codecool.pawsandrequests.service.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,10 +27,12 @@ import java.util.UUID;
 @RequestMapping("/posts")
 public final class PostController {
 
-    private final PostService service;
+    private final PostService postService;
 
-    public PostController(final PostService s) {
-        this.service = s;
+    public PostController(
+            final PostService pService
+    ) {
+        this.postService = pService;
     }
 
     @GetMapping()
@@ -28,25 +40,36 @@ public final class PostController {
             final @RequestParam(required = false) Gender gender,
             final @RequestParam(required = false) Species species
     ) {
-        return service.getAllPosts(gender, species);
+        return postService.getAllPosts(gender, species);
     }
 
     @GetMapping("/{postId}")
     public PostResponse getOnePost(@PathVariable final UUID postId) {
-        return service.getOnePost(postId);
+        return postService.getOnePost(postId);
+    }
+
+    @PostMapping()
+    public ResponseEntity<PostResponse> createPost(
+            @AuthenticationPrincipal final CustomUserDetails customUserDetails,
+            @RequestBody final PostRequest postRequest) {
+        PostResponse response = postService.createPost(postRequest,
+                customUserDetails.getOrgNr(),
+                customUserDetails.getUsername()
+        );
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{postId}")
     public ResponseEntity<Void> deletePost(
             @AuthenticationPrincipal final UserDetails userDetails,
             @PathVariable final UUID postId) {
-        service.deletePost(postId,  userDetails.getUsername());
+        postService.deletePost(postId,  userDetails.getUsername());
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/shelter/{orgNr}")
     public List<PostSummaryResponse> getShelterPosts(
             @PathVariable final String orgNr) {
-        return service.getShelterPosts(orgNr);
+        return postService.getShelterPosts(orgNr);
     }
 }

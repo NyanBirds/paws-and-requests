@@ -1,5 +1,6 @@
 package com.codecool.pawsandrequests.service;
 
+import com.codecool.pawsandrequests.dto.PostRequest;
 import com.codecool.pawsandrequests.dto.PostResponse;
 import com.codecool.pawsandrequests.dto.PostSummaryResponse;
 import com.codecool.pawsandrequests.mapper.PostMapper;
@@ -7,9 +8,9 @@ import com.codecool.pawsandrequests.model.Animal;
 import com.codecool.pawsandrequests.model.Gender;
 import com.codecool.pawsandrequests.model.Picture;
 import com.codecool.pawsandrequests.model.Post;
-import com.codecool.pawsandrequests.model.Shelter;
 import com.codecool.pawsandrequests.model.Species;
 import com.codecool.pawsandrequests.model.User;
+import com.codecool.pawsandrequests.repository.AnimalRepository;
 import com.codecool.pawsandrequests.repository.PostRepository;
 import com.codecool.pawsandrequests.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -24,16 +25,20 @@ public final class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final AnimalRepository animalRepository;
     private final PostMapper postMapper;
 
     public PostService(
             final PostRepository pr,
             final UserRepository ur,
+            final AnimalRepository ar,
             final PostMapper pm
     ) {
         this.postRepository = pr;
         this.userRepository = ur;
+        this.animalRepository = ar;
         this.postMapper = pm;
+
     }
 
     public List<PostSummaryResponse> getAllPosts(
@@ -111,6 +116,42 @@ public final class PostService {
         postRepository.delete(post);
     }
 
+    public PostResponse createPost(
+            final PostRequest postRequest,
+            final String orgNr,
+            final String requesterEmail
+    ) {
+
+        // If user does not exist
+        User user = userRepository.findByEmail(requesterEmail)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "user not found")
+                );
+        Animal animal = animalRepository.findById(postRequest.animalId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "animal not found"));
+
+        // If animal is not in this shelter
+        if (!animal.getShelter().getOrgNr().equals(orgNr)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "This animal doesnt belong to this shelter");
+        }
+        Post newPost = postMapper.toPost(postRequest, user, animal);
+        List<Picture> pictures = postRequest.url().stream()
+                .map(singleUrl -> {
+                    Picture picture = new Picture();
+                    picture.setUrl(singleUrl);
+                    picture.setPost(newPost);
+                    return picture;
+                })
+                .toList();
+
+        newPost.setPictures(pictures);
+
+        postRepository.save(newPost);
+
+        return postMapper.toPostResponse(newPost);
+    }
     public List<PostSummaryResponse> getShelterPosts(final String orgNr) {
         List<Post> posts = postRepository.findByUserShelterOrgNr(orgNr);
 
