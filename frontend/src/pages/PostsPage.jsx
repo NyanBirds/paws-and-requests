@@ -1,5 +1,7 @@
 import {useEffect, useState} from "react";
 import PostDetails from "../components/PostDetails.jsx";
+import CardGrid from "../components/CardGrid.jsx";
+import PostCard from "../components/PostCard.jsx";
 
 export default function PostsPage() {
 
@@ -19,9 +21,7 @@ export default function PostsPage() {
     return(
         <section>
             <h1>Look at all these cuties!</h1>
-            <ul>
-                {posts.map(post => <PostDetails key={post.id} {...post}/>)}
-            </ul>
+            <CardGrid> {posts.map(post => <PostCard key={post.id} {...post}/>)} </CardGrid>
         </section>
     );
 }
