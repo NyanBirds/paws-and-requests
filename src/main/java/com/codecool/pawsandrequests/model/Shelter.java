@@ -15,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Shelter {
+    public static final int INT = 1_000;
     @Id
     private String orgNr;
 
@@ -23,7 +24,7 @@ public class Shelter {
     private String address;
     private String description;
 
-    @Column(length = 1_000)
+    @Column(length = INT)
     private String logo;
 
     @OneToMany(mappedBy = "shelter")

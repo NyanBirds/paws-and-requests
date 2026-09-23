@@ -16,8 +16,6 @@ public interface PostMapper {
     @Mapping(target = "age", source = "animal.age")
     @Mapping(target = "gender", source = "animal.gender")
     @Mapping(target = "species", source = "animal.species")
-    @Mapping(target = "picture", expression = "java(post.getPictures()"
-            + ".stream().map(Picture::getUrl).findFirst().get())")
     PostSummaryResponse toPostSummaryResponse(Post post);
     @Mapping(target = "shelterName", source = "user.shelter.shelterName")
     @Mapping(target = "address", source = "user.shelter.address")
