@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { animalProfile } from "../api/pages.js";
+import { BASE_URL } from "../api/client.js";
 import Divider from "../components/Divider.jsx";
 
 export default function AnimalProfilePage() {
@@ -33,7 +34,7 @@ export default function AnimalProfilePage() {
             <h1>{post.animalName}</h1>
             <div>
                 {post.url?.map((imageUrl) => (
-                    <img key={imageUrl} src={imageUrl} alt={post.animalName} width={200}/>
+                    <img key={imageUrl} src={`${BASE_URL}${imageUrl}`} alt={post.animalName} width={200}/>
                 ))}
             </div>
             <h2>{post.title}</h2>
