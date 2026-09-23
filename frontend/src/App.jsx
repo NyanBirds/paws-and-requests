@@ -38,6 +38,9 @@ function App() {
               {" | "}
               <NavLink to="/shelters">Shelters</NavLink>
               {" | "}
+              <NavLink to="/post/new">Create post</NavLink>
+              {" | "}
+
               {isLoggedIn ? (
                   <button type="button" onClick={handleLogout}>Logout</button>
               ) : (

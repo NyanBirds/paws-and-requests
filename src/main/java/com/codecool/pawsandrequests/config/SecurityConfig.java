@@ -64,6 +64,8 @@ public class SecurityConfig {
                             "/shelters/**").permitAll()
                     .requestMatchers(HttpMethod.POST, "/posts")
                     .hasRole("SHELTERUSER")
+                    .requestMatchers("/h2-console/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/pictures/**").permitAll()
                     .anyRequest().authenticated()
             )
             .headers(headers -> headers

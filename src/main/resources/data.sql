@@ -2,15 +2,15 @@
 
 INSERT INTO Shelter (org_nr, shelter_name, address, description, logo)
 VALUES
-    ('1', 
-     'Dyrebeskyttelsen Norge', 
-     'Øvre gate 7, 0551 Oslo', 
-     'Vi er Norges eldste dyrevernorganisasjon, og jobber for å skaffe hunder og katter i nød et nytt hjem, samtidig som vi kjemper for sterkere dyrerettigheter i hele landet', 
+    ('1',
+     'Dyrebeskyttelsen Norge',
+     'Øvre gate 7, 0551 Oslo',
+     'Vi er Norges eldste dyrevernorganisasjon, og jobber for å skaffe hunder og katter i nød et nytt hjem, samtidig som vi kjemper for sterkere dyrerettigheter i hele landet',
      'https://scontent.fsvg1-1.fna.fbcdn.net/v/t39.30808-6/391587480_705360571628818_6774951360565198877_n.jpg?stp=dst-jpg_tt6&cstp=mx960x960&ctp=s960x960&_nc_cat=108&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=Xm5A71dZ_C0Q7kNvwFJRDfB&_nc_oc=AdqWuAKoiSB4DXKhIvZ4JtVQvAS_fb2xfHdktloffsTC9zb1k0icCdsbhz259oi4pTU&_nc_zt=23&_nc_ht=scontent.fsvg1-1.fna&_nc_gid=PyNy4u67ynGLnewOdWkMfA&_nc_ss=7b289&oh=00_AQIhrUZ2HiPNgRz_H14zyAlANLH19Q5iN69ts9Reohriow&oe=6AB2ECF5'
     ),
     ('2',
      'FOD – Foreningen for omplassering av dyr',
-     'Enebakkveien 866, 1290 Oslo', 'Vi er en frivillig drevet forening som jobber for å finne nye, kjærlige hjem til forlatte og omplasserte kjæledyr i Oslo-området', 
+     'Enebakkveien 866, 1290 Oslo', 'Vi er en frivillig drevet forening som jobber for å finne nye, kjærlige hjem til forlatte og omplasserte kjæledyr i Oslo-området',
      'https://scontent.fsvg1-1.fna.fbcdn.net/v/t39.30808-6/391763790_721124743379291_8810608562810801027_n.jpg?stp=dst-jpg_tt6&cstp=mx1004x929&ctp=s1004x929&_nc_cat=109&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=WAWvms8r-G8Q7kNvwGkUYS3&_nc_oc=AdqZZ7zslpv789LjmygJJmVY7akE98CtZAN2cnI-I-bqH8q317MA-PndtDr3Q0RFewc&_nc_zt=23&_nc_ht=scontent.fsvg1-1.fna&_nc_gid=20aNM7HBmd3l81ytbdDhsQ&_nc_ss=7b289&oh=00_AQK84lbs1TaHf3jcINxAbHEV9tiK9DcEPX1lI_XqEfTkUQ&oe=6AB2D769'
     ),
     ('3',
@@ -28,14 +28,14 @@ VALUES
 
 INSERT INTO users (first_name, last_name, email, phone_number, password, role, profile_picture, org_nr)
 VALUES
-    ('Vegard', 'Eple', 'Vegard@hotmail.com', '12345678', 'verysercurepassword',
+    ('Vegard', 'Eple', 'vegard@hotmail.com', '12345678', 'verysercurepassword',
      'ADMIN', 'https://i.pinimg.com/474x/f6/51/0c/f6510c7eeab1d3db3b16684244665f7d.jpg', NULL),
 
-    ('Lisbeth', 'Mango', 'Lisbeth@hotmail.com', '87654321', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
+    ('Lisbeth', 'Mango', 'lisbeth@hotmail.com', '87654321', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
      'SHELTERUSER', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8LqCs6k1rtI_Jh7YmCbTl9woInyTY6skKWtGQZGQ5xEblEN98V38-qBs&s=10','1'),
 
-    ('Sara', 'Banana', 'Sara@hotmail.com', '12344321', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
-     'USER', 'https://www.reddit.com/media?url=https%3A%2F%2Fpreview.redd.it%2Fcute-duck-in-a-cheerful-yellow-sun-hat-v0-c7xnlawjylhg1.jpeg%3Fwidth%3D640%26crop%3Dsmart%26auto%3Dwebp%26s%3D6f1c966c77d11b6049037b9ad3a0923f99d8a414', NULL),
+    ('Sara', 'Banana', 'sara@hotmail.com', '12344321', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
+     'USER', 'https://www.reddit.com/media?url=https%3A%2F%2Fpreview.redd.it%2Fcute-duck-in-a-cheerful-yellow-sun-hat-v0-c7xnlawjylhg1.jpeg%3Fwidth%3D640%26crop%3Dsmart%26auto%3Dwebp%26s%3D6f1c966c77d11b6049037b9ad3a0923f99d8a414', NULL);
 
     ('Erik', 'Bjørk', 'Erik@hotmail.com', '99887766', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
      'SHELTERUSER', 'https://i.pinimg.com/474x/8a/8f/ee/8a8fee6a1a1a1a1a1a1a1a1a1a1a1a1a.jpg', '2'),
@@ -82,6 +82,10 @@ INSERT INTO Post (id, title, description, user_id, animal_id) VALUES
     ('b1c2d3e4-4444-9999-0000-000000000002', 'Finn the adventurer', 'Finn is active outdoors but calm indoors. He loves walking in the forest and watching birds from the window.', 6, 'a1b2c3d4-4444-9999-0000-000000000002'),
     ('b1c2d3e4-4444-9999-0000-000000000003', 'Gentle Molly', 'Molly is an older girl who has raised several litters. Now it is her turn to be pampered in a peaceful home.', 6, 'a1b2c3d4-4444-9999-0000-000000000003'),
     ('b1c2d3e4-4444-9999-0000-000000000004', 'Handsome Simba', 'Simba is a majestic long-haired cat who loves being brushed. He is looking for a home where he gets lots of attention.', 6, 'a1b2c3d4-4444-9999-0000-000000000004');
+
+INSERT INTO Picture (post_id, data, content_type) VALUES
+    ('a1b2c3d4-1111-2222-3333-444455556666', FILE_READ('classpath:images/maja.jpg'), 'image/jpeg'),
+    ('a1b2c3d4-1111-2222-3333-444455556666', FILE_READ('classpath:images/maja2.jpg'), 'image/jpeg');
 
 INSERT INTO Picture (post_id, url) VALUES
     ('a1b2c3d4-1111-2222-3333-444455556666', 'https://hips.hearstapps.com/ghk.h-cdn.co/assets/17/30/dachshund.jpg?crop=1.00xw:0.668xh;0,0.260xh'),
