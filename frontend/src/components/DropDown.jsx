@@ -1,4 +1,4 @@
-export default function DropDown({name, animals = [], label, required = true, onChange}) {
+export default function DropDown({name, items = [], label, required = true, onChange}) {
     return <div>
         <label>{label}</label>
         <select
@@ -8,8 +8,8 @@ export default function DropDown({name, animals = [], label, required = true, on
             }}>
             
             <option value="">---</option>
-            {animals.map((animal, i) => {
-                return <option key={i} value={animal.id}>{animal.name}</option>
+            {items.map((item, i) => {
+                return <option key={i} value={item.id}>{item.name}</option>
             })}
 
         </select>
