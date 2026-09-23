@@ -148,7 +148,8 @@ public final class PostService {
                         picture.setData(file.getBytes());
                     } catch (IOException e) {
                         throw new ResponseStatusException(
-                                HttpStatus.BAD_REQUEST, "Could not read uploaded picture");
+                                HttpStatus.BAD_REQUEST,
+                                "Could not read uploaded picture");
 
                     }
                     picture.setContentType(file.getContentType());

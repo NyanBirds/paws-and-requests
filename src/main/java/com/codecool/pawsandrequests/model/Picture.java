@@ -18,11 +18,9 @@ public class Picture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
     @Lob
     @Column(nullable = false)
     private byte[] data;
-
     @Column(nullable = false)
     private String contentType;
     @ManyToOne

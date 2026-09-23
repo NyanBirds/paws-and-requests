@@ -21,3 +21,6 @@ VALUES
 
 INSERT INTO Post (id, title, description, user_id, animal_id) VALUES
     ('a1b2c3d4-1111-2222-3333-444455556666', 'GET YOUR PET', 'This dog is looking for a forever home, as she lost her family due to moving.', 2, 'a1b2c3d4-1111-2222-3333-444455556667');
+
+INSERT INTO Picture (post_id, data, content_type) VALUES
+    ('a1b2c3d4-1111-2222-3333-444455556666', FILE_READ('classpath:images/maja.jpg'), 'image/jpeg');
