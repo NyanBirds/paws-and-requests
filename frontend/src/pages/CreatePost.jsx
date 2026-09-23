@@ -54,7 +54,7 @@ export default function CreatePost() {
 
                     <DropDown
                         name={inputFields[3].key}
-                        animals={animals}
+                        items={animals}
                         label={inputFields[3].label}
                         onChange={onChange}
                         />
