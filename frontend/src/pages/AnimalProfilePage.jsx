@@ -36,10 +36,6 @@ export default function AnimalProfilePage() {
             <h1>{post.animalName}</h1>
             <div>
                 <Gallery image={post.url.map(imageUrl => `${BASE_URL}${imageUrl}`)}/>
-
-                {post.url?.map((imageUrl) => (
-                    <img key={imageUrl} src={`${BASE_URL}${imageUrl}`} alt={post.animalName} width={200}/>
-                ))}
             </div>
             <h2>{post.title}</h2>
             <p>{post.description}</p>
