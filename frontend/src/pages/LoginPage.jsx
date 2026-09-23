@@ -45,7 +45,7 @@ export default function LoginPage() {
                         required = {inputField.required}
                         onChange = {onChange}/>
                 ))}
-                <button type="submit">Submit</button>
+                <button type="submit">Login</button>
                 <p>{error.message}</p>
             </form>
         </Box>
