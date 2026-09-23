@@ -12,8 +12,6 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
-ENV JWT_SECRET='54PurjIaqXejlKQZ+4XtvpjpObxoVXdmWoLNgfejyRU='
-
 COPY --from=builder /build/target/*.jar app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
