@@ -59,7 +59,7 @@ export default function RegistrationPage() {
             <form onSubmit={onSubmit}>
                 {inputFields.map(toInputField)}
                 {shelterRegistration && shelterFields.map(toInputField)}
-                <button type="submit">Submit</button>
+                <button type="submit">Register</button>
                 <p>{error.message}</p>
             </form>
         </Box>
