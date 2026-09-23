@@ -1,19 +1,14 @@
 import {useEffect, useState} from "react";
 import PostDetails from "../components/PostDetails.jsx";
+import {getAllPosts} from "../services/postService.js";
 
 export default function PostsPage() {
 
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
-        async function fetchPosts() {
-            const response = await fetch("http://localhost:8080/posts");
-            const data = await response.json();
-
-            setPosts(data);
-        }
-
-        fetchPosts();
+        getAllPosts()
+            .then(posts => setPosts(posts));
     }, []);
 
     return(

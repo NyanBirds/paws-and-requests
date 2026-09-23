@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react"
-import { getAnimals, newPost } from "../api/pages";
 import InputField from "../components/InputField";
 import TextField from "../components/TextField.jsx"
 import { useNavigate } from "react-router"
 import { Box } from "../components/Box.jsx";
 import DropDown from "../components/DropDown.jsx";
-
-
+import {getAnimals} from "../services/animalService.js";
+import {newPost} from "../services/postService.js";
 
 export default function CreatePost() {
     const [formData, setFormData] = useState({})
@@ -21,11 +20,8 @@ export default function CreatePost() {
     ]
 
     useEffect(() => {
-        const fetchAnimals = async () => {
-            const response = await getAnimals();
-            setAnimals(response);
-        }
-        fetchAnimals();
+        getAnimals()
+            .then(response => setAnimals(response));
     }, [])
 
     function onChange(key, value) {
@@ -70,9 +66,6 @@ export default function CreatePost() {
                         animals={animals}
                         label={inputFields[2].label}
                         onChange={onChange}/>
-    
-
-
 
                     <button type="submit">Submit</button>
                 </form>

@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router";
-import { animalProfile } from "../api/pages.js";
 import Divider from "../components/Divider.jsx";
-import { BASE_URL } from "../api/client.js";
+import {BASE_URL} from "../api/client.js";
 import Gallery from "../components/Gallery.jsx";
+import {getPost} from "../services/postService.js";
 
 export default function AnimalProfilePage() {
     const navigate = useNavigate();
@@ -12,15 +12,9 @@ export default function AnimalProfilePage() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        async function fetchPost() {
-            try {
-                const data = await animalProfile(postId);
-                setPost(data);
-            } catch (err) {
-                setError(err.message);
-            }
-        }
-        fetchPost();
+        getPost(postId)
+            .then(post => setPost(post))
+            .catch(error => setError(error.message));
     }, [postId]);
 
     if (error) {
