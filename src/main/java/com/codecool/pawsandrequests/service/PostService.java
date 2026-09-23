@@ -15,8 +15,10 @@ import com.codecool.pawsandrequests.repository.PostRepository;
 import com.codecool.pawsandrequests.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -118,6 +120,7 @@ public final class PostService {
 
     public PostResponse createPost(
             final PostRequest postRequest,
+            final List<MultipartFile> pictureFiles,
             final String orgNr,
             final String requesterEmail
     ) {
@@ -137,10 +140,18 @@ public final class PostService {
                     "This animal doesnt belong to this shelter");
         }
         Post newPost = postMapper.toPost(postRequest, user, animal);
-        List<Picture> pictures = postRequest.url().stream()
-                .map(singleUrl -> {
+        List<Picture> pictures = pictureFiles == null ? List.of()
+                : pictureFiles.stream()
+                .map(file -> {
                     Picture picture = new Picture();
-                    picture.setUrl(singleUrl);
+                    try {
+                        picture.setData(file.getBytes());
+                    } catch (IOException e) {
+                        throw new ResponseStatusException(
+                                HttpStatus.BAD_REQUEST, "Could not read uploaded picture");
+
+                    }
+                    picture.setContentType(file.getContentType());
                     picture.setPost(newPost);
                     return picture;
                 })
