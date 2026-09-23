@@ -8,6 +8,8 @@ import LoginPage from "./pages/LoginPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import AnimalProfilePage from './pages/AnimalProfilePage.jsx';
 import PostsPage from "./pages/PostsPage.jsx";
+import {AdoptionPage} from "./pages/AdoptionPage.jsx";
+import CreatePost from './pages/CreatePost.jsx';
 
 const router = createBrowserRouter([
     {
@@ -17,8 +19,10 @@ const router = createBrowserRouter([
             { index: true, Component: HomePage },
             { path: 'registration', Component: RegisterPage },
             { path: 'login', Component: LoginPage },
+            { path: 'posts', Component: PostsPage },
             { path: 'posts/:postId', Component: AnimalProfilePage },
-            { path: 'posts', Component: PostsPage }
+            { path: 'posts/:postId/adoption', Component: AdoptionPage },
+            { path: 'post/new', Component: CreatePost }
         ]
     }
 ]);
