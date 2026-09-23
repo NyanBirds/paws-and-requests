@@ -6,7 +6,7 @@ export function AdoptionPage() {
     const { postId } = useParams();
     const [content, setContent] = useState('');
     const [isSent, setIsSent] = useState(false);
-
+    
     function onSubmit(event) {
         event.preventDefault();
         adopt(postId, {"content": content})

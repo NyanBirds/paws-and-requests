@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,10 +18,11 @@ public class Picture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Lob
     @Column(nullable = false)
-    private String url;
-
+    private byte[] data;
+    @Column(nullable = false)
+    private String contentType;
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import {useNavigate, useParams} from "react-router";
 import { animalProfile } from "../api/pages.js";
 import Divider from "../components/Divider.jsx";
+import { BASE_URL } from "../api/client.js";
+import Gallery from "../components/Gallery.jsx";
 
 export default function AnimalProfilePage() {
     const navigate = useNavigate();
@@ -33,9 +35,7 @@ export default function AnimalProfilePage() {
         <section>
             <h1>{post.animalName}</h1>
             <div>
-                {post.url?.map((imageUrl) => (
-                    <img key={imageUrl} src={imageUrl} alt={post.animalName} width={200}/>
-                ))}
+                <Gallery image={post.url.map(imageUrl => `${BASE_URL}${imageUrl}`)}/>
             </div>
             <h2>{post.title}</h2>
             <p>{post.description}</p>

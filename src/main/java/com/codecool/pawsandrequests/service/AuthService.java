@@ -44,7 +44,7 @@ public class AuthService {
     public final TokenResponse login(final LoginRequest request) {
         try {
             var user = userDetailsService.loadUserByUsername(
-                    request.email()
+                    request.email().trim().toLowerCase()
             );
 
             if (!passwordEncoder.matches(
@@ -63,13 +63,15 @@ public class AuthService {
     }
 
     public final TokenResponse registration(final RegistrationRequest request) {
-        if (userRepository.existsByEmail(request.email())) {
-            throw new EmailTakenException(request.email());
+        var email = request.email().trim().toLowerCase();
+
+        if (userRepository.existsByEmail(email)) {
+            throw new EmailTakenException(email);
         } else {
             User user = new User();
             user.setFirstName(request.firstname());
             user.setLastName(request.lastname());
-            user.setEmail(request.email());
+            user.setEmail(email);
             user.setPhoneNumber(request.phonenumber());
             user.setPassword(passwordEncoder.encode(request.password()));
             user.setRole(Role.USER);
@@ -86,7 +88,7 @@ public class AuthService {
             userRepository.save(user);
 
             var uDetails = userDetailsService.loadUserByUsername(
-                    request.email()
+                    email
             );
 
             return TokenResponse.bearer(
