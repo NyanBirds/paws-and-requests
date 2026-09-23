@@ -1,4 +1,4 @@
-export function Checkbox( { id, checked, onChange } ) {
+export function Checkbox( { id, label, checked, onChange } ) {
 
     return (
         <div>
@@ -8,7 +8,7 @@ export function Checkbox( { id, checked, onChange } ) {
                 checked={checked}
                 onChange={ (e) => onChange(id, e.target.checked) }
             />
-            <span>{id}</span>
+            <span>{label}</span>
         </div>
     );
 }

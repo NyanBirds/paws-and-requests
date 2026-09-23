@@ -3,6 +3,7 @@ import PostDetails from "../components/PostDetails.jsx";
 import {Box} from "../components/Box.jsx";
 import {Checkbox} from "../components/Checkbox.jsx";
 import {getPosts} from "../api/pages.js";
+import Divider from "../components/Divider.jsx";
 
 export default function PostsPage() {
 
@@ -46,14 +47,30 @@ export default function PostsPage() {
             <h1>Look at all these cuties!</h1>
             <div style={{ display: 'flex', gap: '10rem' }}>
                 <div>
-                    {filters.map(filter => (
-                        <Checkbox
-                            key={filter.value}
-                            id={filter.value}
-                            checked={ checkboxes[filter.value] }
-                            onChange={checkboxChange}
-                        />
-                    ))}
+                    <Box>
+                        <p><strong>Filters</strong></p>
+                        <p>Gender</p>
+                        {filters.slice(0, 2).map(filter => (
+                            <Checkbox
+                                key={filter.value}
+                                id={filter.value}
+                                label={filter.label}
+                                checked={ checkboxes[filter.value] }
+                                onChange={checkboxChange}
+                            />
+                        ))}
+                        <Divider/>
+                        <p>Species</p>
+                        {filters.slice(2, 4).map(filter => (
+                            <Checkbox
+                                key={filter.value}
+                                id={filter.value}
+                                label={filter.label}
+                                checked={ checkboxes[filter.value] }
+                                onChange={checkboxChange}
+                            />
+                        ))}
+                    </Box>
                 </div>
                 <ul>
                     {posts.map(post => <PostDetails key={post.id} {...post}/>)}
