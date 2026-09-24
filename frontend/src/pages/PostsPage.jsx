@@ -1,9 +1,8 @@
 import {useEffect, useState} from "react";
 import PostDetails from "../components/PostDetails.jsx";
-import {getAllPosts} from "../services/postService.js";
 import {Box} from "../components/Box.jsx";
 import {Checkbox} from "../components/Checkbox.jsx";
-import {getPosts} from "../api/pages.js";
+import {getPosts} from "../services/postService.js";
 import Divider from "../components/Divider.jsx";
 
 export default function PostsPage() {
