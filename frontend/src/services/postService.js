@@ -1,10 +1,8 @@
-import { api } from './client';
+import {api} from "../api/client.js";
 
-export const animalProfile = (postId) => api.get(`/posts/${postId}`);
+export const getPost = (postId) => api.get(`/posts/${postId}`);
 
-export const adopt = (postId, content) => api.post(`/posts/${postId}/adoption`, content);
-
-export const getAnimals = () => api.get(`/animals`);
+export const getAllPosts = () => api.get('/posts');
 
 export const newPost = (postFields, pictureFiles = []) => {
     const formData = new FormData();

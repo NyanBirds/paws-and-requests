@@ -1,12 +1,12 @@
 import {useState} from "react";
-import {adopt} from "../api/pages.js";
 import {useParams} from "react-router";
+import {adopt} from "../services/adoptionformService.js";
 
 export function AdoptionPage() {
     const { postId } = useParams();
     const [content, setContent] = useState('');
     const [isSent, setIsSent] = useState(false);
-    
+
     function onSubmit(event) {
         event.preventDefault();
         adopt(postId, {"content": content})
