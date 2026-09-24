@@ -44,13 +44,13 @@ public final class PostService {
     }
 
     public List<PostSummaryResponse> getAllPosts(
-            final Gender gender,
-            final Species species
+            final List<Gender> gender,
+            final List<Species> species
     ) {
 
         if (gender != null && species != null) {
             return postRepository
-                    .findByAnimalGenderAndAnimalSpecies(gender, species)
+                    .findByAnimalGenderInAndAnimalSpeciesIn(gender, species)
                     .stream()
                     .map(postMapper::toPostSummaryResponse)
                     .toList();
@@ -58,7 +58,7 @@ public final class PostService {
 
         if (gender != null) {
             return postRepository
-                    .findByAnimalGender(gender)
+                    .findByAnimalGenderIn(gender)
                     .stream()
                     .map(postMapper::toPostSummaryResponse)
                     .toList();
@@ -66,7 +66,7 @@ public final class PostService {
 
         if (species != null) {
             return postRepository
-                    .findByAnimalSpecies(species)
+                    .findByAnimalSpeciesIn(species)
                     .stream()
                     .map(postMapper::toPostSummaryResponse)
                     .toList();

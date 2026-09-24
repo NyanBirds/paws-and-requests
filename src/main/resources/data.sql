@@ -5,13 +5,13 @@ VALUES ('1', 'sheltername', 'oslo');
 
 INSERT INTO users (first_name, last_name, email, phone_number, password, role, profile_picture, org_nr)
 VALUES
-    ('Vegard', 'Eple', 'Vegard@hotmail.com', '12345678', 'verysercurepassword',
+    ('Vegard', 'Eple', 'vegard@hotmail.com', '12345678', 'verysercurepassword',
      'ADMIN', 'https://i.pinimg.com/474x/f6/51/0c/f6510c7eeab1d3db3b16684244665f7d.jpg', NULL),
 
-    ('Lisbeth', 'Mango', 'Lisbeth@hotmail.com', '87654321', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
+    ('Lisbeth', 'Mango', 'lisbeth@hotmail.com', '87654321', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
      'SHELTERUSER', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8LqCs6k1rtI_Jh7YmCbTl9woInyTY6skKWtGQZGQ5xEblEN98V38-qBs&s=10','1'),
 
-    ('Sara', 'Banana', 'Sara@hotmail.com', '12344321', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
+    ('Sara', 'Banana', 'sara@hotmail.com', '12344321', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
      'USER', 'https://www.reddit.com/media?url=https%3A%2F%2Fpreview.redd.it%2Fcute-duck-in-a-cheerful-yellow-sun-hat-v0-c7xnlawjylhg1.jpeg%3Fwidth%3D640%26crop%3Dsmart%26auto%3Dwebp%26s%3D6f1c966c77d11b6049037b9ad3a0923f99d8a414', NULL);
 
 INSERT INTO Animal (id, name, age, gender, species, org_nr)
