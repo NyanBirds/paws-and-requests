@@ -4,8 +4,16 @@ import Divider from "../components/Divider.jsx";
 import {BASE_URL} from "../api/client.js";
 import Gallery from "../components/Gallery.jsx";
 import {getPost} from "../services/postService.js";
+import {fetchMe} from "../services/authService.js";
 
 export default function AnimalProfilePage() {
+    const [role, setRole] = useState(null);
+    useEffect(() => {
+        fetchMe()
+            .then(user => setRole(user.role));
+        console.log(role);
+    }, [])
+
     const navigate = useNavigate();
     const { postId } = useParams();
     const [post, setPost] = useState(null);
@@ -40,7 +48,11 @@ export default function AnimalProfilePage() {
             <Divider/>
             <p>Shelter: {post.shelterName}</p>
             <p>Address: {post.address}</p>
-            <button onClick={() => navigate(`/posts/${postId}/adoption`)}>Adopt</button>
+            {role === "USER" ? (
+                <button onClick={() => navigate(`/posts/${postId}/adoption`)}>Adopt</button>
+            ) : (
+                <button onClick={() => navigate(`/posts/${postId}/adoptionForm`)}>View Adoption Forms</button>
+            )}
         </section>
     );
 }

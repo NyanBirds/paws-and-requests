@@ -10,6 +10,7 @@ import AnimalProfilePage from './pages/AnimalProfilePage.jsx';
 import PostsPage from "./pages/PostsPage.jsx";
 import {AdoptionPage} from "./pages/AdoptionPage.jsx";
 import CreatePost from './pages/CreatePost.jsx';
+import {AdoptionFormPage} from "./pages/AdoptionFormsPage.jsx";
 
 const router = createBrowserRouter([
     {
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
             { path: 'posts', Component: PostsPage },
             { path: 'posts/:postId', Component: AnimalProfilePage },
             { path: 'posts/:postId/adoption', Component: AdoptionPage },
+            { path: 'posts/:postId/adoptionForm', Component: AdoptionFormPage },
             { path: 'post/new', Component: CreatePost }
         ]
     }
