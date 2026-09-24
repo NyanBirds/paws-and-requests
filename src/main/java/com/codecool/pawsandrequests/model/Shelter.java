@@ -1,12 +1,14 @@
 package com.codecool.pawsandrequests.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,6 @@ import java.util.List;
 @Getter
 @Setter
 public class Shelter {
-    public static final int INT = 1_000;
     @Id
     private String orgNr;
 
@@ -24,8 +25,10 @@ public class Shelter {
     private String address;
     private String description;
 
-    @Column(length = INT)
-    private String logo;
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true)
+    @JoinColumn(name = "picture_id")
+    private Picture picture;
 
     @OneToMany(mappedBy = "shelter")
     private List<User> users = new ArrayList<>();
