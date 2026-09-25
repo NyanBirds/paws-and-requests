@@ -26,7 +26,7 @@ export function AdoptionPage() {
                     <TextField
                         id="content"
                         value={content}
-                        onChange={(e) => setContent(e.target.value)}
+                        onChange={(name, value) => setContent(value)}
                         placeholder="Please tell us about yourself!"
                     />
                     <p><em>Character Count:</em> {content.length}</p>
