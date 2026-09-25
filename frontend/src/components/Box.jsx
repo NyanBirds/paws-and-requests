@@ -1,9 +1,9 @@
-export function Box({ children }) {
+export function Box({ width, children }) {
 
     return (
         <div
             style={{
-                maxWidth: "400px",
+                width,
                 margin: "40px auto",
                 padding: "24px",
                 border: "1px solid #ddd",

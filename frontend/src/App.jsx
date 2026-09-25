@@ -30,7 +30,7 @@ function App() {
 
   return (
     <>
-        <div style={{ display: 'flex', gap: '30rem' }}>
+        <div className="row">
         <Link to='/'>
             <img
                 src={logo}
