@@ -1,7 +1,8 @@
 import { Link } from "react-router";
 import { useState } from "react";
+import { BASE_URL } from "../api/client";
 
-export default function ShelterCard( {orgNr, shelterName, address, description, logo} ) {
+export default function ShelterCard( {orgNr, shelterName, address, description, url} ) {
     const [hovered, setHovered] = useState(false);
 
     return (
@@ -33,7 +34,7 @@ export default function ShelterCard( {orgNr, shelterName, address, description, 
                 }}
             >
                 <img
-                    src={logo}
+                    src={`${BASE_URL}${url}`}
                     alt={shelterName}
                     style={{
                         display: "block",

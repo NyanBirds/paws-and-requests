@@ -1,7 +1,8 @@
 import { Link } from "react-router";
 import { useState } from "react";
+import { BASE_URL } from "../api/client";
 
-export default function PostCard( {id, title, age, gender, picture}) {
+export default function PostCard( {id, title, age, gender, url}) {
     const [hovered, setHovered] = useState(false);
 
     return (
@@ -33,7 +34,7 @@ export default function PostCard( {id, title, age, gender, picture}) {
                 }}
             >
                 <img
-                    src={picture}
+                    src={`${BASE_URL}${url}`}
                     alt={title}
                     style={{
                         display: "block",
