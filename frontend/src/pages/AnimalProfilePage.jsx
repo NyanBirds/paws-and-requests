@@ -1,18 +1,14 @@
 import {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router";
+import {useNavigate, useParams, useOutletContext } from "react-router";
 import Divider from "../components/Divider.jsx";
 import {BASE_URL} from "../api/client.js";
 import Gallery from "../components/Gallery.jsx";
 import {getPost} from "../services/postService.js";
-import {fetchMe} from "../services/authService.js";
+import CheckUser from "../components/CheckUser.jsx";
 
 export default function AnimalProfilePage() {
-    const [role, setRole] = useState(null);
-    useEffect(() => {
-        fetchMe()
-            .then(user => setRole(user.role));
-        console.log(role);
-    }, [])
+    const { isLoggedIn } = useOutletContext();
+    const role = CheckUser(isLoggedIn)?.role;
 
     const navigate = useNavigate();
     const { postId } = useParams();
@@ -48,9 +44,10 @@ export default function AnimalProfilePage() {
             <Divider/>
             <p>Shelter: {post.shelterName}</p>
             <p>Address: {post.address}</p>
-            {role === "USER" ? (
+            {role === "USER" && (
                 <button onClick={() => navigate(`/posts/${postId}/adoption`)}>Adopt</button>
-            ) : (
+            )}
+            {(role === "SHELTERUSER" || role === "ADMIN") && (
                 <button onClick={() => navigate(`/posts/${postId}/adoptionForm`)}>View Adoption Forms</button>
             )}
         </section>

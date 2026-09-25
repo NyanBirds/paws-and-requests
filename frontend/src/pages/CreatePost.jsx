@@ -32,8 +32,8 @@ export default function CreatePost() {
         const { url: pictureFiles = [], ...postFields} = formData;
         console.log(formData);
         newPost(postFields, pictureFiles)
-            .then(() => {
-                navigate('/')
+            .then((post) => {
+                navigate(`/posts/${post.id}`)
             }, (error) => {
                 console.log(error.message);
             });
@@ -58,7 +58,9 @@ export default function CreatePost() {
                     <TextField
                         name={inputFields[1].key}
                         label={inputFields[1].label}
-                        onChange={onChange} />
+                        onChange={onChange}
+                        placeholder="Describe the animal"
+                    />
 
                     <InputField
                         name={inputFields[2].key}

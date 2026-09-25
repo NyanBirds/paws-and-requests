@@ -4,6 +4,7 @@ import com.codecool.pawsandrequests.model.Role;
 
 public record UserResponse(
         String username,
-        Role role
+        Role role,
+        String firstName
 ) {
 }

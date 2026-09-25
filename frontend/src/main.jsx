@@ -27,7 +27,6 @@ const router = createBrowserRouter([
             { path: 'shelters', Component: ShelterListPage},
             { path: 'shelters/:orgNr', Component: ShelterPage},
             { path: 'posts/:postId/adoption', Component: AdoptionPage },
-            { path: 'posts/:postId/adoption', Component: AdoptionPage },
             { path: 'posts/:postId/adoptionForm', Component: AdoptionFormPage },
             { path: 'post/new', Component: CreatePost }
         ]
