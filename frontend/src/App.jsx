@@ -3,21 +3,31 @@ import {Link, NavLink, Outlet, useNavigate} from "react-router";
 import {useEffect, useState} from "react";
 import logo from "./assets/logo_transparent.png"
 import CheckUser from "./components/CheckUser.jsx";
+import {fetchMe} from "./services/authService.js";
 
 const AUTH_TOKEN = "authToken";
 const AUTH_EVENT = "authorization-request";
 
-const hasToken = () => Boolean(localStorage.getItem(AUTH_TOKEN));
-
 function App() {
 
     const navigate = useNavigate();
-    const [isLoggedIn, setIsLoggedIn] = useState(hasToken);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const user = CheckUser(isLoggedIn);
     const role = user?.role;
 
     useEffect(() => {
-        const sync = () => setIsLoggedIn(hasToken());
+        if (Boolean(localStorage.getItem(AUTH_TOKEN))) {
+            fetchMe()
+                .then(() => {
+                    setIsLoggedIn(true);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    localStorage.removeItem(AUTH_TOKEN);
+                    setIsLoggedIn(false);
+                });
+        }
+        const sync = () => setIsLoggedIn(Boolean(localStorage.getItem(AUTH_TOKEN)));
         window.addEventListener(AUTH_EVENT, sync);
         return () => window.removeEventListener(AUTH_EVENT, sync);
     }, []);
