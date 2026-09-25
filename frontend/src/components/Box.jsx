@@ -1,4 +1,4 @@
-export function Box({ width, children }) {
+export function Box({ width, onClick, children }) {
 
     return (
         <div
@@ -10,6 +10,7 @@ export function Box({ width, children }) {
                 borderRadius: "8px",
                 boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
             }}
+            onClick={onClick}
         >
             {children}
         </div>
