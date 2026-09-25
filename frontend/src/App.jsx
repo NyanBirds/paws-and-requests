@@ -1,7 +1,8 @@
 import './App.css'
 import {Link, NavLink, Outlet, useNavigate} from "react-router";
 import {useEffect, useState} from "react";
-import logo from "./assets/logo.png"
+import logo from "./assets/logo_transparent.png"
+import CheckRole from "./components/CheckRole.jsx";
 
 const AUTH_TOKEN = "authToken";
 const AUTH_EVENT = "authorization-request";
@@ -10,6 +11,8 @@ function App() {
 
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(Boolean(localStorage.getItem(AUTH_TOKEN)));
+    const user = CheckRole(isLoggedIn);
+    const role = user?.role;
 
     useEffect(() => {
         const sync = () => setIsLoggedIn(Boolean(localStorage.getItem(AUTH_TOKEN)));
@@ -25,7 +28,7 @@ function App() {
 
   return (
     <>
-        <div style={{ display: 'flex', gap: '40rem' }}>
+        <div style={{ display: 'flex', gap: '30rem' }}>
         <Link to='/'>
             <img
                 src={logo}
@@ -36,11 +39,18 @@ function App() {
           <nav>
               <NavLink to="/posts">Posts</NavLink>
               {" | "}
-              <NavLink to="/post/new">Create post</NavLink>
-              {" | "}
-              
+              {role === 'SHELTERUSER' && (
+                  <>
+                    <NavLink to="/post/new">Create post</NavLink>
+                    {" | "}
+                  </>
+              )}
               {isLoggedIn ? (
-                  <button type="button" onClick={handleLogout}>Logout</button>
+                  <>
+                    <span>Hello {user?.firstName}</span>
+                    {" | "}
+                    <button type="button" onClick={handleLogout}>Logout</button>
+                  </>
               ) : (
                   <>
                   <NavLink to="/registration">Register</NavLink>
@@ -50,7 +60,7 @@ function App() {
               )}
           </nav>
         </div>
-      <Outlet/>
+      <Outlet context={{ isLoggedIn }}/>
     </>
   )
 }

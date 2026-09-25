@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {useParams} from "react-router";
 import {adopt} from "../services/adoptionformService.js";
+import TextField from "../components/TextField.jsx";
 
 export function AdoptionPage() {
     const { postId } = useParams();
@@ -22,12 +23,10 @@ export function AdoptionPage() {
             {!isSent ? (
                 <>
                     <h3>Adoption Form</h3>
-                    <textarea
+                    <TextField
                         id="content"
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
-                        rows={10}
-                        cols={50}
                         placeholder="Please tell us about yourself!"
                     />
                     <p><em>Character Count:</em> {content.length}</p>
