@@ -49,6 +49,15 @@ public final class PostController {
         return postService.getOnePost(postId);
     }
 
+    @GetMapping("/shelter")
+    public List<PostSummaryResponse> getAllPostsByShelter(
+            @AuthenticationPrincipal final CustomUserDetails customUserDetails
+    ) {
+        return postService.getAllPostsByShelter(
+                customUserDetails.getUsername()
+        );
+    }
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PostResponse> createPost(
             @AuthenticationPrincipal final CustomUserDetails customUserDetails,
