@@ -33,7 +33,7 @@ export default function LoginPage() {
 
     return (
     <div>
-        <Box>
+        <Box width="30%">
             <h3>Login</h3>
             <form onSubmit={onSubmit}>
                 {inputFields.map((inputField) => (
