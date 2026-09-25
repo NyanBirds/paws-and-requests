@@ -1,12 +1,12 @@
 -- INSERTION
 
-INSERT INTO Picture (id, data, content_type) VALUES
-    (1,FILE_READ('classpath:images/maja.jpg'), 'image/jpeg'),
-    (2,FILE_READ('classpath:images/maja2.jpg'), 'image/jpeg'),
-    (3,FILE_READ('classpath:images/dyrebeskyttelsen.jpg'), 'image/jpeg'),
-    (4,FILE_READ('classpath:images/fod.jpg'), 'image/jpeg'),
-    (5,FILE_READ('classpath:images/dyrevernalliansen.jpg'), 'image/jpeg'),
-    (6,FILE_READ('classpath:images/dyreneshus.jpg'), 'image/jpeg');
+INSERT INTO Picture (data, content_type) VALUES
+    (FILE_READ('classpath:images/maja.jpg'), 'image/jpeg'),
+    (FILE_READ('classpath:images/maja2.jpg'), 'image/jpeg'),
+    (FILE_READ('classpath:images/dyrebeskyttelsen.jpg'), 'image/jpeg'),
+    (FILE_READ('classpath:images/fod.jpg'), 'image/jpeg'),
+    (FILE_READ('classpath:images/dyrevernalliansen.jpg'), 'image/jpeg'),
+    (FILE_READ('classpath:images/dyreneshus.jpg'), 'image/jpeg');
 
 
 INSERT INTO Shelter (org_nr, shelter_name, address, description, picture_id)
