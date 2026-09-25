@@ -36,9 +36,11 @@ function App() {
           <nav>
               <NavLink to="/posts">Posts</NavLink>
               {" | "}
+              <NavLink to="/shelters">Shelters</NavLink>
+              {" | "}
               <NavLink to="/post/new">Create post</NavLink>
               {" | "}
-              
+
               {isLoggedIn ? (
                   <button type="button" onClick={handleLogout}>Logout</button>
               ) : (

@@ -1,9 +1,10 @@
 import {useEffect, useState} from "react";
-import PostDetails from "../components/PostDetails.jsx";
 import {Box} from "../components/Box.jsx";
 import {Checkbox} from "../components/Checkbox.jsx";
 import {getPosts} from "../services/postService.js";
 import Divider from "../components/Divider.jsx";
+import CardGrid from "../components/CardGrid.jsx";
+import PostCard from "../components/PostCard.jsx";
 
 export default function PostsPage() {
 
@@ -73,7 +74,7 @@ export default function PostsPage() {
                     </Box>
                 </div>
                 <ul>
-                    {posts.map(post => <PostDetails key={post.id} {...post}/>)}
+                    <CardGrid> {posts.map(post => <PostCard key={post.id} {...post}/>)} </CardGrid>
                 </ul>
             </div>
         </div>

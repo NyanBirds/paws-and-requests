@@ -75,7 +75,6 @@ public class AuthService {
             user.setPhoneNumber(request.phonenumber());
             user.setPassword(passwordEncoder.encode(request.password()));
             user.setRole(Role.USER);
-            user.setProfilePicture(request.profilePicture());
             String org = request.shelterOrg();
             if (org != null && !org.isBlank()) {
                 Shelter shelter = shelterRepository
