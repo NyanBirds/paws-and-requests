@@ -2,20 +2,22 @@ import './App.css'
 import {Link, NavLink, Outlet, useNavigate} from "react-router";
 import {useEffect, useState} from "react";
 import logo from "./assets/logo_transparent.png"
-import CheckRole from "./components/CheckRole.jsx";
+import CheckUser from "./components/CheckUser.jsx";
 
 const AUTH_TOKEN = "authToken";
 const AUTH_EVENT = "authorization-request";
 
+const hasToken = () => Boolean(localStorage.getItem(AUTH_TOKEN));
+
 function App() {
 
     const navigate = useNavigate();
-    const [isLoggedIn, setIsLoggedIn] = useState(Boolean(localStorage.getItem(AUTH_TOKEN)));
-    const user = CheckRole(isLoggedIn);
+    const [isLoggedIn, setIsLoggedIn] = useState(hasToken);
+    const user = CheckUser(isLoggedIn);
     const role = user?.role;
 
     useEffect(() => {
-        const sync = () => setIsLoggedIn(Boolean(localStorage.getItem(AUTH_TOKEN)));
+        const sync = () => setIsLoggedIn(hasToken());
         window.addEventListener(AUTH_EVENT, sync);
         return () => window.removeEventListener(AUTH_EVENT, sync);
     }, []);

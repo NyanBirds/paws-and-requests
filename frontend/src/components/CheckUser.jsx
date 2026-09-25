@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {fetchMe} from "../services/authService.js";
 
-export default function CheckRole(isLoggedIn) {
+export default function CheckUser(isLoggedIn) {
     const [user, setRole] = useState(null);
 
     useEffect(() => {

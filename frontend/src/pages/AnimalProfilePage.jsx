@@ -4,11 +4,11 @@ import Divider from "../components/Divider.jsx";
 import {BASE_URL} from "../api/client.js";
 import Gallery from "../components/Gallery.jsx";
 import {getPost} from "../services/postService.js";
-import CheckRole from "../components/CheckRole.jsx";
+import CheckUser from "../components/CheckUser.jsx";
 
 export default function AnimalProfilePage() {
     const { isLoggedIn } = useOutletContext();
-    const role = CheckRole(isLoggedIn)?.role;
+    const role = CheckUser(isLoggedIn)?.role;
 
     const navigate = useNavigate();
     const { postId } = useParams();
