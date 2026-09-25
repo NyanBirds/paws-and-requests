@@ -3,6 +3,7 @@ package com.codecool.pawsandrequests.service;
 import com.codecool.pawsandrequests.dto.AdoptionFormRequest;
 import com.codecool.pawsandrequests.dto.AdoptionFormResponse;
 import com.codecool.pawsandrequests.mapper.AdoptionFormMapper;
+import com.codecool.pawsandrequests.model.AdoptionForm;
 import com.codecool.pawsandrequests.model.Post;
 import com.codecool.pawsandrequests.model.User;
 import com.codecool.pawsandrequests.repository.AdoptionFormRepository;
@@ -64,5 +65,31 @@ public class AdoptionFormService {
         adoptionFormRepository.save(
                 adoptionFormMapper.toAdoptionForm(request, user, post)
         );
+    }
+
+    public final List<AdoptionFormResponse> getAllForms(
+            final String email
+    ) {
+        User user = userRepository.findByEmail(email).get();
+
+        List<AdoptionForm> forms;
+
+        switch (user.getRole()) {
+            case ADMIN:
+                forms = adoptionFormRepository.findAll();
+                break;
+            case SHELTERUSER:
+                String orgNr = user.getShelter().getOrgNr();
+                forms = adoptionFormRepository
+                        .findByPostUserShelterOrgNr(orgNr);
+                break;
+            default:
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                        "Your role does not allow this");
+        }
+
+        return forms.stream()
+                .map(adoptionFormMapper::toAdoptionFormResponse)
+                .toList();
     }
 }
