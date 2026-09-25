@@ -40,7 +40,6 @@ public final class PostService {
         this.userRepository = ur;
         this.animalRepository = ar;
         this.postMapper = pm;
-
     }
 
     public List<PostSummaryResponse> getAllPosts(
@@ -153,7 +152,6 @@ public final class PostService {
 
                     }
                     picture.setContentType(file.getContentType());
-                    picture.setPost(newPost);
                     return picture;
                 })
                 .toList();
