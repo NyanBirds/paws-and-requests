@@ -69,4 +69,10 @@ public final class PostController {
         postService.deletePost(postId,  userDetails.getUsername());
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/shelter/{orgNr}")
+    public List<PostSummaryResponse> getShelterPosts(
+            @PathVariable final String orgNr) {
+        return postService.getShelterPosts(orgNr);
+    }
 }

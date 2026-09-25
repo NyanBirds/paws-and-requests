@@ -41,6 +41,8 @@ function App() {
           <nav>
               <NavLink to="/posts">Posts</NavLink>
               {" | "}
+              <NavLink to="/shelters">Shelters</NavLink>
+              {" | "}
               {role === 'SHELTERUSER' && (
                   <>
                     <NavLink to="/post/new">Create post</NavLink>

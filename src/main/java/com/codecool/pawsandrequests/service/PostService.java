@@ -40,7 +40,6 @@ public final class PostService {
         this.userRepository = ur;
         this.animalRepository = ar;
         this.postMapper = pm;
-
     }
 
     public List<PostSummaryResponse> getAllPosts(
@@ -153,7 +152,6 @@ public final class PostService {
 
                     }
                     picture.setContentType(file.getContentType());
-                    picture.setPost(newPost);
                     return picture;
                 })
                 .toList();
@@ -163,5 +161,13 @@ public final class PostService {
         postRepository.save(newPost);
 
         return postMapper.toPostResponse(newPost);
+    }
+
+    public List<PostSummaryResponse> getShelterPosts(final String orgNr) {
+        List<Post> posts = postRepository.findByUserShelterOrgNr(orgNr);
+
+        return posts.stream()
+                .map(postMapper::toPostSummaryResponse)
+                .toList();
     }
 }
