@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import PostDetails from "../components/PostDetails.jsx";
 
-export default function PostsPage() {
+export default function AdoptionPage() {
 
     const [posts, setPosts] = useState([]);
 

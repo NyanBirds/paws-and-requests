@@ -1,6 +1,4 @@
 import Divider from "../components/Divider";
-import dyrebeskyttelsen from "../assets/dyrebeskyttelsen.png";
-import fod from "../assets/fod.png";
 
 export default function HomePage() {
     return <>
@@ -11,16 +9,6 @@ export default function HomePage() {
         </div>
         <div>
             <h3>SHELTERS</h3>
-            <img
-                src={dyrebeskyttelsen}
-                height="100"
-                style={{ padding: '20px' }}
-            />
-            <img
-                src={fod}
-                height="100"
-                style={{ padding: '20px' }}
-            />
             <Divider/>
         </div>
         <div>
@@ -33,6 +21,6 @@ export default function HomePage() {
             <Divider/>
         </div>
 
-
+    
     </>
 }

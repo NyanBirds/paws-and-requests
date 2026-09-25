@@ -1,8 +1,7 @@
-import {useState} from "react"
+import { useState } from "react"
 import InputField from "../components/InputField"
-import {login} from "../api/auth"
-import {useNavigate} from "react-router"
-import {Box} from "../components/Box.jsx";
+import { login } from "../api/auth"
+import { useNavigate } from "react-router"
 
 export default function LoginPage() {
     const [formData, setFormData] = useState({})
@@ -33,22 +32,19 @@ export default function LoginPage() {
 
     return (
     <div>
-        <Box>
-            <h3>Login</h3>
-            <form onSubmit={onSubmit}>
-                {inputFields.map((inputField) => (
-                    <InputField
-                        key = {inputField.key}
-                        name = {inputField.key}
-                        type = {inputField.type}
-                        label = {inputField.label}
-                        required = {inputField.required}
-                        onChange = {onChange}/>
-                ))}
-                <button type="submit">Submit</button>
-                <p>{error.message}</p>
-            </form>
-        </Box>
+        <form onSubmit={onSubmit}>
+            {inputFields.map((inputField) => (
+                <InputField
+                    key = {inputField.key}
+                    name = {inputField.key}
+                    type = {inputField.type}
+                    label = {inputField.label}
+                    required = {inputField.required}
+                    onChange = {onChange}/>
+            ))}
+            <button type="submit">Submit</button>
+            <p>{error.message}</p>
+        </form>
     </div>
   )
 }

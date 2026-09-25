@@ -1,7 +1,6 @@
 import './App.css'
-import {Link, NavLink, Outlet, useNavigate} from "react-router";
+import {NavLink, Outlet, useNavigate} from "react-router";
 import {useEffect, useState} from "react";
-import logo from "./assets/logo.png"
 
 const AUTH_TOKEN = "authToken";
 const AUTH_EVENT = "authorization-request";
@@ -25,28 +24,21 @@ function App() {
 
   return (
     <>
-        <div style={{ display: 'flex', gap: '40rem' }}>
-        <Link to='/'>
-            <img
-                src={logo}
-                width="100"
-                style={{ padding: '20px' }}
-            />
-        </Link>
-          <nav>
-              <NavLink to="/posts">Posts</NavLink>
-              {" | "}
-              {isLoggedIn ? (
-                  <button type="button" onClick={handleLogout}>Logout</button>
-              ) : (
-                  <>
-                  <NavLink to="/registration">Register</NavLink>
-                    {" | "}
-                  <NavLink to="/login">Login</NavLink>
-                  </>
-              )}
-          </nav>
-        </div>
+      <nav>
+          <NavLink to="/">Home</NavLink>
+          {" | "}
+          <NavLink to="/posts">Posts</NavLink>
+          {" | "}
+          {isLoggedIn ? (
+              <button type="button" onClick={handleLogout}>Logout</button>
+          ) : (
+              <>
+              <NavLink to="/registration">Register</NavLink>
+                {" | "}
+              <NavLink to="/login">Login</NavLink>
+              </>
+          )}
+      </nav>
       <Outlet/>
     </>
   )

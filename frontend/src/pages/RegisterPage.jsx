@@ -2,7 +2,6 @@ import { useState } from "react"
 import InputField from "../components/InputField"
 import { register } from "../api/auth"
 import { useNavigate } from "react-router"
-import {Box} from "../components/Box.jsx";
 
 export default function RegistrationPage() {
     const [formData, setFormData] = useState({})
@@ -38,7 +37,7 @@ export default function RegistrationPage() {
             })
     }
 
-    const toInputField =
+    const toInputField = 
         (inputField) => (
                 <InputField
                     key = {inputField.key}
@@ -51,18 +50,15 @@ export default function RegistrationPage() {
 
     return (
     <div>
-        <Box>
-            <h3>Registration</h3>
-            <button
-                onClick={() => setShelterRegistration(!shelterRegistration)}
-            >{shelterRegistration ? (<span>User registration</span>) : (<span>Shelter registration</span>)}</button>
-            <form onSubmit={onSubmit}>
-                {inputFields.map(toInputField)}
-                {shelterRegistration && shelterFields.map(toInputField)}
-                <button type="submit">Submit</button>
-                <p>{error.message}</p>
-            </form>
-        </Box>
+        <button
+            onClick={() => setShelterRegistration(!shelterRegistration)}
+        >{shelterRegistration ? (<span>User registration</span>) : (<span>Shelter registration</span>)}</button>
+        <form onSubmit={onSubmit}>
+            {inputFields.map(toInputField)}
+            {shelterRegistration && shelterFields.map(toInputField)}
+            <button type="submit">Submit</button>
+            <p>{error.message}</p>
+        </form>
     </div>
   )
 }
