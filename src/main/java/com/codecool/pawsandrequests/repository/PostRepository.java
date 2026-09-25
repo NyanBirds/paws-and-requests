@@ -12,11 +12,11 @@ import java.util.UUID;
 @Repository
 public interface PostRepository extends JpaRepository<Post, UUID> {
 
-    List<Post> findByAnimalGender(Gender gender);
-    List<Post> findByAnimalSpecies(Species species);
-    List<Post> findByAnimalGenderAndAnimalSpecies(
-            Gender gender,
-            Species species
+    List<Post> findByAnimalGenderIn(List<Gender> gender);
+    List<Post> findByAnimalSpeciesIn(List<Species> species);
+    List<Post> findByAnimalGenderInAndAnimalSpeciesIn(
+            List<Gender> gender,
+            List<Species> species
     );
     List<Post> findByUserShelterOrgNr(String userShelterOrgNr);
 }

@@ -38,8 +38,8 @@ public final class PostController {
 
     @GetMapping()
     public List<PostSummaryResponse> getAllPosts(
-            final @RequestParam(required = false) Gender gender,
-            final @RequestParam(required = false) Species species
+            final @RequestParam(required = false) List<Gender> gender,
+            final @RequestParam(required = false) List<Species> species
     ) {
         return postService.getAllPosts(gender, species);
     }
