@@ -48,7 +48,7 @@ export default function PostsPage() {
             <h1>Look at all these cuties!</h1>
             <div style={{ display: 'flex', gap: '10rem' }}>
                 <div>
-                    <Box>
+                    <Box width="100%">
                         <p><strong>Filters</strong></p>
                         <p>Gender</p>
                         {filters.slice(0, 2).map(filter => (

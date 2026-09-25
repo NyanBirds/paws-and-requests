@@ -13,6 +13,10 @@ import ShelterListPage from './pages/ShelterListPage.jsx';
 import {AdoptionPage} from "./pages/AdoptionPage.jsx";
 import CreatePost from './pages/CreatePost.jsx';
 import {AdoptionFormPage} from "./pages/AdoptionFormsPage.jsx";
+import {MyAccountPage} from "./pages/MyAccountPage.jsx";
+import {MyAnimalsPage} from "./pages/MyAnimalsPage.jsx";
+import {MyPostsPage} from "./pages/MyPostsPage.jsx";
+import {MyAdoptionFormsPage} from "./pages/MyAdoptionFormsPage.jsx";
 
 const router = createBrowserRouter([
     {
@@ -28,7 +32,11 @@ const router = createBrowserRouter([
             { path: 'shelters/:orgNr', Component: ShelterPage},
             { path: 'posts/:postId/adoption', Component: AdoptionPage },
             { path: 'posts/:postId/adoptionForm', Component: AdoptionFormPage },
-            { path: 'post/new', Component: CreatePost }
+            { path: 'post/new', Component: CreatePost },
+            { path: 'me', Component: MyAccountPage },
+            { path: 'me/animals', Component: MyAnimalsPage },
+            { path: 'me/posts', Component: MyPostsPage },
+            { path: 'me/adoptionForms', Component: MyAdoptionFormsPage },
         ]
     }
 ]);
