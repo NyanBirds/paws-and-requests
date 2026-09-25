@@ -56,4 +56,8 @@ public final class CustomUserDetails implements UserDetails {
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
+    public String getFirstName() {
+        return user.getFirstName();
+    }
 }
