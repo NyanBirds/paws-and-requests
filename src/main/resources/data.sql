@@ -5,7 +5,7 @@ VALUES ('1', 'sheltername', 'oslo');
 
 INSERT INTO users (first_name, last_name, email, phone_number, password, role, profile_picture, org_nr)
 VALUES
-    ('Vegard', 'Eple', 'vegard@hotmail.com', '12345678', 'verysercurepassword',
+    ('Vegard', 'Eple', 'vegard@hotmail.com', '12345678', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
      'ADMIN', 'https://i.pinimg.com/474x/f6/51/0c/f6510c7eeab1d3db3b16684244665f7d.jpg', NULL),
 
     ('Lisbeth', 'Mango', 'lisbeth@hotmail.com', '87654321', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
