@@ -40,7 +40,7 @@ export default function CreatePost() {
     }
     return (
         <div>
-            <Box width="40%">
+            <Box>
                 <h3>Create a post </h3>
                 <form onSubmit={onSubmit}>
                     <InputField

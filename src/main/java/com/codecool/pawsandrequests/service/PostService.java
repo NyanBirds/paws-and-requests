@@ -86,6 +86,7 @@ public final class PostService {
         return postMapper.toPostResponse(post);
     }
 
+
     public void deletePost(final UUID postId, final String requesterEmail) {
 
         // If post does not exist

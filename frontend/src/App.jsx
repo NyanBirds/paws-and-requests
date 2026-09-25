@@ -25,7 +25,7 @@ function App() {
 
   return (
     <>
-        <div className="row">
+        <div style={{ display: 'flex', gap: '40rem' }}>
         <Link to='/'>
             <img
                 src={logo}
@@ -42,11 +42,7 @@ function App() {
               {" | "}
 
               {isLoggedIn ? (
-                  <>
-                  <NavLink to="/me">My Account</NavLink>
-                  {" | "}
                   <button type="button" onClick={handleLogout}>Logout</button>
-                  </>
               ) : (
                   <>
                   <NavLink to="/registration">Register</NavLink>

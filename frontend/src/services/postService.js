@@ -2,7 +2,7 @@ import {api} from "../api/client.js";
 
 export const getPost = (postId) => api.get(`/posts/${postId}`);
 
-export const getPosts = (params) => api.get(`/posts?${params}`);
+export const getAllPosts = () => api.get('/posts');
 
 export const newPost = (postFields, pictureFiles = []) => {
     const formData = new FormData();
@@ -14,3 +14,4 @@ export const newPost = (postFields, pictureFiles = []) => {
     pictureFiles.forEach((file) => formData.append("pictures", file));
     return api.postForm(`/posts`, formData);
 };
+export const getPosts = (params) => api.get(`/posts?${params}`);

@@ -17,7 +17,7 @@ export function AdoptionFormPage() {
             <h1>Applications</h1>
             {adoptionForms.length ? (
                 adoptionForms.map((adoption) => (
-                    <Box width="35%">
+                    <Box>
                         <p><strong>Applicant:</strong> {adoption.firstName} {adoption.lastName}</p>
                         <p><em>{adoption.email}</em></p>
                         <p><strong>Application Text:</strong> {adoption.content}</p>
