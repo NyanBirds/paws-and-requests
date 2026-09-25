@@ -51,9 +51,9 @@ public final class AdoptionFormController {
     }
 
     @GetMapping("/adoptionforms")
-    public List<AdoptionFormResponse> getAllMy(
+    public List<AdoptionFormResponse> getAllForms(
             @AuthenticationPrincipal final UserDetails userDetails
     ) {
-        return adoptionFormService.getForms(userDetails.getUsername());
+        return adoptionFormService.getAllForms(userDetails.getUsername());
     }
 }

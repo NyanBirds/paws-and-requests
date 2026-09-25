@@ -67,7 +67,7 @@ public class AdoptionFormService {
         );
     }
 
-    public final List<AdoptionFormResponse> getForms(
+    public final List<AdoptionFormResponse> getAllForms(
             final String email
     ) {
         User user = userRepository.findByEmail(email).get();
