@@ -1,5 +1,6 @@
 package com.codecool.pawsandrequests.service;
 
+import com.codecool.pawsandrequests.dto.EditPostRequest;
 import com.codecool.pawsandrequests.dto.PostRequest;
 import com.codecool.pawsandrequests.dto.PostResponse;
 import com.codecool.pawsandrequests.dto.PostSummaryResponse;
@@ -169,5 +170,47 @@ public final class PostService {
         return posts.stream()
                 .map(postMapper::toPostSummaryResponse)
                 .toList();
+    }
+
+
+    public PostResponse editPost(
+            final EditPostRequest request,
+            final UUID postId,
+            final String requesterEmail
+    ) {
+        // If post does not exist
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.
+                        NOT_FOUND, "post not found")
+                );
+        // If user does not exist
+        User user = userRepository.findByEmail(requesterEmail)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "user not found")
+                );
+
+        switch (user.getRole()) {
+            case ADMIN ->  { }        // admin can edit any post
+            case SHELTERUSER -> {
+                if (user.getShelter() == null
+                        || !user.getShelter().getOrgNr().equals(
+                        post.getAnimal().getShelter().getOrgNr()
+                )) {
+                    throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                            "You can only edit posts from your own shelter");
+                }
+            }
+            default -> throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Only shelter staff or admins can edit post");
+        }
+        if (request.title() != null) {
+            post.setTitle(request.title());
+        }
+        if (request.description() != null) {
+            post.setDescription(request.description());
+        }
+
+        postRepository.save(post);
+        return postMapper.toPostResponse(post);
     }
 }
