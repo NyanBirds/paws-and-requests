@@ -1,39 +1,35 @@
 -- INSERTION
 
-INSERT INTO Picture (data, content_type) VALUES
-    (FILE_READ('classpath:images/maja.jpg'), 'image/jpeg'),
-    (FILE_READ('classpath:images/maja2.jpg'), 'image/jpeg'),
-    (FILE_READ('classpath:images/dyrebeskyttelsen.jpg'), 'image/jpeg'),
-    (FILE_READ('classpath:images/fod.jpg'), 'image/jpeg'),
-    (FILE_READ('classpath:images/dyrevernalliansen.jpg'), 'image/jpeg'),
-    (FILE_READ('classpath:images/dyreneshus.jpg'), 'image/jpeg');
+-- INSERT INTO Picture (data, content_type) VALUES
+--     (FILE_READ('classpath:images/maja.jpg'), 'image/jpeg'),
+--     (FILE_READ('classpath:images/maja2.jpg'), 'image/jpeg'),
+--     (FILE_READ('classpath:images/dyrebeskyttelsen.jpg'), 'image/jpeg'),
+--     (FILE_READ('classpath:images/fod.jpg'), 'image/jpeg'),
+--     (FILE_READ('classpath:images/dyrevernalliansen.jpg'), 'image/jpeg'),
+--     (FILE_READ('classpath:images/dyreneshus.jpg'), 'image/jpeg');
 
 
-INSERT INTO Shelter (org_nr, shelter_name, address, description, picture_id)
+INSERT INTO Shelter (org_nr, shelter_name, address, description)
 VALUES
     ('1',
      'Dyrebeskyttelsen Norge',
      'Øvre gate 7, 0551 Oslo',
-     'Vi er Norges eldste dyrevernorganisasjon, og jobber for å skaffe hunder og katter i nød et nytt hjem, samtidig som vi kjemper for sterkere dyrerettigheter i hele landet',
-     3
+     'Vi er Norges eldste dyrevernorganisasjon, og jobber for å skaffe hunder og katter i nød et nytt hjem, samtidig som vi kjemper for sterkere dyrerettigheter i hele landet'
     ),
     ('2',
      'FOD – Foreningen for omplassering av dyr',
      'Enebakkveien 866, 1290 Oslo',
-     'Vi er en frivillig drevet forening som jobber for å finne nye, kjærlige hjem til forlatte og omplasserte kjæledyr i Oslo-området',
-     4
+     'Vi er en frivillig drevet forening som jobber for å finne nye, kjærlige hjem til forlatte og omplasserte kjæledyr i Oslo-området'
     ),
     ('3',
      'Dyrevern Alliansen',
      'Brenneriveien 7, 0182 Oslo',
-     'Vi kombinerer dyrevern med aktiv kamp mot dyremishandling og vanskjøtsel, og jobber for at hver hund og katt skal få en ny sjanse',
-     5
+     'Vi kombinerer dyrevern med aktiv kamp mot dyremishandling og vanskjøtsel, og jobber for at hver hund og katt skal få en ny sjanse'
     ),
     ('4',
      'Dyrenes Hus',
      'Bekkjarvikveien 1, 5114 Tertnes',
-     'Vi tilbyr midlertidig omsorg og formidler adopsjon av hunder og katter i hele Bergensområdet, og hjelper dem med å finne sitt nye hjem for livet',
-     6
+     'Vi tilbyr midlertidig omsorg og formidler adopsjon av hunder og katter i hele Bergensområdet, og hjelper dem med å finne sitt nye hjem for livet'
     );
 
 INSERT INTO users (first_name, last_name, email, phone_number, password, role, org_nr)
@@ -62,8 +58,3 @@ VALUES
 
 INSERT INTO Post (id, title, description, user_id, animal_id) VALUES
     ('a1b2c3d4-1111-2222-3333-444455556666', 'GET YOUR PET', 'This dog is looking for a forever home, as she lost her family due to moving.', 2, 'a1b2c3d4-1111-2222-3333-444455556667');
-
-INSERT INTO post_picture (post_id, picture_id) VALUES
-    ('a1b2c3d4-1111-2222-3333-444455556666', 1),
-    ('a1b2c3d4-1111-2222-3333-444455556666', 2);
-
