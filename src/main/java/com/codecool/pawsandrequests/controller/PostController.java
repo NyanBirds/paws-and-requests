@@ -1,5 +1,6 @@
 package com.codecool.pawsandrequests.controller;
 
+import com.codecool.pawsandrequests.dto.EditPostRequest;
 import com.codecool.pawsandrequests.dto.PostRequest;
 import com.codecool.pawsandrequests.dto.PostResponse;
 import com.codecool.pawsandrequests.dto.PostSummaryResponse;
@@ -13,8 +14,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -74,5 +77,13 @@ public final class PostController {
     public List<PostSummaryResponse> getShelterPosts(
             @PathVariable final String orgNr) {
         return postService.getShelterPosts(orgNr);
+    }
+
+    @PatchMapping("/{postId}")
+    public PostResponse editPost(
+            @AuthenticationPrincipal final UserDetails userDetails,
+            @PathVariable final UUID postId,
+            @RequestBody final EditPostRequest request) {
+        return postService.editPost(request, postId, userDetails.getUsername());
     }
 }
