@@ -7,7 +7,7 @@ export function MyAnimalsPage() {
     useEffect(() => {
         getAnimals()
             .then(data => setAnimals(data));
-    })
+    }, []);
 
     return (
         <>
