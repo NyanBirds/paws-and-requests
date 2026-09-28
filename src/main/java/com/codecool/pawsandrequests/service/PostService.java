@@ -1,13 +1,16 @@
 package com.codecool.pawsandrequests.service;
 
+import com.codecool.pawsandrequests.dto.AdoptionFormResponse;
 import com.codecool.pawsandrequests.dto.PostRequest;
 import com.codecool.pawsandrequests.dto.PostResponse;
 import com.codecool.pawsandrequests.dto.PostSummaryResponse;
 import com.codecool.pawsandrequests.mapper.PostMapper;
+import com.codecool.pawsandrequests.model.AdoptionForm;
 import com.codecool.pawsandrequests.model.Animal;
 import com.codecool.pawsandrequests.model.Gender;
 import com.codecool.pawsandrequests.model.Picture;
 import com.codecool.pawsandrequests.model.Post;
+import com.codecool.pawsandrequests.model.Role;
 import com.codecool.pawsandrequests.model.Species;
 import com.codecool.pawsandrequests.model.User;
 import com.codecool.pawsandrequests.repository.AnimalRepository;
@@ -72,6 +75,20 @@ public final class PostService {
         }
 
         return postRepository.findAll().stream()
+                .map(postMapper::toPostSummaryResponse)
+                .toList();
+    }
+
+    public List<PostSummaryResponse> getAllPostsByShelter(
+            final String email
+    ) {
+        User user = userRepository.findByEmail(email).get();
+        if (user.getRole() != Role.SHELTERUSER) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+        String orgNr = user.getShelter().getOrgNr();
+
+        return postRepository.findByUserShelterOrgNr(orgNr).stream()
                 .map(postMapper::toPostSummaryResponse)
                 .toList();
     }

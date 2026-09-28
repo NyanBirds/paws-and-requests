@@ -4,6 +4,8 @@ export const getPost = (postId) => api.get(`/posts/${postId}`);
 
 export const getPosts = (params) => api.get(`/posts?${params}`);
 
+export const getShelterPosts = () => api.get('/posts/shelter');
+
 export const newPost = (postFields, pictureFiles = []) => {
     const formData = new FormData();
     formData.append(
