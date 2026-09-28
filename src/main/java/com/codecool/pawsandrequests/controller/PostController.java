@@ -79,11 +79,33 @@ public final class PostController {
         return postService.getShelterPosts(orgNr);
     }
 
-    @PatchMapping("/{postId}")
+    @PatchMapping(value = "/{postId}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public PostResponse editPost(
             @AuthenticationPrincipal final UserDetails userDetails,
             @PathVariable final UUID postId,
-            @RequestBody final EditPostRequest request) {
-        return postService.editPost(request, postId, userDetails.getUsername());
+            @RequestPart(value = "post", required = false)
+            final EditPostRequest request,
+            @RequestPart(value = "pictures", required = false)
+            final List<MultipartFile> pictures) {
+        return postService.editPost(
+                request,
+                pictures,
+                postId,
+                userDetails.getUsername());
+    }
+
+    @DeleteMapping(value = "/{postId}/pictures/{pictureId}",
+        consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> deletePost(
+            @AuthenticationPrincipal final UserDetails userDetails,
+            @PathVariable final UUID postId,
+            @PathVariable final Long pictureId
+    ) {
+        postService.deletePostPicture(
+                postId,
+                userDetails.getUsername(),
+                pictureId);
+        return ResponseEntity.noContent().build();
     }
 }
