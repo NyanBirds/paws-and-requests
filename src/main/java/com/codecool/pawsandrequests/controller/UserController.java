@@ -30,6 +30,6 @@ public final class UserController {
             @RequestBody final UserRequest request
     ) {
         userService.editUser(userDetails.getUsername(), id, request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

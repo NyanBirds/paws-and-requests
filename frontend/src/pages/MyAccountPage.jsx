@@ -7,6 +7,7 @@ import {useEffect, useState} from "react";
 import {fetchMe} from "../services/authService.js";
 import {useNavigate} from "react-router";
 import {FaUser} from "react-icons/fa";
+import {CiEdit} from "react-icons/ci";
 
 export function MyAccountPage() {
     const navigate = useNavigate();
@@ -19,7 +20,7 @@ export function MyAccountPage() {
 
     return (
         <>
-            <h1>Welcome</h1>
+            <h1>Welcome, {user.firstName}!</h1>
             <Box>
                 <div
                     style={{display: "flex", alignItems: "center", gap: "40px"}}>
@@ -28,9 +29,11 @@ export function MyAccountPage() {
                         padding="20px"
                     />
                     <div style={{ textAlign: 'left' }}>
+                        <h3>Account Information</h3>
                         <p>Name: {user.firstName} {user.lastName}</p>
                         <p>Email: {user.email}</p>
                         <p>Phone Nr: {user.phoneNumber}</p>
+                        <CiEdit size="30" onClick={() => navigate('/me/edit')}/>
                     </div>
                 </div>
             </Box>

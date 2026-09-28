@@ -25,7 +25,7 @@ async function request(path, options = {}) {
     if (!res.ok) {
         const message = await res.text()
         console.log(message);
-        
+
         throw new ApiError(res.status, message || res.statusText);
     }
 
@@ -37,6 +37,7 @@ export const api = {
   post: (path, body) => request(path, { method: "POST", body: JSON.stringify(body) }),
    postForm: (path, formData) => requestForm(path, formData),
   put: (path, body) => request(path, { method: "PUT", body: JSON.stringify(body) }),
+    patch: (path, body) => request(path, { method: "PATCH", body: JSON.stringify(body) }),
   delete: (path) => request(path, { method: "DELETE" }),
 };
 

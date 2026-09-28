@@ -20,7 +20,7 @@ public final class CustomUserDetails implements UserDetails {
         return user.getShelter().getOrgNr();
     }
 
-    public UUID getUserId() {
+    public UUID getId() {
         return user.getId();
     }
 
