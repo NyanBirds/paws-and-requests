@@ -1,5 +1,6 @@
 package com.codecool.pawsandrequests.service;
 
+import com.codecool.pawsandrequests.dto.EditPostRequest;
 import com.codecool.pawsandrequests.dto.PostRequest;
 import com.codecool.pawsandrequests.dto.PostResponse;
 import com.codecool.pawsandrequests.dto.PostSummaryResponse;
@@ -8,6 +9,7 @@ import com.codecool.pawsandrequests.model.Animal;
 import com.codecool.pawsandrequests.model.Gender;
 import com.codecool.pawsandrequests.model.Picture;
 import com.codecool.pawsandrequests.model.Post;
+import com.codecool.pawsandrequests.model.Role;
 import com.codecool.pawsandrequests.model.Species;
 import com.codecool.pawsandrequests.model.User;
 import com.codecool.pawsandrequests.repository.AnimalRepository;
@@ -29,17 +31,19 @@ public final class PostService {
     private final UserRepository userRepository;
     private final AnimalRepository animalRepository;
     private final PostMapper postMapper;
+    private final PictureService pictureService;
 
     public PostService(
             final PostRepository pr,
             final UserRepository ur,
             final AnimalRepository ar,
-            final PostMapper pm
-    ) {
+            final PostMapper pm,
+            final PictureService ps) {
         this.postRepository = pr;
         this.userRepository = ur;
         this.animalRepository = ar;
         this.postMapper = pm;
+        this.pictureService = ps;
     }
 
     public List<PostSummaryResponse> getAllPosts(
@@ -72,6 +76,20 @@ public final class PostService {
         }
 
         return postRepository.findAll().stream()
+                .map(postMapper::toPostSummaryResponse)
+                .toList();
+    }
+
+    public List<PostSummaryResponse> getAllPostsByShelter(
+            final String email
+    ) {
+        User user = userRepository.findByEmail(email).get();
+        if (user.getRole() != Role.SHELTERUSER) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+        String orgNr = user.getShelter().getOrgNr();
+
+        return postRepository.findByUserShelterOrgNr(orgNr).stream()
                 .map(postMapper::toPostSummaryResponse)
                 .toList();
     }
@@ -168,5 +186,100 @@ public final class PostService {
         return posts.stream()
                 .map(postMapper::toPostSummaryResponse)
                 .toList();
+    }
+
+
+    public PostResponse editPost(
+            final EditPostRequest request,
+            final List<MultipartFile> pictureFiles,
+            final UUID postId,
+            final String requesterEmail
+    ) {
+        // If post does not exist
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.
+                        NOT_FOUND, "post not found")
+                );
+        // If user does not exist
+        User user = userRepository.findByEmail(requesterEmail)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "user not found")
+                );
+
+        switch (user.getRole()) {
+            case ADMIN ->  { }        // admin can edit any post
+            case SHELTERUSER -> {
+                if (user.getShelter() == null
+                        || !user.getShelter().getOrgNr().equals(
+                        post.getAnimal().getShelter().getOrgNr()
+                )) {
+                    throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                            "You can only edit posts from your own shelter");
+                }
+            }
+            default -> throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Only shelter staff or admins can edit post");
+        }
+        if (request != null) {
+            // Title
+            if (request.title() != null) {
+                post.setTitle(request.title());
+            }
+            // Description
+            if (request.description() != null) {
+                post.setDescription(request.description());
+            }
+        }
+
+        if (pictureFiles != null) {
+            for (MultipartFile file : pictureFiles) {
+                post.getPictures().add(pictureService.createPicture(file));
+            }
+        }
+        postRepository.save(post);
+        return postMapper.toPostResponse(post);
+    }
+
+
+    public void deletePostPicture(
+            final UUID postId,
+            final String requesterEmail,
+            final Long pictureId
+    ) {
+        // If post does not exist
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.
+                        NOT_FOUND, "post not found")
+                );
+        // If user does not exist
+        User user = userRepository.findByEmail(requesterEmail)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "user not found")
+                );
+
+        switch (user.getRole()) {
+            case ADMIN ->  { }        // admin can edit any post
+            case SHELTERUSER -> {
+                if (user.getShelter() == null
+                        || !user.getShelter().getOrgNr().equals(
+                        post.getAnimal().getShelter().getOrgNr()
+                )) {
+                    throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                            "You can only remove posts pictures from "
+                                    + "your own shelter");
+                }
+            }
+            default -> throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Only shelter staff or admins can remove post pictures");
+        }
+        boolean removed = post.getPictures()
+                .removeIf(picture -> picture.getId().equals(pictureId));
+        if (!removed) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "post picture not found");
+        }
+        postRepository.save(post);
+
+        pictureService.deletePicture(pictureId);
     }
 }

@@ -8,6 +8,8 @@ import com.codecool.pawsandrequests.mapper.UserMapper;
 import com.codecool.pawsandrequests.model.CustomUserDetails;
 import com.codecool.pawsandrequests.service.AuthService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,17 +59,19 @@ public class AuthController {
      * @return a {@link UserResponse} containing the email and role
      */
     @GetMapping("/me")
-    public UserResponse getCurrentUser(
+    public ResponseEntity<UserResponse> getCurrentUser(
             final Authentication authentication
     ) {
 
         if (authentication == null || !authentication.isAuthenticated()) {
-            return null;
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         CustomUserDetails userDetails =
                 (CustomUserDetails) authentication.getPrincipal();
 
-        return userMapper.toUserResponse(userDetails);
+        UserResponse user = userMapper.toUserResponse(userDetails);
+
+        return ResponseEntity.ok(user);
     }
 }

@@ -1,5 +1,6 @@
 package com.codecool.pawsandrequests.controller;
 
+import com.codecool.pawsandrequests.dto.EditPostRequest;
 import com.codecool.pawsandrequests.dto.PostRequest;
 import com.codecool.pawsandrequests.dto.PostResponse;
 import com.codecool.pawsandrequests.dto.PostSummaryResponse;
@@ -13,8 +14,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -49,6 +52,15 @@ public final class PostController {
         return postService.getOnePost(postId);
     }
 
+    @GetMapping("/shelter")
+    public List<PostSummaryResponse> getAllPostsByShelter(
+            @AuthenticationPrincipal final CustomUserDetails customUserDetails
+    ) {
+        return postService.getAllPostsByShelter(
+                customUserDetails.getUsername()
+        );
+    }
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PostResponse> createPost(
             @AuthenticationPrincipal final CustomUserDetails customUserDetails,
@@ -74,5 +86,35 @@ public final class PostController {
     public List<PostSummaryResponse> getShelterPosts(
             @PathVariable final String orgNr) {
         return postService.getShelterPosts(orgNr);
+    }
+
+    @PatchMapping(value = "/{postId}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public PostResponse editPost(
+            @AuthenticationPrincipal final UserDetails userDetails,
+            @PathVariable final UUID postId,
+            @RequestPart(value = "post", required = false)
+            final EditPostRequest request,
+            @RequestPart(value = "pictures", required = false)
+            final List<MultipartFile> pictures) {
+        return postService.editPost(
+                request,
+                pictures,
+                postId,
+                userDetails.getUsername());
+    }
+
+    @DeleteMapping(value = "/{postId}/pictures/{pictureId}",
+        consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> deletePost(
+            @AuthenticationPrincipal final UserDetails userDetails,
+            @PathVariable final UUID postId,
+            @PathVariable final Long pictureId
+    ) {
+        postService.deletePostPicture(
+                postId,
+                userDetails.getUsername(),
+                pictureId);
+        return ResponseEntity.noContent().build();
     }
 }
