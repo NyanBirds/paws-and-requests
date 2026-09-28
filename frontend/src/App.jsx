@@ -30,7 +30,7 @@ function App() {
 
   return (
     <>
-        <div style={{ display: 'flex', gap: '30rem' }}>
+        <div className="row">
         <Link to='/'>
             <img
                 src={logo}
@@ -51,7 +51,8 @@ function App() {
               )}
               {isLoggedIn ? (
                   <>
-                    <span>Hello {user?.firstName}</span>
+                    <span onClick={() => navigate("/me")}
+                    >Hello {user?.firstName}</span>
                     {" | "}
                     <button type="button" onClick={handleLogout}>Logout</button>
                   </>

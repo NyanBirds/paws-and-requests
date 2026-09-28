@@ -5,6 +5,7 @@ import com.codecool.pawsandrequests.dto.AdoptionFormResponse;
 import com.codecool.pawsandrequests.model.CustomUserDetails;
 import com.codecool.pawsandrequests.service.AdoptionFormService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,5 +48,12 @@ public final class AdoptionFormController {
                 request
         );
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/adoptionforms")
+    public List<AdoptionFormResponse> getAllForms(
+            @AuthenticationPrincipal final UserDetails userDetails
+    ) {
+        return adoptionFormService.getAllForms(userDetails.getUsername());
     }
 }

@@ -51,7 +51,7 @@ export default function RegistrationPage() {
 
     return (
     <div>
-        <Box>
+        <Box width="30%">
             <h3>Registration</h3>
             <button
                 onClick={() => setShelterRegistration(!shelterRegistration)}
