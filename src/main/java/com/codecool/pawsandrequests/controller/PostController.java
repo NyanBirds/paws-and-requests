@@ -104,9 +104,8 @@ public final class PostController {
                 userDetails.getUsername());
     }
 
-    @DeleteMapping(value = "/{postId}/pictures/{pictureId}",
-        consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> deletePost(
+    @DeleteMapping("/{postId}/pictures/{pictureId}")
+    public ResponseEntity<Void> deletePicture(
             @AuthenticationPrincipal final UserDetails userDetails,
             @PathVariable final UUID postId,
             @PathVariable final Long pictureId

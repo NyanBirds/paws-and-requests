@@ -1,13 +1,15 @@
 import styles from "./Textfield.module.css"
 
-export default function TextField({name, label, required = true, onChange, placeholder}) {
+export default function TextField({name, label, required = true, onChange, placeholder, defaultValue}) {
     return <div>
         <label>{label}</label>
-        <textarea className={styles}
+        <textarea
+            className={styles}
             name={name}
             required={required}
             onChange={(event) => onChange(name, event.target.value)}
-                  placeholder={placeholder}
+            placeholder={placeholder}
+            defaultValue={defaultValue}
             rows={10}
             cols={50}
         />
