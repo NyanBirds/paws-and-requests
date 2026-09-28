@@ -1,10 +1,9 @@
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router";
-import {editPost, getPost} from "../services/postService.js";
+import {editPost, deletePicture, getPost} from "../services/postService.js";
 import {Box} from "../components/Box.jsx";
 import InputField from "../components/InputField.jsx";
 import TextField from "../components/TextField.jsx";
-import Gallery from "../components/Gallery.jsx";
 import {BASE_URL} from "../api/client.js";
 
 export function EditPost() {
@@ -35,6 +34,14 @@ export function EditPost() {
         return <p>Loading...</p>;
     }
 
+    function onDeletePicture(pictureId) {
+        deletePicture(postId, pictureId)
+            .then(() => setPost({
+                ...post,
+                pictureIds: post.pictureIds.filter(id => id !== pictureId),
+            }),
+                (error) => console.log(error.message))
+    }
     return (
         <Box>
             <h1>Edit post</h1>
@@ -54,9 +61,15 @@ export function EditPost() {
                         defaultValue={post.description}
                         onChange={onChange}
                     />
-                    <div>
-                        <Gallery image={post.url.map(imageUrl => `${BASE_URL}${imageUrl}`)}/>
+
+                {post.pictureIds.map(pictureId => (
+                    <div key={pictureId}>
+                        <img src={`${BASE_URL}/pictures/${pictureId}`} width="150" alt={""} />
+                        <button type="button" onClick={() => onDeletePicture(pictureId)}>
+                            Delete
+                        </button>
                     </div>
+                ))}
 
                     <InputField
                         name="pictures"
@@ -65,7 +78,7 @@ export function EditPost() {
                         required={false}
                         onChange={onChange}/>
 
-                    <button type="Save">Save</button>
+                    <button>Save</button>
             </form>
         </Box>
     );
