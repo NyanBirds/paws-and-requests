@@ -27,6 +27,9 @@ public interface PostMapper {
     @Mapping(target = "animalName", source = "animal.name")
     @Mapping(target = "url", expression = "java(post.getPictures().stream()."
             + "map(picture -> \"/pictures/\" + picture.getId()).toList())")
+    @Mapping(target = "pictureIds", expression =
+            "java(post.getPictures().stream()."
+            + "map(picture -> picture.getId()).toList())")
     PostResponse toPostResponse(Post post);
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", source = "user")
