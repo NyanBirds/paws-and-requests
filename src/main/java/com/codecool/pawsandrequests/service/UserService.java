@@ -1,6 +1,7 @@
 package com.codecool.pawsandrequests.service;
 
 import com.codecool.pawsandrequests.dto.UserRequest;
+import com.codecool.pawsandrequests.mapper.UserMapper;
 import com.codecool.pawsandrequests.model.User;
 import com.codecool.pawsandrequests.repository.UserRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,6 +18,7 @@ public class UserService {
 
     public UserService(
             final UserRepository repository,
+            final UserMapper mapper,
             final PasswordEncoder encoder
     ) {
         this.userRepository = repository;

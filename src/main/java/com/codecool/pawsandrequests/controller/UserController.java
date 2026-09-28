@@ -1,7 +1,6 @@
 package com.codecool.pawsandrequests.controller;
 
 import com.codecool.pawsandrequests.dto.UserRequest;
-import com.codecool.pawsandrequests.repository.UserRepository;
 import com.codecool.pawsandrequests.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
