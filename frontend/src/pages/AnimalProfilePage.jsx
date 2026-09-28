@@ -1,24 +1,24 @@
-import { useEffect, useState } from "react";
-import {useNavigate, useParams} from "react-router";
-import { animalProfile } from "../api/pages.js";
+import {useEffect, useState} from "react";
+import {useNavigate, useParams, useOutletContext } from "react-router";
 import Divider from "../components/Divider.jsx";
+import {BASE_URL} from "../api/client.js";
+import Gallery from "../components/Gallery.jsx";
+import {getPost} from "../services/postService.js";
+import CheckUser from "../components/CheckUser.jsx";
 
 export default function AnimalProfilePage() {
+    const { isLoggedIn } = useOutletContext();
+    const role = CheckUser(isLoggedIn)?.role;
+
     const navigate = useNavigate();
     const { postId } = useParams();
     const [post, setPost] = useState(null);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        async function fetchPost() {
-            try {
-                const data = await animalProfile(postId);
-                setPost(data);
-            } catch (err) {
-                setError(err.message);
-            }
-        }
-        fetchPost();
+        getPost(postId)
+            .then(post => setPost(post))
+            .catch(error => setError(error.message));
     }, [postId]);
 
     if (error) {
@@ -33,9 +33,7 @@ export default function AnimalProfilePage() {
         <section>
             <h1>{post.animalName}</h1>
             <div>
-                {post.url?.map((imageUrl) => (
-                    <img key={imageUrl} src={imageUrl} alt={post.animalName} width={200}/>
-                ))}
+                <Gallery image={post.url.map(imageUrl => `${BASE_URL}${imageUrl}`)}/>
             </div>
             <h2>{post.title}</h2>
             <p>{post.description}</p>
@@ -46,7 +44,12 @@ export default function AnimalProfilePage() {
             <Divider/>
             <p>Shelter: {post.shelterName}</p>
             <p>Address: {post.address}</p>
-            <button onClick={() => navigate(`/posts/${postId}/adoption`)}>Adopt</button>
+            {role === "USER" && (
+                <button onClick={() => navigate(`/posts/${postId}/adoption`)}>Adopt</button>
+            )}
+            {(role === "SHELTERUSER" || role === "ADMIN") && (
+                <button onClick={() => navigate(`/posts/${postId}/adoptionForm`)}>View Adoption Forms</button>
+            )}
         </section>
     );
 }

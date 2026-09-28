@@ -1,6 +1,6 @@
 import { useState } from "react"
 import InputField from "../components/InputField"
-import { register } from "../api/auth"
+import { register } from "../services/authService.js"
 import { useNavigate } from "react-router"
 import {Box} from "../components/Box.jsx";
 
@@ -51,7 +51,7 @@ export default function RegistrationPage() {
 
     return (
     <div>
-        <Box>
+        <Box width="30%">
             <h3>Registration</h3>
             <button
                 onClick={() => setShelterRegistration(!shelterRegistration)}
@@ -59,7 +59,7 @@ export default function RegistrationPage() {
             <form onSubmit={onSubmit}>
                 {inputFields.map(toInputField)}
                 {shelterRegistration && shelterFields.map(toInputField)}
-                <button type="submit">Submit</button>
+                <button type="submit">Register</button>
                 <p>{error.message}</p>
             </form>
         </Box>

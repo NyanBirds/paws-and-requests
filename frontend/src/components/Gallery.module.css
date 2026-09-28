@@ -1,0 +1,49 @@
+.container {
+    width: 20rem;
+    height: 20rem;
+    background-color: aliceblue;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.img {
+    max-height: 20rem;
+    max-width: 20rem;
+    display: none;
+    flex: 1 1 50%;
+
+
+}
+
+.img-current {
+    display: block;
+
+}
+
+.button {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    border: none;
+    width: 3rem;
+    background-color: transparent;
+    cursor: pointer;
+    height: 100%;
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50%;
+}
+
+.button:hover{
+    opacity: 1;
+}
+
+.button-left {
+    left: 0;
+}
+
+.button-right {
+    right: 0;
+}

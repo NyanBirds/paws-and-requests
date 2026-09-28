@@ -6,6 +6,5 @@ import java.util.UUID;
 public record PostRequest(
         String title,
         String description,
-        List<String> url,
         UUID animalId
 ) { }

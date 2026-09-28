@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080"
+export const BASE_URL = "http://localhost:8080"
 
 function getToken() {
   return localStorage.getItem("authToken");
@@ -35,6 +35,24 @@ async function request(path, options = {}) {
 export const api = {
   get: (path) => request(path),
   post: (path, body) => request(path, { method: "POST", body: JSON.stringify(body) }),
+   postForm: (path, formData) => requestForm(path, formData),
   put: (path, body) => request(path, { method: "PUT", body: JSON.stringify(body) }),
   delete: (path) => request(path, { method: "DELETE" }),
 };
+
+async function requestForm(path, formData) {
+    const response = await fetch(`${BASE_URL}${path}`, {
+        method: "POST",
+        headers: {
+            ...(getToken() && { Authorization: `Bearer ${getToken()}`}),
+        },
+        body: formData,
+    });
+
+    if (!response.ok) {
+        const message = await response.text()
+        console.log(message);
+        throw new ApiError(response.status, message || response.statusText)
+    }
+    return response.status === 204 ? null : response.json();
+}

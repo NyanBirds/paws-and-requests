@@ -23,6 +23,10 @@ public final class CustomUserDetails implements UserDetails {
         return user.getId();
     }
 
+    public Role getRole() {
+        return user.getRole();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
@@ -51,5 +55,9 @@ public final class CustomUserDetails implements UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
+    }
+
+    public String getFirstName() {
+        return user.getFirstName();
     }
 }

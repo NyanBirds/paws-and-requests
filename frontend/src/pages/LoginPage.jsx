@@ -1,6 +1,6 @@
 import {useState} from "react"
 import InputField from "../components/InputField"
-import {login} from "../api/auth"
+import {login} from "../services/authService.js"
 import {useNavigate} from "react-router"
 import {Box} from "../components/Box.jsx";
 
@@ -33,7 +33,7 @@ export default function LoginPage() {
 
     return (
     <div>
-        <Box>
+        <Box width="30%">
             <h3>Login</h3>
             <form onSubmit={onSubmit}>
                 {inputFields.map((inputField) => (
@@ -45,7 +45,7 @@ export default function LoginPage() {
                         required = {inputField.required}
                         onChange = {onChange}/>
                 ))}
-                <button type="submit">Submit</button>
+                <button type="submit">Login</button>
                 <p>{error.message}</p>
             </form>
         </Box>

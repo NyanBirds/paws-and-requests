@@ -3,8 +3,14 @@ package com.codecool.pawsandrequests.controller;
 import com.codecool.pawsandrequests.dto.LoginRequest;
 import com.codecool.pawsandrequests.dto.RegistrationRequest;
 import com.codecool.pawsandrequests.dto.TokenResponse;
+import com.codecool.pawsandrequests.dto.UserResponse;
+import com.codecool.pawsandrequests.model.CustomUserDetails;
 import com.codecool.pawsandrequests.service.AuthService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,5 +47,32 @@ public class AuthController {
     public TokenResponse registration(
             final @RequestBody @Valid RegistrationRequest request) {
         return authService.registration(request);
+    }
+
+    /**
+     * Returns the currently logged-in user.
+     *
+     * @param authentication the token for an authentication request
+     * @return a {@link UserResponse} containing the email and role
+     */
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getCurrentUser(
+            final Authentication authentication
+    ) {
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        CustomUserDetails userDetails =
+                (CustomUserDetails) authentication.getPrincipal();
+
+        UserResponse user = new UserResponse(
+                userDetails.getUsername(),
+                userDetails.getRole(),
+                userDetails.getFirstName()
+        );
+
+        return ResponseEntity.ok(user);
     }
 }
