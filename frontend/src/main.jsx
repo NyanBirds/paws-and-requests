@@ -17,6 +17,7 @@ import {MyAccountPage} from "./pages/MyAccountPage.jsx";
 import {MyAnimalsPage} from "./pages/MyAnimalsPage.jsx";
 import {MyPostsPage} from "./pages/MyPostsPage.jsx";
 import {MyAdoptionFormsPage} from "./pages/MyAdoptionFormsPage.jsx";
+import {EditPost} from "./pages/EditPost.jsx";
 
 const router = createBrowserRouter([
     {
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
             { path: 'me/animals', Component: MyAnimalsPage },
             { path: 'me/posts', Component: MyPostsPage },
             { path: 'me/adoptionForms', Component: MyAdoptionFormsPage },
+            { path: 'posts/:postId/edit', Component: EditPost },
         ]
     }
 ]);
