@@ -36,24 +36,24 @@ VALUES
      6
     );
 
-INSERT INTO users (first_name, last_name, email, phone_number, password, role, org_nr)
+INSERT INTO users (id, first_name, last_name, email, phone_number, password, role, org_nr)
 VALUES
-    ('Vegard', 'Eple', 'vegard@hotmail.com', '12345678', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
+    ('a1b2c3d4-1111-2222-3333-444455556660', 'Vegard', 'Eple', 'vegard@hotmail.com', '12345678', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
      'ADMIN', NULL),
 
-    ('Lisbeth', 'Mango', 'lisbeth@hotmail.com', '87654321', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
+    ('a1b2c3d4-1111-2222-3333-444455556661', 'Lisbeth', 'Mango', 'lisbeth@hotmail.com', '87654321', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
      'SHELTERUSER', '1'),
 
-    ('Sara', 'Banana', 'sara@hotmail.com', '12344321', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
+    ('a1b2c3d4-1111-2222-3333-444455556662', 'Sara', 'Banana', 'sara@hotmail.com', '12344321', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
      'USER', NULL),
 
-    ('Erik', 'Bjørk', 'erik@hotmail.com', '99887766', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
+    ('a1b2c3d4-1111-2222-3333-444455556663', 'Erik', 'Bjørk', 'erik@hotmail.com', '99887766', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
      'SHELTERUSER', '2'),
 
-    ('Mari', 'Furu', 'mari@hotmail.com', '11223344', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
+    ('a1b2c3d4-1111-2222-3333-444455556664', 'Mari', 'Furu', 'mari@hotmail.com', '11223344', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
      'SHELTERUSER', '3'),
 
-    ('Ola', 'Gran', 'ola@hotmail.com', '55667788', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
+    ('a1b2c3d4-1111-2222-3333-444455556665', 'Ola', 'Gran', 'ola@hotmail.com', '55667788', '$2a$10$z6vTdjBFjs5wLnK4Z7rM9OPwCmSL0RGCZTzikbdKCD.fNyB0nNIZq',
      'SHELTERUSER', '4');
 
 INSERT INTO Animal (id, name, age, gender, species, org_nr)
@@ -61,7 +61,7 @@ VALUES
     ('a1b2c3d4-1111-2222-3333-444455556667', 'Maja', 2, 'FEMALE', 'DOG', '1');
 
 INSERT INTO Post (id, title, description, user_id, animal_id) VALUES
-    ('a1b2c3d4-1111-2222-3333-444455556666', 'GET YOUR PET', 'This dog is looking for a forever home, as she lost her family due to moving.', 2, 'a1b2c3d4-1111-2222-3333-444455556667');
+    ('a1b2c3d4-1111-2222-3333-444455556666', 'GET YOUR PET', 'This dog is looking for a forever home, as she lost her family due to moving.', 'a1b2c3d4-1111-2222-3333-444455556661', 'a1b2c3d4-1111-2222-3333-444455556667');
 
 INSERT INTO post_picture (post_id, picture_id) VALUES
     ('a1b2c3d4-1111-2222-3333-444455556666', 1),
