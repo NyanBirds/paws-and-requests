@@ -13,6 +13,7 @@ public record PostResponse(
         String shelterName,
         String address,
         List<String> url,
+        List<Long> pictureIds,
         int age,
         Gender gender,
         Species species,

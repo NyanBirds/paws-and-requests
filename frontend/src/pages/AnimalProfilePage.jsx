@@ -3,7 +3,7 @@ import {useNavigate, useParams, useOutletContext } from "react-router";
 import Divider from "../components/Divider.jsx";
 import {BASE_URL} from "../api/client.js";
 import Gallery from "../components/Gallery.jsx";
-import {getPost} from "../services/postService.js";
+import {deletePost, getPost} from "../services/postService.js";
 import CheckUser from "../components/CheckUser.jsx";
 
 export default function AnimalProfilePage() {
@@ -32,6 +32,15 @@ export default function AnimalProfilePage() {
     return (
         <section>
             <h1>{post.animalName}</h1>
+            {(role === "SHELTERUSER" || role === "ADMIN") && (
+                <>
+                <button onClick={() => { deletePost(postId).then(_ => navigate(`/`))
+                }}>Delete Post</button>
+
+                <button onClick={() => navigate(`/posts/${postId}/edit`)
+                }>Edit post</button>
+                </>
+            )}
             <div>
                 <Gallery image={post.url.map(imageUrl => `${BASE_URL}${imageUrl}`)}/>
             </div>
