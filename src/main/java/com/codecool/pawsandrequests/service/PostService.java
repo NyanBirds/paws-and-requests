@@ -9,6 +9,7 @@ import com.codecool.pawsandrequests.model.Animal;
 import com.codecool.pawsandrequests.model.Gender;
 import com.codecool.pawsandrequests.model.Picture;
 import com.codecool.pawsandrequests.model.Post;
+import com.codecool.pawsandrequests.model.Role;
 import com.codecool.pawsandrequests.model.Species;
 import com.codecool.pawsandrequests.model.User;
 import com.codecool.pawsandrequests.repository.AnimalRepository;
@@ -75,6 +76,20 @@ public final class PostService {
         }
 
         return postRepository.findAll().stream()
+                .map(postMapper::toPostSummaryResponse)
+                .toList();
+    }
+
+    public List<PostSummaryResponse> getAllPostsByShelter(
+            final String email
+    ) {
+        User user = userRepository.findByEmail(email).get();
+        if (user.getRole() != Role.SHELTERUSER) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+        String orgNr = user.getShelter().getOrgNr();
+
+        return postRepository.findByUserShelterOrgNr(orgNr).stream()
                 .map(postMapper::toPostSummaryResponse)
                 .toList();
     }
