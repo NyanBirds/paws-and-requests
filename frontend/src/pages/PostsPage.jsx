@@ -9,6 +9,8 @@ import PostCard from "../components/PostCard.jsx";
 export default function PostsPage() {
 
     const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const filters = [
         { label: "Male", type: "gender", value: "MALE" },
         { label: "Female", type: "gender", value: "FEMALE" },
@@ -37,11 +39,17 @@ export default function PostsPage() {
             .then((res) => {
                 setPosts(res);
             })
+            .catch(error => setError(error.message))
+            .finally(() => setLoading(false));
     }, [checkboxes]);
 
     const checkboxChange = (key, checked) => {
         setCheckboxes({ ...checkboxes, [key]: checked });
     };
+
+    if (error) return <p>Could not load posts: {error}</p>;
+
+    if (loading) return <p>Loading...</p>
 
     return(
         <div>
@@ -73,9 +81,13 @@ export default function PostsPage() {
                         ))}
                     </Box>
                 </div>
-                <ul>
-                    <CardGrid> {posts.map(post => <PostCard key={post.id} {...post}/>)} </CardGrid>
-                </ul>
+                {posts.length ? (
+                    <ul>
+                        <CardGrid> {posts.map(post => <PostCard key={post.id} {...post}/>)} </CardGrid>
+                    </ul>
+                ) : (
+                    <p>There are currently no animals up for adoption</p>
+                )}
             </div>
         </div>
     );

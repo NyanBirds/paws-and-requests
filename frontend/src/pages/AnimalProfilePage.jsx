@@ -13,19 +13,21 @@ export default function AnimalProfilePage() {
     const navigate = useNavigate();
     const { postId } = useParams();
     const [post, setPost] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         getPost(postId)
             .then(post => setPost(post))
-            .catch(error => setError(error.message));
+            .catch(error => setError(error.message))
+            .finally(() => setLoading(false));
     }, [postId]);
 
     if (error) {
         return <p>Could not load this post: {error}</p>;
     }
 
-    if (!post) {
+    if (loading) {
         return <p>Loading...</p>;
     }
 

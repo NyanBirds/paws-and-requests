@@ -8,13 +8,20 @@ export function AdoptionPage() {
     const [content, setContent] = useState('');
     const [isSent, setIsSent] = useState(false);
 
+    const [status, setStatus] = useState("idle");
+    const [message, setMessage] = useState('');
+
     function onSubmit(event) {
         event.preventDefault();
+        setStatus('submitting');
+
         adopt(postId, {"content": content})
             .then(() => {
+                setStatus("success");
                 setIsSent(true);
             }, (error) => {
-                console.log(error.message);
+                setStatus("error");
+                setMessage(error.message);
             });
     }
 
@@ -30,7 +37,14 @@ export function AdoptionPage() {
                         placeholder="Please tell us about yourself!"
                     />
                     <p><em>Character Count:</em> {content.length}</p>
-                    <button type="submit" onClick={onSubmit}>Submit</button>
+                    <button
+                        type="submit"
+                        disabled={status === "submitting"}
+                        onClick={onSubmit}
+                    >
+                        {status === "submitting" ? "Submitting..." : "Submit"}
+                    </button>
+                    {status === "error" && <p>{message}</p>}
                 </>
             ) : (
                 <h2>Thank you for applying!</h2>

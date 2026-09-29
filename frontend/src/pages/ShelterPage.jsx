@@ -17,6 +17,8 @@ export default function ShelterPage() {
             .then(res => setPosts(res))
     }, [orgNr])
 
+    if (!shelter) return <p>Loading...</p>;
+
     return <>
         { error ? (
             <p>{error.status}</p>
