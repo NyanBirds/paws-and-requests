@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface ShelterRepository extends JpaRepository<Shelter, String> {
 
     Optional<Shelter> findByOrgNr(String orgNr);
+
+    Boolean existsByOrgNr(String orgNr);
 }

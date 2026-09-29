@@ -47,9 +47,10 @@ public class AuthController {
      * @return a {@link TokenResponse} containing the issued access token
      */
     @PostMapping("/registration")
-    public TokenResponse registration(
+    public ResponseEntity<TokenResponse> registration(
             final @RequestBody @Valid RegistrationRequest request) {
-        return authService.registration(request);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(authService.registration(request));
     }
 
     /**

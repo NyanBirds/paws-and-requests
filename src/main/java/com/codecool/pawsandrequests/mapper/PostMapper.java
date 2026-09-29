@@ -30,6 +30,7 @@ public interface PostMapper {
     @Mapping(target = "pictureIds", expression =
             "java(post.getPictures().stream()."
             + "map(picture -> picture.getId()).toList())")
+    @Mapping(target = "orgNr", source = "animal.shelter.orgNr")
     PostResponse toPostResponse(Post post);
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", source = "user")

@@ -11,12 +11,18 @@ import {CiEdit} from "react-icons/ci";
 
 export function MyAccountPage() {
     const navigate = useNavigate();
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState(null);
+    const [error, setError] = useState(null);
+
     useEffect(() => {
         fetchMe()
             .then(response => setUser(response))
-            .then(response => console.log(response))
+            .catch(error => setError(error.message));
     }, [])
+
+    if (error) return <p>Could not load user: {error}</p>;
+
+    if (!user) return <p>Loading...</p>;
 
     return (
         <>

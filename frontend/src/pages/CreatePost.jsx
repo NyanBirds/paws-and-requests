@@ -10,6 +10,8 @@ import {newPost} from "../services/postService.js";
 export default function CreatePost() {
     const [formData, setFormData] = useState({})
     const [animals, setAnimals] = useState([])
+    const [status, setStatus] = useState("idle");
+    const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
     const inputFields = [
@@ -29,12 +31,17 @@ export default function CreatePost() {
     }
     function onSubmit(event) {
         event.preventDefault();
+        setStatus('submitting');
+
         const { url: pictureFiles = [], ...postFields} = formData;
         console.log(formData);
         newPost(postFields, pictureFiles)
             .then((post) => {
+                setStatus("success");
                 navigate(`/posts/${post.id}`)
             }, (error) => {
+                setStatus("error");
+                setMessage(error.message);
                 console.log(error.message);
             });
     }
@@ -69,7 +76,10 @@ export default function CreatePost() {
                         label={inputFields[2].label}
                         onChange={onChange}/>
 
-                    <button type="submit">Submit</button>
+                    <button type="submit" disabled={status === "submitting"}>
+                        {status === "submitting" ? "Creating..." : "Create"}
+                    </button>
+                    {status === "error" && <p>{message}</p>}
                 </form>
             </Box>
         </div>

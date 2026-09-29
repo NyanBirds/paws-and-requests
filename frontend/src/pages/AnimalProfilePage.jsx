@@ -8,31 +8,36 @@ import CheckUser from "../components/CheckUser.jsx";
 
 export default function AnimalProfilePage() {
     const { isLoggedIn } = useOutletContext();
-    const role = CheckUser(isLoggedIn)?.role;
+    const user = CheckUser(isLoggedIn);
+    const role = user?.role;
 
     const navigate = useNavigate();
     const { postId } = useParams();
     const [post, setPost] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         getPost(postId)
             .then(post => setPost(post))
-            .catch(error => setError(error.message));
+            .catch(error => setError(error.message))
+            .finally(() => setLoading(false));
     }, [postId]);
 
     if (error) {
         return <p>Could not load this post: {error}</p>;
     }
 
-    if (!post) {
+    if (loading) {
         return <p>Loading...</p>;
     }
+
+    const canAccess = role === "ADMIN" || (role === "SHELTERUSER" && user?.orgNr === post.orgNr);
 
     return (
         <section>
             <h1>{post.animalName}</h1>
-            {(role === "SHELTERUSER" || role === "ADMIN") && (
+            {canAccess && (
                 <>
                 <button onClick={() => { deletePost(postId).then(_ => navigate(`/`))
                 }}>Delete Post</button>
@@ -56,7 +61,7 @@ export default function AnimalProfilePage() {
             {role === "USER" && (
                 <button onClick={() => navigate(`/posts/${postId}/adoption`)}>Adopt</button>
             )}
-            {(role === "SHELTERUSER" || role === "ADMIN") && (
+            {canAccess && (
                 <button onClick={() => navigate(`/posts/${postId}/adoptionForm`)}>View Adoption Forms</button>
             )}
         </section>
