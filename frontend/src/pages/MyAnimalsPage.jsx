@@ -3,6 +3,7 @@ import {addAnimal, getAnimals} from "../services/animalService.js";
 import {Popup} from "../components/Popup.jsx";
 import InputField from "../components/InputField.jsx";
 import DropDown from "../components/DropDown.jsx";
+import {AnimalCard} from "../components/AnimalCard.jsx";
 
 export function MyAnimalsPage() {
     const [animals, setAnimals] = useState([]);
@@ -33,9 +34,22 @@ export function MyAnimalsPage() {
         <>
             <h1>All Shelter Animals</h1>
             <button onClick={ () => setPopupIsOpen(true) }>Add New Animal</button>
-            {animals.map((animal) => (
-                <h2>{animal.name}</h2>
-            ))}
+            <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))",
+                gap: "20px",
+                padding: "20px",
+                width: "100%",
+                boxSizing: "border-box"}}>
+                {animals.map((animal) => (
+                    <AnimalCard
+                        name={animal.name}
+                        age={animal.age}
+                        gender={animal.gender}
+                        species={animal.species}
+                    />
+                ))}
+            </div>
 
             <Popup
                 isOpen={popupIsOpen}
