@@ -7,17 +7,15 @@ import {AnimalCard} from "../components/AnimalCard.jsx";
 
 export function MyAnimalsPage() {
     const [animals, setAnimals] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         getAnimals()
             .then(data => setAnimals(data))
-            .catch(error => setError(error.message));
+            .catch(error => setError(error.message))
+            .finally(() => setLoading(false));
     }, []);
-
-    if (error) return <p>Could not load animals: {error}</p>;
-
-    if (!animals.length) return <p>Loading...</p>;
 
     const [popupIsOpen, setPopupIsOpen] = useState(false);
     const [animalData, setAnimalData] = useState({});
@@ -44,27 +42,36 @@ export function MyAnimalsPage() {
             });
     }
 
+    if (error) return <p>Could not load animals: {error}</p>;
+
+    if (loading) return <p>Loading...</p>;
+
     return (
         <div>
             <h1>All Shelter Animals</h1>
             <button onClick={ () => setPopupIsOpen(true) }>Add New Animal</button>
-            <div style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-                gap: "20px",
-                padding: "20px",
-                width: "100%",
-                boxSizing: "border-box"}}>
-                {animals.map((animal) => (
-                    <AnimalCard
-                        id={animal.id}
-                        name={animal.name}
-                        age={animal.age}
-                        gender={animal.gender}
-                        species={animal.species}
-                    />
-                ))}
-            </div>
+            {animals.length ? (
+                <div style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+                    gap: "20px",
+                    padding: "20px",
+                    width: "100%",
+                    boxSizing: "border-box"}}>
+                    {animals.map((animal) => (
+                        <AnimalCard
+                            id={animal.id}
+                            name={animal.name}
+                            age={animal.age}
+                            gender={animal.gender}
+                            species={animal.species}
+                        />
+                    ))}
+                </div>
+            ) : (
+                <p>No animals yet</p>
+            )}
+
 
             <Popup
                 isOpen={popupIsOpen}

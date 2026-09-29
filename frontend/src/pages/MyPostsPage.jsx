@@ -5,23 +5,29 @@ import {getShelterPosts} from "../services/postService.js";
 
 export function MyPostsPage() {
     const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         getShelterPosts()
             .then(posts => setPosts(posts))
-            .catch(error => setError(error.message));
+            .catch(error => setError(error.message))
+            .finally(() => setLoading(false));
         console.log(posts);
     }, []);
 
     if (error) return <p>Could not load posts: {error}</p>;
 
-    if (!posts.length) return <p>Loading...</p>;
+    if (loading) return <p>Loading...</p>;
 
     return (
         <>
             <h1>All Shelter Posts</h1>
-            <CardGrid> {posts.map(post => <PostCard key={post.id} {...post}/>)} </CardGrid>
+            {posts.length ? (
+                <CardGrid> {posts.map(post => <PostCard key={post.id} {...post}/>)} </CardGrid>
+            ) : (
+              <p>No posts yet</p>
+            )}
         </>
     );
 }

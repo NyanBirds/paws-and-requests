@@ -6,12 +6,14 @@ import {getAnimals} from "../services/animalService.js";
 export function MyAdoptionFormsPage() {
     const [adoptionForms, setAdoptionForms] = useState([]);
     const [animals, setAnimals] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         getAllAdoptionForms()
             .then(adoptionForms => setAdoptionForms(adoptionForms))
-            .catch(error => setError(error.message));
+            .catch(error => setError(error.message))
+            .finally(() => setLoading(false));
 
         getAnimals()
             .then(data => setAnimals(data));
@@ -23,7 +25,7 @@ export function MyAdoptionFormsPage() {
 
     if (error) return <p>Could not load adoption forms: {error}</p>;
 
-    if (!adoptionForms.length) return <p>Loading...</p>;
+    if (loading) return <p>Loading...</p>;
 
     return (
         <>
