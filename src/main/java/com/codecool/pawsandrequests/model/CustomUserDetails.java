@@ -17,7 +17,7 @@ public final class CustomUserDetails implements UserDetails {
     }
 
     public String getOrgNr() {
-        return user.getShelter().getOrgNr();
+        return user.getShelter() == null ? null : user.getShelter().getOrgNr();
     }
 
     public UUID getId() {
