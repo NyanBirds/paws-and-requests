@@ -6,7 +6,8 @@ import {Box} from "../components/Box.jsx";
 
 export default function LoginPage() {
     const [formData, setFormData] = useState({})
-    const [error, setError] = useState("")
+    const [status, setStatus] = useState("idle");
+    const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
     const inputFields = [
@@ -19,15 +20,18 @@ export default function LoginPage() {
     }
 
     function onSubmit(event) {
-        setError("")
-        event.preventDefault()
+        event.preventDefault();
+        setStatus('submitting');
+
         login(formData)
             .then(res => {
-                localStorage.setItem("authToken", res.token)
+                setStatus("success");
+                localStorage.setItem("authToken", res.token);
                 window.dispatchEvent(new Event("authorization-request"));
                 navigate('/')
-            }, (err) => {
-                setError(err)
+            }, (error) => {
+                setStatus("error");
+                setMessage(error.mesage);
             })
     }
 
@@ -45,9 +49,11 @@ export default function LoginPage() {
                         required = {inputField.required}
                         onChange = {onChange}/>
                 ))}
-                <button type="submit">Login</button>
-                <p>{error.message}</p>
+                <button type="submit" disabled={status === "submitting"}>
+                    {status === "submitting" ? "Logging in..." : "Login"}
+                </button>
             </form>
+            {status === "error" && <p>{message}</p>}
         </Box>
     </div>
   )

@@ -7,11 +7,17 @@ import {AnimalCard} from "../components/AnimalCard.jsx";
 
 export function MyAnimalsPage() {
     const [animals, setAnimals] = useState([]);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         getAnimals()
-            .then(data => setAnimals(data));
+            .then(data => setAnimals(data))
+            .catch(error => setError(error.message));
     }, []);
+
+    if (error) return <p>Could not load animals: {error}</p>;
+
+    if (!animals.length) return <p>Loading...</p>;
 
     const [popupIsOpen, setPopupIsOpen] = useState(false);
     const [animalData, setAnimalData] = useState({});
@@ -20,13 +26,21 @@ export function MyAnimalsPage() {
         setAnimalData({ ...animalData, [key]: value });
     }
 
+    const [status, setStatus] = useState("idle");
+    const [message, setMessage] = useState('');
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setStatus('submitting');
 
         addAnimal(animalData)
             .then(() => {
+                setStatus("success");
                 setPopupIsOpen(false);
                 window.location.reload();
+            }, (error) => {
+                setStatus("error");
+                setMessage(error.message);
             });
     }
 
@@ -81,8 +95,11 @@ export function MyAnimalsPage() {
                         label="Species"
                         onChange={onChange}
                     />
-                    <button type="submit">Submit</button>
+                    <button type="submit" disabled={status === "submitting"}>
+                        {status === "submitting" ? "Adding Animal..." : "Add Animal"}
+                    </button>
                 </form>
+                {status === "error" && <p>{message}</p>}
             </Popup>
         </div>
     );

@@ -5,12 +5,18 @@ import {getShelterPosts} from "../services/postService.js";
 
 export function MyPostsPage() {
     const [posts, setPosts] = useState([]);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         getShelterPosts()
-            .then(posts => setPosts(posts));
+            .then(posts => setPosts(posts))
+            .catch(error => setError(error.message));
         console.log(posts);
     }, []);
+
+    if (error) return <p>Could not load posts: {error}</p>;
+
+    if (!posts.length) return <p>Loading...</p>;
 
     return (
         <>

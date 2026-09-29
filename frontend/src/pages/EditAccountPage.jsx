@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
-import {newPost} from "../services/postService.js";
 import {Box} from "../components/Box.jsx";
 import InputField from "../components/InputField.jsx";
 import {fetchMe} from "../services/authService.js";
@@ -10,6 +9,10 @@ export function EditAccountPage() {
 
     const navigate = useNavigate();
     const [id, setId] = useState(null);
+
+    const [status, setStatus] = useState("idle");
+    const [message, setMessage] = useState('');
+
     useEffect(() => {
         fetchMe()
             .then(response => setId(response.id))
@@ -27,12 +30,15 @@ export function EditAccountPage() {
     }
     function onSubmit(event) {
         event.preventDefault();
-
-        console.log(formData);
+        setStatus('submitting');
 
         editUser(id, formData)
             .then(() => {
+                setStatus("success");
                 navigate('/me')
+            }, (error) => {
+                setStatus("error");
+                setMessage(error.message);
             });
     }
 
@@ -49,8 +55,11 @@ export function EditAccountPage() {
                             required={field.required}
                             onChange={onChange} />
                     ))}
-                    <button type="submit">Submit</button>
+                    <button type="submit" disabled={status === "submitting"}>
+                        {status === "submitting" ? "Submitting..." : "Submit"}
+                    </button>
                 </form>
+                {status === "error" && <p>{message}</p>}
             </Box>
         </div>
     );

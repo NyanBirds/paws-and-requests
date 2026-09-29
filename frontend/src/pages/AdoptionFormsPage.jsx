@@ -6,11 +6,17 @@ import {Box} from "../components/Box.jsx";
 export function AdoptionFormPage() {
     const { postId } = useParams();
     const [adoptionForms, setAdoptionForms] = useState([]);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         getAdoptionForms(postId)
-            .then((adoptionForms) => setAdoptionForms(adoptionForms));
-    }, []);
+            .then((adoptionForms) => setAdoptionForms(adoptionForms))
+            .catch((error) => setError(error.message));
+    }, [postId]);
+
+    if (error) return <p>Could not load adoption forms: {error.message}</p>;
+
+    if (!adoptionForms.length) return <p>Loading...</p>;
 
     return (
         <>
