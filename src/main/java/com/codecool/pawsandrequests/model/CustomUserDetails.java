@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 public final class CustomUserDetails implements UserDetails {
 
@@ -19,12 +20,28 @@ public final class CustomUserDetails implements UserDetails {
         return user.getShelter().getOrgNr();
     }
 
-    public Long getUserId() {
+    public UUID getId() {
         return user.getId();
     }
 
     public Role getRole() {
         return user.getRole();
+    }
+
+    public String getFirstName() {
+        return user.getFirstName();
+    }
+
+    public String getLastName() {
+        return user.getLastName();
+    }
+
+    public String getEmail() {
+        return user.getEmail();
+    }
+
+    public String getPhoneNumber() {
+        return user.getPhoneNumber();
     }
 
     @Override
@@ -55,9 +72,5 @@ public final class CustomUserDetails implements UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
-    }
-
-    public String getFirstName() {
-        return user.getFirstName();
     }
 }
