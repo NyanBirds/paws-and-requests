@@ -1,9 +1,12 @@
 package com.codecool.pawsandrequests.service;
 
 import com.codecool.pawsandrequests.dto.ShelterResponse;
+import com.codecool.pawsandrequests.exception.ShelterNotFoundException;
 import com.codecool.pawsandrequests.mapper.ShelterMapper;
 import com.codecool.pawsandrequests.model.Shelter;
+import com.codecool.pawsandrequests.repository.AnimalRepository;
 import com.codecool.pawsandrequests.repository.ShelterRepository;
+import com.codecool.pawsandrequests.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,11 +39,19 @@ class ShelterServiceTest {
     @Mock
     private ShelterMapper mapper;
 
+    @Mock
+    private UserRepository userRepository;
+
+    @Mock
+    private AnimalRepository animalRepository;
+
+    @Mock
+    private PictureService pictureService;
     private ShelterService shelterService;
 
     @BeforeEach
     void setUp() {
-        shelterService = new ShelterService(repository, mapper);
+        shelterService = new ShelterService(repository, mapper, userRepository, animalRepository, pictureService);
     }
 
     @Test
@@ -97,10 +108,8 @@ class ShelterServiceTest {
         when(repository.findByOrgNr(ORG_NR)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> shelterService.getShelter(ORG_NR))
-                .isInstanceOf(ResponseStatusException.class)
-                .satisfies(e -> assertThat(
-                        ((ResponseStatusException) e).getStatusCode()
-                ).isEqualTo(HttpStatus.NOT_FOUND));
+                .isInstanceOf(ShelterNotFoundException.class)
+                .hasMessage("Shelter not found: " + ORG_NR);
 
         verify(mapper, never()).toShelterInfo(org.mockito.ArgumentMatchers
                 .any());

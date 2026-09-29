@@ -87,7 +87,7 @@ class PostServiceTest {
     private PostResponse fullResponse(final Post post) {
         return new PostResponse(post.getId(), post.getTitle(),
                 post.getDescription(), "Nyan Rescue", "Rainbow Road 1",
-                List.of(), List.of(), 3, Gender.FEMALE, Species.CAT, "Maja");
+                List.of(), List.of(), 3, Gender.FEMALE, Species.CAT, "Maja", null);
     }
 
     @Nested
