@@ -46,14 +46,13 @@ class CustomUserDetailsTest {
     }
 
     @Test
-    @DisplayName("throws when the user has no shelter")
+    @DisplayName("returns null when the user has no shelter")
     void throwsWithoutShelter() {
         CustomUserDetails details = details(
                 user(Role.USER, null)
         );
 
-        assertThatThrownBy(details::getOrgNr)
-                .isInstanceOf(NullPointerException.class);
+        assertThat(details.getOrgNr()).isNull();
     }
 
     @Test

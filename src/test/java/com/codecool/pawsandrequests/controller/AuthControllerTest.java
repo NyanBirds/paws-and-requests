@@ -83,7 +83,7 @@ class AuthControllerTest {
         );
         when(userMapper.toUserResponse(principal)).thenReturn(
                 new UserResponse(principal.getId(), EMAIL, Role.ADMIN, "Ada",
-                        "Lovelace", "070", EMAIL)
+                        "Lovelace", "070", EMAIL, null)
         );
 
         ResponseEntity<UserResponse> response =
