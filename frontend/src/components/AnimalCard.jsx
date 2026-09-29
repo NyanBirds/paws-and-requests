@@ -1,7 +1,7 @@
 import {deleteAnimal} from "../services/animalService.js";
 import {Box} from "./Box.jsx";
 
-export function AnimalCard( {name, age, gender, species} ) {
+export function AnimalCard( {id, name, age, gender, species} ) {
 
     const handleDelete = async (e) => {
         e.preventDefault();
@@ -12,7 +12,7 @@ export function AnimalCard( {name, age, gender, species} ) {
     }
 
     return (
-        <Box>
+        <Box width="80%">
             <div style={{ textAlign: "left", paddingLeft: "1rem" }}>
                 <h3>{name}</h3>
                 <p>{age} years old</p>

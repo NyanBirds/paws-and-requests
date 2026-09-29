@@ -31,18 +31,19 @@ export function MyAnimalsPage() {
     }
 
     return (
-        <>
+        <div>
             <h1>All Shelter Animals</h1>
             <button onClick={ () => setPopupIsOpen(true) }>Add New Animal</button>
             <div style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))",
+                gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
                 gap: "20px",
                 padding: "20px",
                 width: "100%",
                 boxSizing: "border-box"}}>
                 {animals.map((animal) => (
                     <AnimalCard
+                        id={animal.id}
                         name={animal.name}
                         age={animal.age}
                         gender={animal.gender}
@@ -83,6 +84,6 @@ export function MyAnimalsPage() {
                     <button type="submit">Submit</button>
                 </form>
             </Popup>
-        </>
+        </div>
     );
 }
