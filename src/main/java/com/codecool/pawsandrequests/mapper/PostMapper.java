@@ -16,7 +16,6 @@ public interface PostMapper {
     @Mapping(target = "age", source = "animal.age")
     @Mapping(target = "gender", source = "animal.gender")
     @Mapping(target = "species", source = "animal.species")
-    @Mapping(target = "orgNr", source = "animal.shelter.orgNr")
     @Mapping(target = "url", expression = "java(post.getPictures().stream()."
             + "map(picture -> \"/pictures/\" + picture.getId()).findFirst())")
     PostSummaryResponse toPostSummaryResponse(Post post);
@@ -31,6 +30,7 @@ public interface PostMapper {
     @Mapping(target = "pictureIds", expression =
             "java(post.getPictures().stream()."
             + "map(picture -> picture.getId()).toList())")
+    @Mapping(target = "orgNr", source = "animal.shelter.orgNr")
     PostResponse toPostResponse(Post post);
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", source = "user")
