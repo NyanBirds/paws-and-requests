@@ -16,6 +16,7 @@ public interface PostMapper {
     @Mapping(target = "age", source = "animal.age")
     @Mapping(target = "gender", source = "animal.gender")
     @Mapping(target = "species", source = "animal.species")
+    @Mapping(target = "orgNr", source = "animal.shelter.orgNr")
     @Mapping(target = "url", expression = "java(post.getPictures().stream()."
             + "map(picture -> \"/pictures/\" + picture.getId()).findFirst())")
     PostSummaryResponse toPostSummaryResponse(Post post);

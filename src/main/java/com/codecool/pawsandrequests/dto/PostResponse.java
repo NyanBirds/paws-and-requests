@@ -17,5 +17,6 @@ public record PostResponse(
         int age,
         Gender gender,
         Species species,
-        String animalName
+        String animalName,
+        String orgNr
  ) { }
