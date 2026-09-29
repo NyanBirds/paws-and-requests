@@ -6,19 +6,38 @@ import {MdOutlinePostAdd} from "react-icons/md";
 import {useEffect, useState} from "react";
 import {fetchMe} from "../services/authService.js";
 import {useNavigate} from "react-router";
+import {FaUser} from "react-icons/fa";
+import {CiEdit} from "react-icons/ci";
 
 export function MyAccountPage() {
     const navigate = useNavigate();
-    const [role, setRole] = useState(null);
+    const [user, setUser] = useState({});
     useEffect(() => {
         fetchMe()
-            .then(user => setRole(user.role));
+            .then(response => setUser(response))
+            .then(response => console.log(response))
     }, [])
 
     return (
         <>
-            <h1>Welcome</h1>
-            {role === "SHELTERUSER" ? (
+            <h1>Welcome, {user.firstName}!</h1>
+            <Box>
+                <div
+                    style={{display: "flex", alignItems: "center", gap: "40px"}}>
+                    <FaUser
+                        size="100"
+                        padding="20px"
+                    />
+                    <div style={{ textAlign: 'left' }}>
+                        <h3>Account Information</h3>
+                        <p>Name: {user.firstName} {user.lastName}</p>
+                        <p>Email: {user.email}</p>
+                        <p>Phone Nr: {user.phoneNumber}</p>
+                        <CiEdit size="30" onClick={() => navigate('/me/edit')}/>
+                    </div>
+                </div>
+            </Box>
+            {user.role === "SHELTERUSER" ? (
             <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <Box
                     width="25%"

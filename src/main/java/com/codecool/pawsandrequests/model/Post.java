@@ -21,19 +21,26 @@ import java.util.UUID;
 @Getter
 @Setter
 public class Post {
+    public static final int MAX_DESC_LENGTH = 1000;
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     @Column(nullable = false)
     private String title;
-    @Column(nullable = false)
+
+    @Column(nullable = false, length = MAX_DESC_LENGTH)
     private String description;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
     @ManyToOne
     @JoinColumn(name = "animal_id", nullable = false)
     private Animal animal;
+
     @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
     @JoinTable(
             name = "post_picture",
@@ -41,6 +48,7 @@ public class Post {
             inverseJoinColumns = @JoinColumn(name = "picture_id")
     )
     private List<Picture> pictures = new ArrayList<>();
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<AdoptionForm> adoptionForms =  new ArrayList<>();
 }

@@ -4,6 +4,7 @@ import com.codecool.pawsandrequests.dto.LoginRequest;
 import com.codecool.pawsandrequests.dto.RegistrationRequest;
 import com.codecool.pawsandrequests.dto.TokenResponse;
 import com.codecool.pawsandrequests.dto.UserResponse;
+import com.codecool.pawsandrequests.mapper.UserMapper;
 import com.codecool.pawsandrequests.model.CustomUserDetails;
 import com.codecool.pawsandrequests.service.AuthService;
 import jakarta.validation.Valid;
@@ -21,9 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+    private final UserMapper userMapper;
 
-    public AuthController(final AuthService ls) {
+    public AuthController(final AuthService ls, final UserMapper mapper) {
         this.authService = ls;
+        this.userMapper = mapper;
     }
 
     /**
@@ -67,11 +70,7 @@ public class AuthController {
         CustomUserDetails userDetails =
                 (CustomUserDetails) authentication.getPrincipal();
 
-        UserResponse user = new UserResponse(
-                userDetails.getUsername(),
-                userDetails.getRole(),
-                userDetails.getFirstName()
-        );
+        UserResponse user = userMapper.toUserResponse(userDetails);
 
         return ResponseEntity.ok(user);
     }

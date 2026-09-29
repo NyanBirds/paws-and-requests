@@ -1,4 +1,4 @@
-export default function InputField({name, type = "text", label, required = true, onChange}) {
+export default function InputField({name, type = "text", label, required = true, onChange, defaultValue}) {
     return <div>
         <label>{label}</label>
         <input
@@ -10,7 +10,8 @@ export default function InputField({name, type = "text", label, required = true,
                 type == "file" ? 
                 Array.from(event.target.files) : event.target.value
             )}
-            multiple={type=="file"}
+            defaultValue={defaultValue}
+            multiple={type==="file"}
         />
     </div>
 }
