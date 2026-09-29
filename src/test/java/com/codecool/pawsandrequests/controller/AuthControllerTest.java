@@ -70,8 +70,10 @@ class AuthControllerTest {
                 TokenResponse.bearer(TOKEN, 3600L)
         );
 
-        assertThat(authController.registration(request).token())
-                .isEqualTo(TOKEN);
+        ResponseEntity<TokenResponse> response = authController.registration(request);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assert response.getBody() != null;
+        assertThat(response.getBody().token()).isEqualTo(TOKEN);
     }
 
     @Test
