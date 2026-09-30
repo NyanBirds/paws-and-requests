@@ -76,6 +76,7 @@ export function MyAccountPage() {
             ) : (
                 <Box
                     width="25%"
+                    onClick={() => navigate("/me/adoptionForms")}
                 >
                     <HiOutlineClipboardDocumentList size="40"/>
                     <h2>All My Sent Applications</h2>
