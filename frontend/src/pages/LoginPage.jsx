@@ -1,7 +1,7 @@
 import {useState} from "react"
 import InputField from "../components/InputField"
 import {login} from "../services/authService.js"
-import {useNavigate} from "react-router"
+import {useLocation, useNavigate} from "react-router"
 import {Box} from "../components/Box.jsx";
 
 export default function LoginPage() {
@@ -9,6 +9,8 @@ export default function LoginPage() {
     const [status, setStatus] = useState("idle");
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
+    const originalRoute = useLocation();
+    const from = originalRoute.state?.from?.pathname || "/";
 
     const inputFields = [
         {key: 'email', type: 'text', label: 'Email:', required: true},
@@ -28,7 +30,7 @@ export default function LoginPage() {
                 setStatus("success");
                 localStorage.setItem("authToken", res.token);
                 window.dispatchEvent(new Event("authorization-request"));
-                navigate('/')
+                navigate(from, { replace: true })
             }, (error) => {
                 setStatus("error");
                 setMessage(error.mesage);

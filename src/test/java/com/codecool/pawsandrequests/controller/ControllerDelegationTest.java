@@ -1,5 +1,6 @@
 package com.codecool.pawsandrequests.controller;
 
+import com.codecool.pawsandrequests.dto.AdoptionFormResponse;
 import com.codecool.pawsandrequests.dto.AnimalRequest;
 import com.codecool.pawsandrequests.dto.AnimalResponse;
 import com.codecool.pawsandrequests.dto.ShelterResponse;
@@ -105,11 +106,12 @@ class ControllerDelegationTest {
         @DisplayName("looks up a single animal by id")
         void looksUpSingleAnimal() {
             UUID id = UUID.randomUUID();
-            AnimalResponse response = new AnimalResponse(id, "Maja", 3,
+            AnimalResponse animal = new AnimalResponse(id, "Maja", 3,
                     Gender.FEMALE, Species.CAT);
-            when(animalService.getAnimal(id)).thenReturn(response);
+            ResponseEntity<AnimalResponse> response = ResponseEntity.ok(animal);
+            when(animalService.getAnimal(id)).thenReturn(response.getBody());
 
-            assertThat(controller.getAnimal(id)).isSameAs(response);
+            assertThat(controller.getAnimal(id)).isEqualTo(response);
         }
     }
 
@@ -139,11 +141,12 @@ class ControllerDelegationTest {
         @Test
         @DisplayName("returns one shelter by org number")
         void returnsOneShelter() {
-            ShelterResponse response = new ShelterResponse(ORG_NR, "Nyan",
+            ShelterResponse shelter = new ShelterResponse(ORG_NR, "Nyan",
                     "Rainbow Road 1", "We help", Optional.empty());
-            when(shelterService.getShelter(ORG_NR)).thenReturn(response);
+            ResponseEntity<ShelterResponse> response = ResponseEntity.ok(shelter);
+            when(shelterService.getShelter(ORG_NR)).thenReturn(response.getBody());
 
-            assertThat(controller.getShelter(ORG_NR)).isSameAs(response);
+            assertThat(controller.getShelter(ORG_NR)).isEqualTo(response);
         }
 
         @Test
@@ -258,11 +261,11 @@ class ControllerDelegationTest {
                     new com.codecool.pawsandrequests.dto.AdoptionFormRequest(
                             "Hi");
 
-            ResponseEntity<Void> response = controller.createForm(principal,
+            ResponseEntity<AdoptionFormResponse> response = controller.createForm(principal,
                     postId, request);
 
             assertThat(response.getStatusCode())
-                    .isEqualTo(HttpStatus.NO_CONTENT);
+                    .isEqualTo(HttpStatus.CREATED);
             verify(adoptionFormService).createForm(principal.getUsername(),
                     postId, request);
         }

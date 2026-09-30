@@ -5,6 +5,7 @@ import com.codecool.pawsandrequests.dto.AdoptionFormResponse;
 import com.codecool.pawsandrequests.mapper.AdoptionFormMapper;
 import com.codecool.pawsandrequests.model.AdoptionForm;
 import com.codecool.pawsandrequests.model.Post;
+import com.codecool.pawsandrequests.model.Role;
 import com.codecool.pawsandrequests.model.User;
 import com.codecool.pawsandrequests.repository.AdoptionFormRepository;
 import com.codecool.pawsandrequests.repository.PostRepository;
@@ -40,13 +41,19 @@ public class AdoptionFormService {
             final String email,
             final UUID postId
     ) {
-        User user = userRepository.findByEmail(email).get();
-        Post post = postRepository.findById(postId).get();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "User not found")
+                );
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.
+                        NOT_FOUND, "Post not found")
+                );
 
-        if (user.getShelter() == null
+        if (user.getRole() != Role.ADMIN && (user.getShelter() == null
                 || !user.getShelter().getOrgNr().equals(
                 post.getAnimal().getShelter().getOrgNr()
-        )) {
+        ))) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     "You can only access adoption forms from your own shelter");
         }
@@ -55,22 +62,33 @@ public class AdoptionFormService {
                 .toList();
     }
 
-    public final void createForm(
+    public final AdoptionFormResponse createForm(
             final String email,
             final UUID postId,
             final AdoptionFormRequest request
     ) {
-        User user = userRepository.findByEmail(email).get();
-        Post post = postRepository.findById(postId).get();
-        adoptionFormRepository.save(
-                adoptionFormMapper.toAdoptionForm(request, user, post)
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "User not found")
         );
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.
+                        NOT_FOUND, "Post not found")
+                );
+        AdoptionForm adoptionForm = adoptionFormMapper.toAdoptionForm(
+                request, user, post
+        );
+        adoptionFormRepository.save(adoptionForm);
+        return adoptionFormMapper.toAdoptionFormResponse(adoptionForm);
     }
 
     public final List<AdoptionFormResponse> getAllForms(
             final String email
     ) {
-        User user = userRepository.findByEmail(email).get();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "User not found")
+                );
 
         List<AdoptionForm> forms;
 
@@ -82,6 +100,9 @@ public class AdoptionFormService {
                 String orgNr = user.getShelter().getOrgNr();
                 forms = adoptionFormRepository
                         .findByPostUserShelterOrgNr(orgNr);
+                break;
+            case USER:
+                forms = adoptionFormRepository.findByUser(user);
                 break;
             default:
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN,

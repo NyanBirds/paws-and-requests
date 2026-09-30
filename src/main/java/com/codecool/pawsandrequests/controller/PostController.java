@@ -8,6 +8,7 @@ import com.codecool.pawsandrequests.model.CustomUserDetails;
 import com.codecool.pawsandrequests.model.Gender;
 import com.codecool.pawsandrequests.model.Species;
 import com.codecool.pawsandrequests.service.PostService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -48,8 +49,11 @@ public final class PostController {
     }
 
     @GetMapping("/{postId}")
-    public PostResponse getOnePost(@PathVariable final UUID postId) {
-        return postService.getOnePost(postId);
+    public ResponseEntity<PostResponse> getOnePost(
+            @PathVariable final UUID postId
+    ) {
+        PostResponse post = postService.getOnePost(postId);
+        return ResponseEntity.ok(post);
     }
 
     @GetMapping("/shelter")
@@ -71,7 +75,7 @@ public final class PostController {
                 customUserDetails.getOrgNr(),
                 customUserDetails.getUsername()
         );
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @DeleteMapping("/{postId}")

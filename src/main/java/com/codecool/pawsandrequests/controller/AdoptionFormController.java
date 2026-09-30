@@ -4,6 +4,7 @@ import com.codecool.pawsandrequests.dto.AdoptionFormRequest;
 import com.codecool.pawsandrequests.dto.AdoptionFormResponse;
 import com.codecool.pawsandrequests.model.CustomUserDetails;
 import com.codecool.pawsandrequests.service.AdoptionFormService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -37,17 +38,17 @@ public final class AdoptionFormController {
     }
 
     @PostMapping("/posts/{postId}/adoption")
-    public ResponseEntity<Void> createForm(
+    public ResponseEntity<AdoptionFormResponse> createForm(
             @AuthenticationPrincipal final UserDetails userDetails,
             @PathVariable final UUID postId,
             @RequestBody final AdoptionFormRequest request
     ) {
-        adoptionFormService.createForm(
-                userDetails.getUsername(),
-                postId,
-                request
-        );
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(adoptionFormService.createForm(
+                        userDetails.getUsername(),
+                        postId,
+                        request)
+                );
     }
 
     @GetMapping("/adoptionforms")

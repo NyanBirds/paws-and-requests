@@ -7,6 +7,7 @@ import com.codecool.pawsandrequests.model.AdoptionForm;
 import com.codecool.pawsandrequests.model.Post;
 import com.codecool.pawsandrequests.model.Role;
 import com.codecool.pawsandrequests.model.Shelter;
+import com.codecool.pawsandrequests.model.Species;
 import com.codecool.pawsandrequests.model.User;
 import com.codecool.pawsandrequests.repository.AdoptionFormRepository;
 import com.codecool.pawsandrequests.repository.PostRepository;
@@ -94,7 +95,7 @@ class AdoptionFormServiceTest {
             when(adoptionFormMapper.toAdoptionFormResponse(form))
                     .thenReturn(new AdoptionFormResponse(form.getContent(),
                             "Ada", "Lovelace", EMAIL,
-                            target.getAnimal().getId()));
+                            target.getAnimal().getId(), "Maja", Species.DOG));
 
             List<AdoptionFormResponse> result = adoptionFormService.getForms(
                     EMAIL, target.getId()
@@ -143,7 +144,7 @@ class AdoptionFormServiceTest {
         }
 
         @Test
-        @DisplayName("forbids a user with no shelter")
+        @DisplayName("forbids a user with no shelter (unless they are an admin)")
         void forbidsUserWithoutShelter() {
             User plain = shelterUser(shelter());
             plain.setShelter(null);
@@ -161,6 +162,21 @@ class AdoptionFormServiceTest {
                     .satisfies(e -> assertThat(
                             ((ResponseStatusException) e).getStatusCode()
                     ).isEqualTo(HttpStatus.FORBIDDEN));
+        }
+
+        @Test
+        @DisplayName("lets an admin read forms on any shelter's post")
+        void adminSeesAnyPostsForms() {
+            Post foreign = post(shelterUser(shelter(OTHER_ORG_NR)),
+                    animal(shelter(OTHER_ORG_NR)));
+
+            when(userRepository.findByEmail(EMAIL))
+                    .thenReturn(Optional.of(admin()));
+            when(postRepository.findById(foreign.getId()))
+                    .thenReturn(Optional.of(foreign));
+
+            assertThat(adoptionFormService.getForms(EMAIL, foreign.getId()))
+                    .isEmpty();
         }
     }
 
@@ -236,10 +252,10 @@ class AdoptionFormServiceTest {
                     .thenReturn(List.of(first, second));
             when(adoptionFormMapper.toAdoptionFormResponse(first))
                     .thenReturn(new AdoptionFormResponse("one", "A", "B",
-                            EMAIL, UUID.randomUUID()));
+                            EMAIL, UUID.randomUUID(), "Maja", Species.DOG));
             when(adoptionFormMapper.toAdoptionFormResponse(second))
                     .thenReturn(new AdoptionFormResponse("two", "C", "D",
-                            EMAIL, UUID.randomUUID()));
+                            EMAIL, UUID.randomUUID(), "Maja",  Species.DOG));
 
             assertThat(adoptionFormService.getAllForms(EMAIL)).hasSize(2);
             verify(adoptionFormRepository, never())
@@ -259,7 +275,7 @@ class AdoptionFormServiceTest {
                     .thenReturn(List.of(form));
             when(adoptionFormMapper.toAdoptionFormResponse(form))
                     .thenReturn(new AdoptionFormResponse("mine", "Ada",
-                            "Lovelace", EMAIL, UUID.randomUUID()));
+                            "Lovelace", EMAIL, UUID.randomUUID(), "Maja", Species.DOG));
 
             assertThat(adoptionFormService.getAllForms(EMAIL)).hasSize(1);
 
@@ -269,18 +285,17 @@ class AdoptionFormServiceTest {
         }
 
         @Test
-        @DisplayName("a regular user is refused")
-        void plainUserRefused() {
-            when(userRepository.findByEmail(EMAIL)).thenReturn(
-                    Optional.of(user(
-                            Role.USER, null))
-            );
+        @DisplayName("a plain user sees only their own forms")
+        void plainUserSeesOwnForms() {
+            User plain = user(Role.USER, null);
+            AdoptionForm mine = form("mine");
 
-            assertThatThrownBy(() -> adoptionFormService.getAllForms(EMAIL))
-                    .isInstanceOf(ResponseStatusException.class)
-                    .satisfies(e -> assertThat(
-                            ((ResponseStatusException) e).getStatusCode()
-                    ).isEqualTo(HttpStatus.FORBIDDEN));
+            when(userRepository.findByEmail(EMAIL)).thenReturn(Optional.of(plain));
+            when(adoptionFormRepository.findByUser(plain)).thenReturn(List.of(mine));
+
+            assertThat(adoptionFormService.getAllForms(EMAIL)).hasSize(1);
+            verify(adoptionFormRepository).findByUser(plain);
+            verify(adoptionFormRepository, never()).findAll();
         }
     }
 }
