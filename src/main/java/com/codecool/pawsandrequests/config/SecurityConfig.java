@@ -62,8 +62,8 @@ public class SecurityConfig {
                                 new HttpStatusEntryPoint(
                                         HttpStatus.UNAUTHORIZED)))
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(HttpMethod.POST, "/api/auth/login",
-                            "/api/auth/registration").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/auth/login",
+                            "/auth/registration").permitAll()
                     .requestMatchers(HttpMethod.GET, "/posts",
                             "/posts/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/shelters",
