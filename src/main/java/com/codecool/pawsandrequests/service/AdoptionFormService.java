@@ -40,8 +40,14 @@ public class AdoptionFormService {
             final String email,
             final UUID postId
     ) {
-        User user = userRepository.findByEmail(email).get();
-        Post post = postRepository.findById(postId).get();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "User not found")
+                );
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.
+                        NOT_FOUND, "Post not found")
+                );
 
         if (user.getShelter() == null
                 || !user.getShelter().getOrgNr().equals(
@@ -55,22 +61,33 @@ public class AdoptionFormService {
                 .toList();
     }
 
-    public final void createForm(
+    public final AdoptionFormResponse createForm(
             final String email,
             final UUID postId,
             final AdoptionFormRequest request
     ) {
-        User user = userRepository.findByEmail(email).get();
-        Post post = postRepository.findById(postId).get();
-        adoptionFormRepository.save(
-                adoptionFormMapper.toAdoptionForm(request, user, post)
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "User not found")
         );
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.
+                        NOT_FOUND, "Post not found")
+                );
+        AdoptionForm adoptionForm = adoptionFormMapper.toAdoptionForm(
+                request, user, post
+        );
+        adoptionFormRepository.save(adoptionForm);
+        return adoptionFormMapper.toAdoptionFormResponse(adoptionForm);
     }
 
     public final List<AdoptionFormResponse> getAllForms(
             final String email
     ) {
-        User user = userRepository.findByEmail(email).get();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "User not found")
+                );
 
         List<AdoptionForm> forms;
 

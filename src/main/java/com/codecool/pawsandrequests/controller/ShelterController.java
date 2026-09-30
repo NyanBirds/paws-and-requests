@@ -35,8 +35,11 @@ public final class ShelterController {
     }
 
     @GetMapping("/{orgNr}")
-    public ShelterResponse getShelter(@PathVariable final String orgNr) {
-        return service.getShelter(orgNr);
+    public ResponseEntity<ShelterResponse> getShelter(
+            @PathVariable final String orgNr
+    ) {
+        ShelterResponse shelter = service.getShelter(orgNr);
+        return ResponseEntity.ok(shelter);
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

@@ -4,6 +4,7 @@ import com.codecool.pawsandrequests.dto.EditPostRequest;
 import com.codecool.pawsandrequests.dto.PostRequest;
 import com.codecool.pawsandrequests.dto.PostResponse;
 import com.codecool.pawsandrequests.dto.PostSummaryResponse;
+import com.codecool.pawsandrequests.exception.ResourceNotFoundException;
 import com.codecool.pawsandrequests.mapper.PostMapper;
 import com.codecool.pawsandrequests.model.Animal;
 import com.codecool.pawsandrequests.model.Gender;
@@ -190,10 +191,7 @@ class PostServiceTest {
                     .thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> postService.getOnePost(missing))
-                    .isInstanceOf(ResponseStatusException.class)
-                    .satisfies(e -> assertThat(
-                            ((ResponseStatusException) e).getStatusCode()
-                    ).isEqualTo(HttpStatus.NOT_FOUND));
+                    .isInstanceOf(ResourceNotFoundException.class);
         }
     }
 
