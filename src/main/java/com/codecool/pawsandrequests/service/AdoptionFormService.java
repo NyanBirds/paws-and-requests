@@ -100,6 +100,9 @@ public class AdoptionFormService {
                 forms = adoptionFormRepository
                         .findByPostUserShelterOrgNr(orgNr);
                 break;
+            case USER:
+                forms = adoptionFormRepository.findByUser(user);
+                break;
             default:
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                         "Your role does not allow this");
