@@ -4,6 +4,7 @@ import com.codecool.pawsandrequests.dto.EditPostRequest;
 import com.codecool.pawsandrequests.dto.PostRequest;
 import com.codecool.pawsandrequests.dto.PostResponse;
 import com.codecool.pawsandrequests.dto.PostSummaryResponse;
+import com.codecool.pawsandrequests.exception.ResourceNotFoundException;
 import com.codecool.pawsandrequests.mapper.PostMapper;
 import com.codecool.pawsandrequests.model.Animal;
 import com.codecool.pawsandrequests.model.Gender;
@@ -97,8 +98,8 @@ public final class PostService {
     public PostResponse getOnePost(final UUID postId) {
 
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "post not found")
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(postId, "Post")
                 );
 
         return postMapper.toPostResponse(post);
