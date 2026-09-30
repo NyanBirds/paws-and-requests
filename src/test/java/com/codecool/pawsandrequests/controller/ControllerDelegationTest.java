@@ -141,11 +141,12 @@ class ControllerDelegationTest {
         @Test
         @DisplayName("returns one shelter by org number")
         void returnsOneShelter() {
-            ShelterResponse response = new ShelterResponse(ORG_NR, "Nyan",
+            ShelterResponse shelter = new ShelterResponse(ORG_NR, "Nyan",
                     "Rainbow Road 1", "We help", Optional.empty());
-            when(shelterService.getShelter(ORG_NR)).thenReturn(response);
+            ResponseEntity<ShelterResponse> response = ResponseEntity.ok(shelter);
+            when(shelterService.getShelter(ORG_NR)).thenReturn(response.getBody());
 
-            assertThat(controller.getShelter(ORG_NR)).isSameAs(response);
+            assertThat(controller.getShelter(ORG_NR)).isEqualTo(response);
         }
 
         @Test

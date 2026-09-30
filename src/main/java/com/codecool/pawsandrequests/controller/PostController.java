@@ -49,7 +49,9 @@ public final class PostController {
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<PostResponse> getOnePost(@PathVariable final UUID postId) {
+    public ResponseEntity<PostResponse> getOnePost(
+            @PathVariable final UUID postId
+    ) {
         PostResponse post = postService.getOnePost(postId);
         return ResponseEntity.ok(post);
     }
