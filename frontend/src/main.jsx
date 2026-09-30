@@ -19,6 +19,7 @@ import {MyPostsPage} from "./pages/MyPostsPage.jsx";
 import {MyAdoptionFormsPage} from "./pages/MyAdoptionFormsPage.jsx";
 import {EditAccountPage} from "./pages/EditAccountPage.jsx";
 import {EditPost} from "./pages/EditPost.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 const router = createBrowserRouter([
     {
@@ -32,15 +33,21 @@ const router = createBrowserRouter([
             { path: 'posts/:postId', Component: AnimalProfilePage },
             { path: 'shelters', Component: ShelterListPage},
             { path: 'shelters/:orgNr', Component: ShelterPage},
-            { path: 'posts/:postId/adoption', Component: AdoptionPage },
-            { path: 'posts/:postId/adoptionForm', Component: AdoptionFormPage },
-            { path: 'post/new', Component: CreatePost },
-            { path: 'me', Component: MyAccountPage },
-            { path: 'me/animals', Component: MyAnimalsPage },
-            { path: 'me/posts', Component: MyPostsPage },
-            { path: 'me/adoptionForms', Component: MyAdoptionFormsPage },
-            { path: 'me/edit', Component: EditAccountPage },
-            { path: 'posts/:postId/edit', Component: EditPost },
+
+            {
+                Component: ProtectedRoute,
+                children: [
+                    { path: 'posts/:postId/adoption', Component: AdoptionPage },
+                    { path: 'posts/:postId/adoptionForm ', Component: AdoptionFormPage },
+                    { path: 'post/new', Component: CreatePost },
+                    { path: 'me', Component: MyAccountPage },
+                    { path: 'me/animals', Component: MyAnimalsPage },
+                    { path: 'me/posts', Component: MyPostsPage },
+                    { path: 'me/adoptionForms', Component: MyAdoptionFormsPage },
+                    { path: 'me/edit', Component: EditAccountPage },
+                    { path: 'posts/:postId/edit', Component: EditPost },
+                ]
+            },
         ]
     }
 ]);
