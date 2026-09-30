@@ -1,10 +1,10 @@
 import {api} from "../api/client.js";
 
-export const getPost = (postId) => api.get(`/api/posts/${postId}`);
+export const getPost = (postId) => api.get(`/posts/${postId}`);
 
-export const getPosts = (params) => api.get(`/api/posts?${params}`);
+export const getPosts = (params) => api.get(`/posts?${params}`);
 
-export const getShelterPosts = () => api.get('/api/posts/shelter');
+export const getShelterPosts = () => api.get('/posts/shelter');
 
 export const newPost = (postFields, pictureFiles = []) => {
     const formData = new FormData();
