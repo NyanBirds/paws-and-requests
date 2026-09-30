@@ -58,7 +58,6 @@ const router = createBrowserRouter([
                     { path: 'me/posts', Component: MyPostsPage },
                     { path: 'posts/:postId/adoptionForm', Component: AdoptionFormPage },
                     { path: 'posts/:postId/edit', Component: EditPost },
-                    { path: 'me/adoptionForms', Component: MyAdoptionFormsPage },
                     { path: 'me/animals', Component: MyAnimalsPage },
                 ]
             },
@@ -67,6 +66,7 @@ const router = createBrowserRouter([
                 element: <ProtectedRoute roles={["USER"]} />,
                 children: [
                     { path: 'posts/:postId/adoption', Component: AdoptionPage },
+                    { path: 'me/adoptionForms', Component: MyAdoptionFormsPage },
                 ]
             },
         ]
