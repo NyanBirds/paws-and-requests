@@ -2,6 +2,7 @@ package com.codecool.pawsandrequests.service;
 
 import com.codecool.pawsandrequests.dto.AnimalRequest;
 import com.codecool.pawsandrequests.dto.AnimalResponse;
+import com.codecool.pawsandrequests.exception.ResourceNotFoundException;
 import com.codecool.pawsandrequests.mapper.AnimalMapper;
 import com.codecool.pawsandrequests.model.Animal;
 import com.codecool.pawsandrequests.model.Gender;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -107,7 +109,7 @@ class AnimalServiceTest {
         when(animalRepository.findById(missing)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> animalService.getAnimal(missing))
-                .isInstanceOf(NoSuchElementException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
@@ -134,7 +136,7 @@ class AnimalServiceTest {
 
         assertThatThrownBy(() -> animalService.addAnimal(ORG_NR,
                 new AnimalRequest("Fod", 1, "MALE", "DOG")))
-                .isInstanceOf(NoSuchElementException.class);
+                .isInstanceOf(ResponseStatusException.class);
 
         verify(animalRepository, never()).save(any());
     }

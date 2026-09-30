@@ -4,6 +4,7 @@ import com.codecool.pawsandrequests.dto.AnimalRequest;
 import com.codecool.pawsandrequests.dto.AnimalResponse;
 import com.codecool.pawsandrequests.model.CustomUserDetails;
 import com.codecool.pawsandrequests.service.AnimalService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,17 +37,22 @@ public final class AnimalController {
     }
 
     @GetMapping("/{id}")
-    public AnimalResponse getAnimal(@PathVariable final UUID id) {
-        return animalService.getAnimal(id);
+    public ResponseEntity<AnimalResponse> getAnimal(
+            @PathVariable final UUID id
+    ) {
+        AnimalResponse animal = animalService.getAnimal(id);
+        return ResponseEntity.ok(animal);
     }
 
     @PostMapping()
-    public ResponseEntity<Void> addAnimal(
+    public ResponseEntity<AnimalResponse> addAnimal(
             @AuthenticationPrincipal final CustomUserDetails userDetails,
             @RequestBody final AnimalRequest animalRequest
     ) {
-        animalService.addAnimal(userDetails.getOrgNr(), animalRequest);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(animalService.addAnimal(
+                        userDetails.getOrgNr(), animalRequest)
+                );
     }
 
     @DeleteMapping("/{id}")

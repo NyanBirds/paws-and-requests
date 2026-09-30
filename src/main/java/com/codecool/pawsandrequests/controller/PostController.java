@@ -8,6 +8,7 @@ import com.codecool.pawsandrequests.model.CustomUserDetails;
 import com.codecool.pawsandrequests.model.Gender;
 import com.codecool.pawsandrequests.model.Species;
 import com.codecool.pawsandrequests.service.PostService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -71,7 +72,7 @@ public final class PostController {
                 customUserDetails.getOrgNr(),
                 customUserDetails.getUsername()
         );
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @DeleteMapping("/{postId}")
