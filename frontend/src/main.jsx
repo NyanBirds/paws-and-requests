@@ -20,6 +20,7 @@ import {MyAdoptionFormsPage} from "./pages/MyAdoptionFormsPage.jsx";
 import {EditAccountPage} from "./pages/EditAccountPage.jsx";
 import {EditPost} from "./pages/EditPost.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import NoAccessPage from "./pages/NoAccessPage.jsx";
 
 const router = createBrowserRouter([
     {
@@ -33,19 +34,39 @@ const router = createBrowserRouter([
             { path: 'posts/:postId', Component: AnimalProfilePage },
             { path: 'shelters', Component: ShelterListPage},
             { path: 'shelters/:orgNr', Component: ShelterPage},
+            { path: 'no-access', Component: NoAccessPage},
 
             {
                 Component: ProtectedRoute,
                 children: [
-                    { path: 'posts/:postId/adoption', Component: AdoptionPage },
-                    { path: 'posts/:postId/adoptionForm ', Component: AdoptionFormPage },
-                    { path: 'post/new', Component: CreatePost },
                     { path: 'me', Component: MyAccountPage },
-                    { path: 'me/animals', Component: MyAnimalsPage },
-                    { path: 'me/posts', Component: MyPostsPage },
-                    { path: 'me/adoptionForms', Component: MyAdoptionFormsPage },
                     { path: 'me/edit', Component: EditAccountPage },
+
+                ]
+            },
+
+            {
+                element: <ProtectedRoute roles={["SHELTERUSER"]} />,
+                children: [
+                    { path: 'post/new', Component: CreatePost },
+                ]
+            },
+
+            {
+                element: <ProtectedRoute roles={["SHELTERUSER", "ADMIN"]} />,
+                children: [
+                    { path: 'me/posts', Component: MyPostsPage },
+                    { path: 'posts/:postId/adoptionForm', Component: AdoptionFormPage },
                     { path: 'posts/:postId/edit', Component: EditPost },
+                    { path: 'me/adoptionForms', Component: MyAdoptionFormsPage },
+                    { path: 'me/animals', Component: MyAnimalsPage },
+                ]
+            },
+
+            {
+                element: <ProtectedRoute roles={["USER"]} />,
+                children: [
+                    { path: 'posts/:postId/adoption', Component: AdoptionPage },
                 ]
             },
         ]

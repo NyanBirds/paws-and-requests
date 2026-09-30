@@ -7,10 +7,7 @@ import com.codecool.pawsandrequests.model.Animal;
 import com.codecool.pawsandrequests.model.Shelter;
 import com.codecool.pawsandrequests.repository.AnimalRepository;
 import com.codecool.pawsandrequests.repository.ShelterRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,6 +33,12 @@ public class AnimalService {
                 .filter(animal -> animal.getShelter()
                         .equals(shelterRepository.findByOrgNr(orgNr).get())
                 )
+                .map(animalMapper::toAnimalResponse)
+                .toList();
+    }
+
+    public final List<AnimalResponse> getAllAnimals() {
+        return animalRepository.findAll().stream()
                 .map(animalMapper::toAnimalResponse)
                 .toList();
     }

@@ -14,6 +14,8 @@ public interface AdoptionFormMapper {
     @Mapping(target = "lastName", source = "user.lastName")
     @Mapping(target = "email", source = "user.email")
     @Mapping(target = "animalId", source = "post.animal.id")
+    @Mapping(target = "animalName", source = "post.animal.name")
+    @Mapping(target = "species", source = "post.animal.species")
     AdoptionFormResponse toAdoptionFormResponse(AdoptionForm adoptionForm);
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", source = "user")

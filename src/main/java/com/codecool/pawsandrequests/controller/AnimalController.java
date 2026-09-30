@@ -3,6 +3,7 @@ package com.codecool.pawsandrequests.controller;
 import com.codecool.pawsandrequests.dto.AnimalRequest;
 import com.codecool.pawsandrequests.dto.AnimalResponse;
 import com.codecool.pawsandrequests.model.CustomUserDetails;
+import com.codecool.pawsandrequests.model.Role;
 import com.codecool.pawsandrequests.service.AnimalService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,9 +32,13 @@ public final class AnimalController {
     public List<AnimalResponse> getMyAnimals(
             @AuthenticationPrincipal final CustomUserDetails userDetails
     ) {
-
+        if (userDetails.getRole() == Role.ADMIN) {
+            return animalService.getAllAnimals();
+        }
         return animalService.getMyAnimals(userDetails.getOrgNr());
     }
+
+
 
     @GetMapping("/{id}")
     public AnimalResponse getAnimal(@PathVariable final UUID id) {

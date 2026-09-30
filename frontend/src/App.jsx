@@ -75,7 +75,7 @@ function App() {
               )}
           </nav>
         </div>
-      <Outlet context={{ isLoggedIn }}/>
+      <Outlet context={{ isLoggedIn, user }}/>
     </>
   )
 }
