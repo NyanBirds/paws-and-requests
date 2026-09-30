@@ -285,18 +285,17 @@ class AdoptionFormServiceTest {
         }
 
         @Test
-        @DisplayName("a regular user is refused")
-        void plainUserRefused() {
-            when(userRepository.findByEmail(EMAIL)).thenReturn(
-                    Optional.of(user(
-                            Role.USER, null))
-            );
+        @DisplayName("a plain user sees only their own forms")
+        void plainUserSeesOwnForms() {
+            User plain = user(Role.USER, null);
+            AdoptionForm mine = form("mine");
 
-            assertThatThrownBy(() -> adoptionFormService.getAllForms(EMAIL))
-                    .isInstanceOf(ResponseStatusException.class)
-                    .satisfies(e -> assertThat(
-                            ((ResponseStatusException) e).getStatusCode()
-                    ).isEqualTo(HttpStatus.FORBIDDEN));
+            when(userRepository.findByEmail(EMAIL)).thenReturn(Optional.of(plain));
+            when(adoptionFormRepository.findByUser(plain)).thenReturn(List.of(mine));
+
+            assertThat(adoptionFormService.getAllForms(EMAIL)).hasSize(1);
+            verify(adoptionFormRepository).findByUser(plain);
+            verify(adoptionFormRepository, never()).findAll();
         }
     }
 }
