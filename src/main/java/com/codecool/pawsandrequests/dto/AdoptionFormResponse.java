@@ -1,5 +1,7 @@
 package com.codecool.pawsandrequests.dto;
 
+import com.codecool.pawsandrequests.model.Species;
+
 import java.util.UUID;
 
 public record AdoptionFormResponse(
@@ -7,6 +9,8 @@ public record AdoptionFormResponse(
         String firstName,
         String lastName,
         String email,
-        UUID animalId
+        UUID animalId,
+        String animalName,
+        Species species
 ) {
 }

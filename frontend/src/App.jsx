@@ -11,7 +11,9 @@ const AUTH_EVENT = "authorization-request";
 function App() {
 
     const navigate = useNavigate();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(
+        () => Boolean(localStorage.getItem(AUTH_TOKEN))
+    );
     const user = CheckUser(isLoggedIn);
     const role = user?.role;
 
@@ -75,7 +77,7 @@ function App() {
               )}
           </nav>
         </div>
-      <Outlet context={{ isLoggedIn }}/>
+      <Outlet context={{ isLoggedIn, user }}/>
     </>
   )
 }

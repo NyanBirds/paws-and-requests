@@ -2,16 +2,17 @@ import {useEffect, useState} from "react";
 import {fetchMe} from "../services/authService.js";
 
 export default function CheckUser(isLoggedIn) {
-    const [user, setRole] = useState(null);
+    const [user, setUser] = useState(isLoggedIn ? undefined : null);
 
     useEffect(() => {
         if (!isLoggedIn) {
-            setRole(null);
+            setUser(null);
             return;
         }
+        setUser(undefined);
         fetchMe()
-            .then(users => setRole(users))
-            .catch(() => setRole(null));
+            .then(users => setUser(users))
+            .catch(() => setUser(null));
     }, [isLoggedIn])
 
     return user;

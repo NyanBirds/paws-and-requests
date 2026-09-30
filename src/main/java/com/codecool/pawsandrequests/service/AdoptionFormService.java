@@ -5,6 +5,7 @@ import com.codecool.pawsandrequests.dto.AdoptionFormResponse;
 import com.codecool.pawsandrequests.mapper.AdoptionFormMapper;
 import com.codecool.pawsandrequests.model.AdoptionForm;
 import com.codecool.pawsandrequests.model.Post;
+import com.codecool.pawsandrequests.model.Role;
 import com.codecool.pawsandrequests.model.User;
 import com.codecool.pawsandrequests.repository.AdoptionFormRepository;
 import com.codecool.pawsandrequests.repository.PostRepository;
@@ -49,10 +50,10 @@ public class AdoptionFormService {
                         NOT_FOUND, "Post not found")
                 );
 
-        if (user.getShelter() == null
+        if (user.getRole() != Role.ADMIN && (user.getShelter() == null
                 || !user.getShelter().getOrgNr().equals(
                 post.getAnimal().getShelter().getOrgNr()
-        )) {
+        ))) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     "You can only access adoption forms from your own shelter");
         }

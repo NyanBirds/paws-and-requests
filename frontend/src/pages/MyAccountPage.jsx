@@ -43,7 +43,7 @@ export function MyAccountPage() {
                     </div>
                 </div>
             </Box>
-            {user.role === "SHELTERUSER" ? (
+            {user.role === "SHELTERUSER" || user.role === "ADMIN" ? (
             <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <Box
                     width="25%"

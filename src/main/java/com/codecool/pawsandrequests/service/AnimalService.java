@@ -8,12 +8,10 @@ import com.codecool.pawsandrequests.model.Animal;
 import com.codecool.pawsandrequests.model.Shelter;
 import com.codecool.pawsandrequests.repository.AnimalRepository;
 import com.codecool.pawsandrequests.repository.ShelterRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,6 +40,12 @@ public class AnimalService {
                                         HttpStatus.NOT_FOUND,
                                         "Shelter not found")
                                 )))
+                .map(animalMapper::toAnimalResponse)
+                .toList();
+    }
+
+    public final List<AnimalResponse> getAllAnimals() {
+        return animalRepository.findAll().stream()
                 .map(animalMapper::toAnimalResponse)
                 .toList();
     }
