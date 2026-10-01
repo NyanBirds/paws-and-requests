@@ -7,7 +7,8 @@ their animals, posts and incoming requests.
 Live URL: The backend is published to Azure App Service
 (`backend-nyanbirds`) and the frontend is built and served separately.
 
-- Backend: [backend-nyanbirds](backend-nyanbirds-geguesg4chhxcebr.swedencentral-01.azurewebsites.net)
+- Backend: [backend-nyanbirds](https://backend-nyanbirds-geguesg4chhxcebr.swedencentral-01.azurewebsites.net)
+- Frontend: [frontend-nyanbirds](https://jolly-mud-084d20903.3.azurestaticapps.net/)
 
 ## Team
 
@@ -19,17 +20,13 @@ Live URL: The backend is published to Azure App Service
 
 ## Domain mapping
 
-| Domain term | What it represents |
-| --- | --- |
-| `User` | A registered person. Either a regular adopter (`USER`), a shelter account (`SHELTERUSER`), or an `ADMIN` |
-| `Animal` | An animal in a shelter's care, with name, age, gender and species |
-| `Post` | A shelter's adoption listing for one animal, with title, description and photos |
-| `Shelter` | A shelter organisation, identified by its organisation number (`orgNr`), owning users and animals |
-| `AdoptionForm` | An adoption request sent by a user for a specific post |
-|`Picture`| A picture linked to either a post, a shelter or a user profile picture |
-
-The `Role` / `Gender` / `Species` enums were added on top to support
-the mapping above.
+| Placeholder | Domain term | What it represents |
+| --- | --- | --- |
+| `[USER]` | `User` | A registered person. Either a regular adopter (`USER`), a shelter account (`SHELTERUSER`), or an `ADMIN` |
+| `[PRIMARY]` | `Post` | A shelter's adoption listing for one `Animal`, with title, description and photos |
+| `[CHILD]` |`Picture`| A picture linked to either a post, a shelter or a user profile picture |
+| `[TAG]` | `Species` and `Gender` on `Animal` | Fixed enums used to filter posts |
+| `[INTERACTION]` | `AdoptionForm` | An adoption request sent by a user for a specific post |
 
 ## Tech stack
 
@@ -54,6 +51,12 @@ docker compose up --build
 The backend reads its configuration from the environment, so an `.env` file with the
 JWT secret and the PostgreSQL connection details must be present before starting. `compose.yaml` injects them
 into the container.
+
+The necessary environment variables read from the `.env` file:
+- `JWT_SECRET`
+- `DB_URL`
+- `DB_USERNAME`
+- `DB_PASSWORD`
 
 Run the halves without Docker:
 
