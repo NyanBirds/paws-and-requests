@@ -1,7 +1,7 @@
 import { useState } from "react"
 import InputField from "../components/InputField"
 import { register } from "../services/authService.js"
-import { useNavigate } from "react-router"
+import { useLocation, useNavigate } from "react-router"
 import '../components/Form.css';
 import ToggleButton from "../components/ToggleButton.jsx";
 
@@ -9,7 +9,10 @@ export default function RegistrationPage() {
     const [formData, setFormData] = useState({})
     const [error, setError] = useState("")
     const navigate = useNavigate();
-    const [shelterRegistration, setShelterRegistration] = useState(false);
+    const location = useLocation();
+    const [shelterRegistration, setShelterRegistration] = useState(
+        Boolean(location.state?.shelter)
+    )
 
     const inputFields = [
         {key: 'firstname', type: 'text', label: 'First name:', required: true},

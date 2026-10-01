@@ -1,8 +1,9 @@
 import {useState} from "react"
 import InputField from "../components/InputField"
 import {login} from "../services/authService.js"
-import {useLocation, useNavigate} from "react-router"
+import {Link, useLocation, useNavigate} from "react-router"
 import '../components/Form.css';
+import styles from "./HomePage.module.css";
 
 export default function LoginPage() {
     const [formData, setFormData] = useState({})
@@ -62,7 +63,9 @@ export default function LoginPage() {
                         type="submit" disabled={status === "submitting"}>
                         {status === "submitting" ? "Logging in..." : "Login"}
                     </button>
-                    <p onClick={ () => navigate('/registration') }>No account? Register here</p>
+                    <Link to="/registration" className={styles.arrowLink}>
+                        No account? Register here
+                    </Link>
                 </div>
             </form>
             {status === "error" && <p>{message}</p>}
