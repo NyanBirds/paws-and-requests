@@ -5,11 +5,14 @@ import InputField from "../components/InputField.jsx";
 import DropDown from "../components/DropDown.jsx";
 import {AnimalCard} from "../components/AnimalCard.jsx";
 import "../components/Button.css";
+import {useOutletContext} from "react-router";
+
 
 export function MyAnimalsPage() {
     const [animals, setAnimals] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { user } = useOutletContext();
 
     useEffect(() => {
         getAnimals()
@@ -50,13 +53,15 @@ export function MyAnimalsPage() {
     return (
         <div>
             <h1>All Shelter Animals</h1>
-            <button
-                className="btn btn-primary"
-                style={{ marginBottom: "24px" }}
-                onClick={ () => setPopupIsOpen(true) }
-            >
-                Add New Animal
-            </button>
+            {user?.role === "SHELTERUSER" && (
+                    <button
+                        className="btn btn-primary"
+                        style={{ marginBottom: "24px" }}
+                        onClick={ () => setPopupIsOpen(true) }
+                    >
+                        Add New Animal
+                    </button>
+            )}
             {animals.length ? (
                 <div style={{
                     display: "grid",
