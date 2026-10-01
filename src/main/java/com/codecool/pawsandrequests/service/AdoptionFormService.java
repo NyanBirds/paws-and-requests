@@ -2,6 +2,7 @@ package com.codecool.pawsandrequests.service;
 
 import com.codecool.pawsandrequests.dto.AdoptionFormRequest;
 import com.codecool.pawsandrequests.dto.AdoptionFormResponse;
+import com.codecool.pawsandrequests.exception.ResourceNotFoundException;
 import com.codecool.pawsandrequests.mapper.AdoptionFormMapper;
 import com.codecool.pawsandrequests.model.AdoptionForm;
 import com.codecool.pawsandrequests.model.Post;
@@ -112,5 +113,50 @@ public class AdoptionFormService {
         return forms.stream()
                 .map(adoptionFormMapper::toAdoptionFormResponse)
                 .toList();
+    }
+
+    public final void deleteForm(
+            final String email,
+            final UUID adoptionFormId
+    ) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "User not found"));
+
+        AdoptionForm adoptionForm = adoptionFormRepository
+                .findById(adoptionFormId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(adoptionFormId,
+                                "Adoption form")
+                );
+
+        switch (user.getRole()) {
+            case ADMIN -> {
+            }
+            case SHELTERUSER -> {
+                String orgNr = user.getShelter().getOrgNr();
+                if (!orgNr.equals(
+                        adoptionForm
+                                .getPost().getUser().getShelter().getOrgNr())
+                ) {
+                    throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                            "You can only delete forms from your own shelter"
+                    );
+                }
+            }
+            case USER -> {
+                if (!user.getId().equals(adoptionForm.getUser().getId())) {
+                    throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                            "You can only delete your own forms"
+                    );
+                }
+            }
+            default -> throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "You can only delete your own forms"
+            );
+        }
+
+        adoptionFormRepository.delete(adoptionForm);
     }
 }

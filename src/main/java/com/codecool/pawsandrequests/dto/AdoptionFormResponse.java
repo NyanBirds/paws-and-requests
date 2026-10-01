@@ -5,6 +5,7 @@ import com.codecool.pawsandrequests.model.Species;
 import java.util.UUID;
 
 public record AdoptionFormResponse(
+        UUID id,
         String content,
         String firstName,
         String lastName,
