@@ -2,7 +2,10 @@ import { useState } from "react"
 import InputField from "../components/InputField"
 import { register } from "../services/authService.js"
 import { useLocation, useNavigate } from "react-router"
-import {Box} from "../components/Box.jsx";
+import { useNavigate } from "react-router"
+import '../components/Button.css';
+import '../components/Form.css';
+import ToggleButton from "../components/ToggleButton.jsx";
 
 export default function RegistrationPage() {
     const [formData, setFormData] = useState({})
@@ -44,6 +47,7 @@ export default function RegistrationPage() {
     const toInputField =
         (inputField) => (
                 <InputField
+                    className="form-group"
                     key = {inputField.key}
                     name = {inputField.key}
                     type = {inputField.type}
@@ -53,19 +57,19 @@ export default function RegistrationPage() {
             )
 
     return (
-    <div>
-        <Box width="30%">
-            <h3>Registration</h3>
-            <button
-                onClick={() => setShelterRegistration(!shelterRegistration)}
-            >{shelterRegistration ? (<span>User registration</span>) : (<span>Shelter registration</span>)}</button>
-            <form onSubmit={onSubmit}>
+    <div className="form-container">
+            <form className="custom-form" onSubmit={onSubmit}>
+                <h2>Registration</h2>
+                <ToggleButton
+                    label="Shelter registration"
+                    isOn={shelterRegistration}
+                    onToggle={() => setShelterRegistration(!shelterRegistration)}/>
                 {inputFields.map(toInputField)}
                 {shelterRegistration && shelterFields.map(toInputField)}
-                <button type="submit">Register</button>
+                <button type="submit" className="submit-btn">Register</button>
                 <p>{error.message}</p>
             </form>
-        </Box>
+
     </div>
   )
 }

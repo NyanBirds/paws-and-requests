@@ -1,0 +1,91 @@
+/* Box-sizing reset locally for the form container */
+.form-container,
+.form-container * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Flexbox wrapper to center the form layout */
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*min-height: 100vh;*/
+    padding: 20px;
+}
+
+/* Form Container Card styling */
+.custom-form {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+}
+
+.custom-form h2 {
+    margin-bottom: 24px;
+    color: #333333;
+    text-align: center;
+}
+
+/* Individual Form field groups styling */
+.form-group {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555555;
+    font-size: 0.9rem;
+}
+
+/* Inputs and Textarea focus & hover mechanics */
+.form-group input,
+.form-group textarea {
+    padding: 12px 16px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #333333;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+.form-group textarea {
+    resize: vertical; /* Allows dynamic height change safely */
+}
+
+/* Submit Button Interactions */
+.submit-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #516A4D;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.submit-btn:hover {
+    background-color: #4b5c49;
+}
+
+.submit-btn:active {
+    background-color: #4b5c49;
+}

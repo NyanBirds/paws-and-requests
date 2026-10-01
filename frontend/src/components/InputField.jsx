@@ -1,13 +1,13 @@
-export default function InputField({name, type = "text", label, required = true, onChange, defaultValue}) {
-    return <div>
+export default function InputField({className, name, type = "text", label, required = true, onChange, defaultValue}) {
+    return <div className={className}>
         <label>{label}</label>
         <input
             name={name}
             type={type}
             required={required}
             onChange={(event) => onChange(
-                name, 
-                type == "file" ? 
+                name,
+                type == "file" ?
                 Array.from(event.target.files) : event.target.value
             )}
             defaultValue={defaultValue}

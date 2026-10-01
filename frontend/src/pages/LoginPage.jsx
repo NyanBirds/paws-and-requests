@@ -2,7 +2,8 @@ import {useState} from "react"
 import InputField from "../components/InputField"
 import {login} from "../services/authService.js"
 import {useLocation, useNavigate} from "react-router"
-import {Box} from "../components/Box.jsx";
+import '../components/Button.css';
+import '../components/Form.css';
 
 export default function LoginPage() {
     const [formData, setFormData] = useState({})
@@ -38,12 +39,17 @@ export default function LoginPage() {
     }
 
     return (
-    <div>
-        <Box width="30%">
-            <h3>Login</h3>
-            <form onSubmit={onSubmit}>
+        <div
+            className="form-container"
+        >
+            <form
+                className="custom-form"
+                onSubmit={onSubmit}
+            >
+                <h2>Login</h2>
                 {inputFields.map((inputField) => (
                     <InputField
+                        className="form-group"
                         key = {inputField.key}
                         name = {inputField.key}
                         type = {inputField.type}
@@ -51,12 +57,16 @@ export default function LoginPage() {
                         required = {inputField.required}
                         onChange = {onChange}/>
                 ))}
-                <button type="submit" disabled={status === "submitting"}>
-                    {status === "submitting" ? "Logging in..." : "Login"}
-                </button>
+                <div className="row">
+                    <button
+                        className="submit-btn"
+                        type="submit" disabled={status === "submitting"}>
+                        {status === "submitting" ? "Logging in..." : "Login"}
+                    </button>
+                    <p onClick={ () => navigate('/registration') }>No account? Register here</p>
+                </div>
             </form>
             {status === "error" && <p>{message}</p>}
-        </Box>
-    </div>
+        </div>
   )
 }

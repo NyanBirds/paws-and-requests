@@ -1,8 +1,8 @@
-import {Outlet, useNavigate} from "react-router";
+import './App.css'
+import {Link, NavLink, Outlet, useNavigate} from "react-router";
 import {useEffect, useState} from "react";
+import logo from "./assets/logo_transparent.png"
 import CheckUser from "./components/CheckUser.jsx";
-import Navbar from "./components/Navbar.jsx";
-import Footer from "./components/Footer.jsx";
 import {fetchMe} from "./services/authService.js";
 
 const AUTH_TOKEN = "authToken";
@@ -15,6 +15,7 @@ function App() {
         () => Boolean(localStorage.getItem(AUTH_TOKEN))
     );
     const user = CheckUser(isLoggedIn);
+    const role = user?.role;
 
     useEffect(() => {
         if (Boolean(localStorage.getItem(AUTH_TOKEN))) {
