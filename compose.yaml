@@ -32,6 +32,9 @@ services:
       DB_USERNAME: nyanbirds
       DB_PASSWORD: nyanbirds
       APP_SEEDPICTURES_ENABLED: "true"
+      # Flyway is a local tool only. Azure leaves FLYWAY_ENABLED unset, so the
+      # deployed app never migrates its existing database.
+      FLYWAY_ENABLED: "true"
       # Adds db/seed, the demo shelters, accounts, animals and posts. Azure does
       # not set this, so demo rows never reach the deployed database.
       FLYWAY_LOCATIONS: "classpath:db/migration,classpath:db/seed"
