@@ -1,0 +1,39 @@
+.carouselWindow {
+    overflow: hidden;
+    width: 100%;
+    padding: 20px 0;
+    /* fade out at the edges */
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.imageStrip {
+    display: flex;
+    width: max-content;
+    animation: scroll-right 80s linear infinite;
+}
+
+.carouselWindow:hover .imageStrip {
+    animation-play-state: paused;
+}
+
+.shelterLink {
+    flex-shrink: 0;
+    margin-right: 40px;
+}
+
+.shelterLink img {
+    height: 100px;
+    width: auto;
+    display: block;
+}
+
+@keyframes scroll-right {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .imageStrip {
+        animation: none;
+    }
+}
