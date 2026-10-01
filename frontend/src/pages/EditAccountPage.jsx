@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router";
-import {Box} from "../components/Box.jsx";
 import InputField from "../components/InputField.jsx";
+import "../components/Form.css";
 import {fetchMe} from "../services/authService.js";
 import {editUser} from "../services/userService.js";
 
@@ -21,8 +21,8 @@ export function EditAccountPage() {
     const [formData, setFormData] = useState({})
 
     const inputFields = [
-        { key: 'password', type: 'password', label: 'Password', required: false },
-        { key: 'phoneNumber', type: 'text', label: 'Phone Nr', required: false }
+        { key: 'password', type: 'password', label: 'New password', required: false },
+        { key: 'phoneNumber', type: 'text', label: 'Phone number', required: false }
     ]
 
     function onChange(key, value) {
@@ -43,24 +43,29 @@ export function EditAccountPage() {
     }
 
     return (
-        <div>
-            <Box width="40%">
-                <h3>Edit User Profile</h3>
-                <form onSubmit={onSubmit}>
-                    {inputFields.map((field) => (
-                        <InputField
-                            name={field.key}
-                            type={field.type}
-                            label={field.label}
-                            required={field.required}
-                            onChange={onChange} />
-                    ))}
-                    <button type="submit" disabled={status === "submitting"}>
-                        {status === "submitting" ? "Submitting..." : "Submit"}
-                    </button>
-                </form>
-                {status === "error" && <p>{message}</p>}
-            </Box>
+        <div className="form-container">
+            <form className="custom-form" onSubmit={onSubmit}>
+                <h2>Edit profile</h2>
+                <p className="form-intro">
+                    Only fill in what you want to change.
+                </p>
+                {inputFields.map((field) => (
+                    <InputField
+                        key={field.key}
+                        className="form-group"
+                        name={field.key}
+                        type={field.type}
+                        label={field.label}
+                        required={field.required}
+                        onChange={onChange} />
+                ))}
+                <button type="submit" className="submit-btn" disabled={status === "submitting"}>
+                    {status === "submitting" ? "Saving..." : "Save changes"}
+                </button>
+                {status === "error" && (
+                    <p className="form-error" role="alert">{message}</p>
+                )}
+            </form>
         </div>
     );
 }

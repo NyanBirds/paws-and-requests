@@ -28,22 +28,24 @@ export function MyAccountPage() {
     return (
         <div className={styles.page}>
             <h1>Welcome, {user.firstName}!</h1>
-            <Box>
-                <div className={styles.accountInfo}>
-                    <FaUser size="100"/>
-                    <div className={styles.accountDetails}>
-                        <h3>Account Information</h3>
-                        <p>Name: {user.firstName} {user.lastName}</p>
-                        <p>Email: {user.email}</p>
-                        <p>Phone Nr: {user.phoneNumber}</p>
-                        <CiEdit
-                            className={styles.editIcon}
-                            size="30"
-                            onClick={() => navigate('/me/edit')}
-                        />
+            <div className={styles.accountCard}>
+                <Box>
+                    <div className={styles.accountInfo}>
+                        <FaUser size="100"/>
+                        <div className={styles.accountDetails}>
+                            <h3>Account Information</h3>
+                            <p>Name: {user.firstName} {user.lastName}</p>
+                            <p>Email: {user.email}</p>
+                            <p>Phone Nr: {user.phoneNumber}</p>
+                            <CiEdit
+                                className={styles.editIcon}
+                                size="30"
+                                onClick={() => navigate('/me/edit')}
+                            />
+                        </div>
                     </div>
-                </div>
-            </Box>
+                </Box>
+            </div>
             {user.role === "SHELTERUSER" || user.role === "ADMIN" ? (
             <div className={styles.cardRow}>
                 <Box

@@ -76,12 +76,13 @@ export default function AnimalProfilePage() {
             <p style={{padding: '0 24px 48px'}}>Address: {post.address}</p>
             {role === "USER" && (
                 <button
+                    style={{margin: '10px',}}
                     className={`btn btn-primary`}
                     onClick={() => navigate(`/posts/${postId}/adoption`)}>Adopt</button>
             )}
             {canAccess && (
                 <button
-                    style={{margin: '10px'}}
+                    style={{margin: '10px',}}
                     className={`btn btn-primary`}
                     onClick={() => navigate(`/posts/${postId}/adoptionForm`)}>View Adoption Forms</button>
             )}

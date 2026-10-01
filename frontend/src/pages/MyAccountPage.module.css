@@ -2,6 +2,12 @@
     padding: 0 24px 48px;
 }
 
+/* Keeps the account box from stretching across the whole page */
+.accountCard {
+    max-width: 560px;
+    margin: 0 auto;
+}
+
 .accountInfo {
     display: flex;
     align-items: center;
