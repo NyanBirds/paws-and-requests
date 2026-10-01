@@ -1,0 +1,76 @@
+.page {
+    padding: 0 24px 48px;
+}
+
+.pageHeading {
+    margin: 32px 0;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+.filterPanel {
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.filterTitle {
+    margin-bottom: 12px;
+    font-weight: 700;
+    color: var(--text-h);
+}
+
+.filterGroups {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.filterGroup {
+    margin: 0;
+    padding: 0;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filterGroup legend {
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--text-h);
+}
+
+.emptyMessage {
+    margin-top: 24px;
+}
+
+@media (max-width: 760px) {
+    .page {
+        padding: 0 16px 32px;
+    }
+
+    .pageHeading {
+        font-size: 1.8rem;
+        margin: 24px 0 16px;
+    }
+
+    /* Filters on top, posts underneath */
+    .layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    /* Gender and Species next to each other to save height */
+    .filterGroups {
+        flex-direction: row;
+        gap: 40px;
+    }
+}
