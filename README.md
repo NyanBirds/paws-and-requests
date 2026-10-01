@@ -34,12 +34,13 @@ Live URL: The backend is published to Azure App Service
 | --- | --- |
 | Backend | Java 21, Spring Boot, Spring Web, Spring Data JPA, Spring Security, MapStruct, Lombok, Maven |
 | Frontend | React 19, Vite, React Router |
-| Database | PostgreSQL (H2 during early development) |
+| Database | PostgreSQL, schema and seed data managed by Flyway |
 | Build/CI | Maven, Docker, Docker Compose, GitHub Actions |
 
 ## Running locally
 
-One command starts the whole stack:
+One command starts the whole stack, including a PostgreSQL database that is
+created and filled from the Flyway migrations:
 
 ```bash
 docker compose up --build
@@ -47,10 +48,37 @@ docker compose up --build
 
 - Backend: http://localhost:8080
 - Frontend (Vite dev server): http://localhost:5173
+- PostgreSQL: `localhost:5432`, database/user/password all `nyanbirds`
 
-The backend reads its configuration from the environment, so an `.env` file with the
-JWT secret and the PostgreSQL connection details must be present before starting. `compose.yaml` injects them
-into the container.
+The backend waits for the database to report healthy before it starts, so the
+migrations never race the container.
+
+The JWT secret has a development-only default in `compose.yaml`. Export
+`JWT_SECRET` (or put it in `.env`) to use your own — never rely on the default
+for anything but local work.
+
+### Seeded accounts
+
+Every seeded account has the password **`password`**.
+
+| Email | Role | Shelter |
+| --- | --- | --- |
+| `vegard@hotmail.com` | `ADMIN` | – |
+| `lisbeth@hotmail.com` | `SHELTERUSER` | Dyrebeskyttelsen Norge |
+| `sara@hotmail.com` | `USER` | – |
+
+Lisbeth owns both adoption posts and all five animals, so she is the account to
+log in with when working on shelter features.
+
+### Starting over
+
+The database lives in a named volume, so it survives `docker compose down`.
+To throw it away and rebuild it from the migrations:
+
+```bash
+docker compose down -v
+docker compose up --build
+```
 
 The necessary environment variables read from the `.env` file:
 - `JWT_SECRET`
@@ -64,6 +92,10 @@ Run the halves without Docker:
 mvn spring-boot:run                         # backend on :8080
 cd frontend && npm install && npm run dev   # frontend on :5173
 ```
+
+`mvn spring-boot:run` still needs a reachable database and a `JWT_SECRET`. It
+defaults to `jdbc:postgresql://localhost:5432/nyanbirds`, which is the compose
+database, so only `JWT_SECRET` has to be exported.
 
 ## Tests
 
@@ -85,7 +117,7 @@ frontend (React/Vite, :5173)
 backend (Spring Boot REST API, :8080)
         │  Spring Data JPA / Hibernate, ddl-auto=validate
         ▼
-PostgreSQL
+PostgreSQL (schema and seed data from Flyway migrations)
 ```
 
 **Backend** — `com.codecool.pawsandrequests`, layered as `controller` → `service` → `repository`, with
@@ -100,7 +132,21 @@ requests) are enforced in the service layer and mirrored in the frontend by comp
 handling; `src/services/*` holds one module per resource; `src/pages/*` holds the routed screens
 (home, posts, animal profile, adoption form, login/register, account, my posts/animals/requests, shelters).
 
-**Database** — PostgreSQL, with the URL, credentials and schema owned by the environment. 
+**Database** — PostgreSQL. Flyway owns the schema: `db/migration/V1` creates the
+tables and `db/migration/V2` seeds them, while Hibernate stays on
+`ddl-auto=validate` and only checks that the two agree. A fresh database is
+therefore reproducible from the repository alone — no setup steps, no data
+typed in by hand.
+
+Image bytes are the one thing that does not live in a migration, so
+`SeedPictures` writes `picture.data` from `src/main/resources/images` on
+startup. It is off by default, because the deployed database holds real uploads
+that must not be overwritten; `compose.yaml` switches it on for local use.
+
+The Azure database predates Flyway. `spring.flyway.baseline-on-migrate` with
+`baseline-version=2` means an already-populated schema is recorded as
+"already at version 2" and neither migration runs again, so deploying never
+re-seeds or duplicates rows. Future `V3`+ migrations do reach Azure as normal.
 
 ### API overview
 
@@ -126,7 +172,7 @@ as its own container from `frontend/Dockerfile` (`npm run dev --host` with the s
 ├── config/checkstyle/       # Checkstyle rules used by the build
 ├── scripts/                 # pre-commit hook
 ├── src/main/java/com/codecool/pawsandrequests/
-│   ├── config/              # security, password encoding, JWT properties
+│   ├── config/              # security, password encoding, JWT properties, seed images
 │   ├── controller/          # REST endpoints + global exception handler
 │   ├── dto/                 # request/response records
 │   ├── mapper/              # MapStruct mappers
@@ -134,9 +180,13 @@ as its own container from `frontend/Dockerfile` (`npm run dev --host` with the s
 │   ├── repository/          # Spring Data repositories
 │   ├── security/            # JWT filter
 │   └── service/             # business logic
+├── src/main/resources/
+│   ├── db/migration/        # Flyway: V1 schema, V2 seed data
+│   ├── images/              # seed images for shelters, animals and posts
+│   └── application.properties
 ├── src/test/java/           # unit tests
 ├── frontend/src/            # React SPA
-├── compose.yaml             # backend + frontend
+├── compose.yaml             # database + backend + frontend
 └── Dockerfile
 ```
 
