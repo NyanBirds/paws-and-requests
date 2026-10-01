@@ -89,3 +89,65 @@
 .submit-btn:active {
     background-color: #4b5c49;
 }
+
+/* Labels and fields aligned to the left (the app centers text by default) */
+.custom-form {
+    text-align: left;
+}
+
+/* Optional short text under the form heading */
+.form-intro {
+    margin: -12px 0 24px;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+/* Fields fill the form width, also on narrow screens */
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    min-width: 0;
+}
+
+/* Dropdowns get the same look as inputs */
+.form-group select {
+    padding: 12px 16px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #333333;
+    background: #ffffff;
+    cursor: pointer;
+    outline: none;
+}
+
+.form-group select:focus {
+    border-color: #516a4d;
+    box-shadow: 0 0 0 3px rgba(81, 106, 77, 0.15);
+}
+
+/* File upload looks like a drop area */
+.form-group input[type="file"] {
+    padding: 10px;
+    border-style: dashed;
+    background: #fafafa;
+    cursor: pointer;
+}
+
+.form-error {
+    margin-top: 12px;
+    color: #b42318;
+}
+
+@media (max-width: 600px) {
+    .form-container {
+        padding: 12px;
+    }
+
+    .custom-form {
+        padding: 24px 18px;
+        box-shadow: none;
+        border: 1px solid var(--border);
+    }
+}

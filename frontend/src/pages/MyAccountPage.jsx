@@ -8,6 +8,7 @@ import {fetchMe} from "../services/authService.js";
 import {useNavigate} from "react-router";
 import {FaUser} from "react-icons/fa";
 import {CiEdit} from "react-icons/ci";
+import styles from "./MyAccountPage.module.css";
 
 export function MyAccountPage() {
     const navigate = useNavigate();
@@ -25,28 +26,27 @@ export function MyAccountPage() {
     if (!user) return <p>Loading...</p>;
 
     return (
-        <>
+        <div className={styles.page}>
             <h1>Welcome, {user.firstName}!</h1>
             <Box>
-                <div
-                    style={{display: "flex", alignItems: "center", gap: "40px"}}>
-                    <FaUser
-                        size="100"
-                        padding="20px"
-                    />
-                    <div style={{ textAlign: 'left' }}>
+                <div className={styles.accountInfo}>
+                    <FaUser size="100"/>
+                    <div className={styles.accountDetails}>
                         <h3>Account Information</h3>
                         <p>Name: {user.firstName} {user.lastName}</p>
                         <p>Email: {user.email}</p>
                         <p>Phone Nr: {user.phoneNumber}</p>
-                        <CiEdit size="30" onClick={() => navigate('/me/edit')}/>
+                        <CiEdit
+                            className={styles.editIcon}
+                            size="30"
+                            onClick={() => navigate('/me/edit')}
+                        />
                     </div>
                 </div>
             </Box>
             {user.role === "SHELTERUSER" || user.role === "ADMIN" ? (
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div className={styles.cardRow}>
                 <Box
-                    width="25%"
                     onClick={() => navigate("/me/animals")}
                 >
                     <div>
@@ -57,7 +57,6 @@ export function MyAccountPage() {
                     <p>View all registered animals in your shelter</p>
                 </Box>
                 <Box
-                    width="25%"
                     onClick={() => navigate("/me/posts")}
                 >
                     <MdOutlinePostAdd size="40"/>
@@ -65,7 +64,6 @@ export function MyAccountPage() {
                     <p>View all your posts across all animals in your shelter</p>
                 </Box>
                 <Box
-                    width="25%"
                     onClick={() => navigate("/me/adoptionForms")}
                 >
                     <HiOutlineClipboardDocumentList size="40"/>
@@ -74,15 +72,16 @@ export function MyAccountPage() {
                 </Box>
             </div>
             ) : (
-                <Box
-                    width="25%"
-                    onClick={() => navigate("/me/adoptionForms")}
-                >
-                    <HiOutlineClipboardDocumentList size="40"/>
-                    <h2>All My Sent Applications</h2>
-                    <p>View all adoption applications you have sent across all animals</p>
-                </Box>
+                <div className={styles.singleCard}>
+                    <Box
+                        onClick={() => navigate("/me/adoptionForms")}
+                    >
+                        <HiOutlineClipboardDocumentList size="40"/>
+                        <h2>All My Sent Applications</h2>
+                        <p>View all adoption applications you have sent across all animals</p>
+                    </Box>
+                </div>
             )}
-        </>
+        </div>
     );
 }

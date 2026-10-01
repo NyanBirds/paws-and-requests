@@ -1,7 +1,7 @@
 import styles from "./Textfield.module.css"
 
-export default function TextField({name, label, required = true, onChange, placeholder, defaultValue}) {
-    return <div>
+export default function TextField({className, name, label, required = true, onChange, placeholder, defaultValue}) {
+    return <div className={className}>
         <label>{label}</label>
         <textarea
             className={styles}
