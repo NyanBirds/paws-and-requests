@@ -1,8 +1,9 @@
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router";
 import {editPost, deletePicture, getPost} from "../services/postService.js";
-import {Box} from "../components/Box.jsx";
 import InputField from "../components/InputField.jsx";
+import "../components/Form.css";
+import "../components/Button.css";
 import TextField from "../components/TextField.jsx";
 import {BASE_URL} from "../api/client.js";
 
@@ -24,7 +25,7 @@ export function EditPost() {
         const { pictures = [], ...postFields } = formData;
         editPost(postId, postFields, pictures)
             .then(() => navigate(`/posts/${postId}`),
-            (error) => console.log(error.message));
+            (error) => setError(error.message));
     }
 
     function onChange(key, value) {
@@ -40,46 +41,62 @@ export function EditPost() {
                 ...post,
                 pictureIds: post.pictureIds.filter(id => id !== pictureId),
             }),
-                (error) => console.log(error.message))
+                (error) => setError(error.message))
     }
     return (
-        <Box>
-            <h1>Edit post</h1>
-            <h2>{post.animalName}</h2>
-            <form onSubmit={onSubmit}>
-                    <InputField
-                        name="title"
-                        label="Title"
-                        required={false}
-                        defaultValue={post.title}
-                        onChange={onChange} />
+        <div className="form-container">
+            <form className="custom-form" onSubmit={onSubmit}>
+                <h2>Edit post</h2>
+                <p className="form-intro">{post.animalName}</p>
 
-                    <TextField
-                        name="description"
-                        label="Description"
-                        required={false}
-                        defaultValue={post.description}
-                        onChange={onChange}
-                    />
+                <InputField
+                    className="form-group"
+                    name="title"
+                    label="Title"
+                    required={false}
+                    defaultValue={post.title}
+                    onChange={onChange} />
 
-                {post.pictureIds.map(pictureId => (
-                    <div key={pictureId}>
-                        <img src={`${BASE_URL}/pictures/${pictureId}`} width="150" alt={""} />
-                        <button type="button" onClick={() => onDeletePicture(pictureId)}>
-                            Delete
-                        </button>
+                <TextField
+                    className="form-group"
+                    name="description"
+                    label="Description"
+                    required={false}
+                    defaultValue={post.description}
+                    onChange={onChange}
+                />
+
+                {post.pictureIds.length > 0 && (
+                    <div className="form-group">
+                        <label>Current pictures</label>
+                        <div className="picture-grid">
+                            {post.pictureIds.map(pictureId => (
+                                <div key={pictureId} className="picture-item">
+                                    <img src={`${BASE_URL}/pictures/${pictureId}`} alt="" />
+                                    <button
+                                        type="button"
+                                        className="btn btn-danger"
+                                        onClick={() => onDeletePicture(pictureId)}
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                ))}
+                )}
 
-                    <InputField
-                        name="pictures"
-                        type="file"
-                        label="Add pictures"
-                        required={false}
-                        onChange={onChange}/>
+                <InputField
+                    className="form-group"
+                    name="pictures"
+                    type="file"
+                    label="Add pictures"
+                    required={false}
+                    onChange={onChange}/>
 
-                    <button>Save</button>
+                <button type="submit" className="submit-btn">Save changes</button>
+                {error && <p className="form-error" role="alert">{error}</p>}
             </form>
-        </Box>
+        </div>
     );
 }

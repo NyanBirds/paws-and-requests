@@ -80,7 +80,7 @@ export default function RegistrationPage() {
     return (
     <div className="form-container">
             <form className="custom-form" onSubmit={onSubmit}>
-                <h2>Registration</h2>
+                <h2>Sign up</h2>
                 <ToggleButton
                     label="Shelter registration"
                     isOn={shelterRegistration}

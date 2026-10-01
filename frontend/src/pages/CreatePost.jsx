@@ -2,8 +2,8 @@ import { useState, useEffect } from "react"
 import InputField from "../components/InputField";
 import TextField from "../components/TextField.jsx"
 import { useNavigate } from "react-router"
-import { Box } from "../components/Box.jsx";
 import DropDown from "../components/DropDown.jsx";
+import '../components/Form.css';
 import {getAnimals} from "../services/animalService.js";
 import {newPost} from "../services/postService.js";
 
@@ -46,42 +46,49 @@ export default function CreatePost() {
             });
     }
     return (
-        <div>
-            <Box width="40%">
-                <h3>Create a post </h3>
-                <form onSubmit={onSubmit}>
-                    <InputField
-                        name={inputFields[0].key}
-                        label={inputFields[0].label}
-                        onChange={onChange} />
+        <div className="form-container">
+            <form className="custom-form" onSubmit={onSubmit}>
+                <h2>Create a post</h2>
+                <p className="form-intro">
+                    Tell people about an animal that is looking for a new home.
+                </p>
 
-                    <DropDown
-                        name={inputFields[3].key}
-                        items={animals}
-                        label={inputFields[3].label}
-                        onChange={onChange}
-                        />
+                <InputField
+                    className="form-group"
+                    name={inputFields[0].key}
+                    label={inputFields[0].label}
+                    onChange={onChange} />
 
-                    <TextField
-                        name={inputFields[1].key}
-                        label={inputFields[1].label}
-                        onChange={onChange}
-                        placeholder="Describe the animal"
+                <DropDown
+                    className="form-group"
+                    name={inputFields[3].key}
+                    items={animals}
+                    label={inputFields[3].label}
+                    onChange={onChange}
                     />
 
-                    <InputField
-                        name={inputFields[2].key}
-                        type={inputFields[2].type}
-                        animals={animals}
-                        label={inputFields[2].label}
-                        onChange={onChange}/>
+                <TextField
+                    className="form-group"
+                    name={inputFields[1].key}
+                    label={inputFields[1].label}
+                    onChange={onChange}
+                    placeholder="Describe the animal"
+                />
 
-                    <button type="submit" disabled={status === "submitting"}>
-                        {status === "submitting" ? "Creating..." : "Create"}
-                    </button>
-                    {status === "error" && <p>{message}</p>}
-                </form>
-            </Box>
+                <InputField
+                    className="form-group"
+                    name={inputFields[2].key}
+                    type={inputFields[2].type}
+                    label={inputFields[2].label}
+                    onChange={onChange}/>
+
+                <button type="submit" className="submit-btn" disabled={status === "submitting"}>
+                    {status === "submitting" ? "Creating..." : "Create post"}
+                </button>
+                {status === "error" && (
+                    <p className="form-error" role="alert">{message}</p>
+                )}
+            </form>
         </div>
     );
 }

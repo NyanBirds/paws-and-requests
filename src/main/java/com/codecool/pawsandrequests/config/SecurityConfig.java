@@ -62,8 +62,8 @@ public class SecurityConfig {
                                 new HttpStatusEntryPoint(
                                         HttpStatus.UNAUTHORIZED)))
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(HttpMethod.POST, "/api/auth/login",
-                            "/api/auth/registration").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/auth/login",
+                            "/auth/registration").permitAll()
                     .requestMatchers(HttpMethod.GET, "/posts",
                             "/posts/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/shelters",
@@ -92,7 +92,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedOrigins(List.of(
+                "http://localhost:5173",
+                "https://jolly-mud-084d20903.3.azurestaticapps.net"));
         configuration.setAllowedMethods(List.of(
                 "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));

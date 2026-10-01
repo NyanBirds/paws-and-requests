@@ -1,0 +1,62 @@
+.page {
+    padding: 0 24px 48px;
+}
+
+/* Keeps the account box from stretching across the whole page */
+.accountCard {
+    max-width: 560px;
+    margin: 0 auto;
+}
+
+.accountInfo {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.accountDetails {
+    text-align: left;
+}
+
+.editIcon {
+    cursor: pointer;
+}
+
+.cardRow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.singleCard {
+    max-width: 360px;
+    margin: 0 auto;
+}
+
+.cardRow > div,
+.singleCard > div {
+    cursor: pointer;
+}
+
+@media (max-width: 760px) {
+    .page {
+        padding: 0 16px 32px;
+    }
+
+    .accountInfo {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .accountDetails {
+        text-align: center;
+    }
+    .cardRow {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .singleCard {
+        max-width: none;
+    }
+}
