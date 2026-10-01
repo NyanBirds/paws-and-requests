@@ -20,7 +20,7 @@ export default function ShelterListPage() {
     if (loading) return <p>Loading...</p>;
 
     return (
-        <div>
+        <div style={{padding: '0 24px 48px'}}>
             <h1>Shelters</h1>
             {shelters.length ? (
                 <CardGrid>
