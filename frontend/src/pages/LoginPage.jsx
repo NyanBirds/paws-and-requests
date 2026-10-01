@@ -34,7 +34,7 @@ export default function LoginPage() {
                 navigate(from, { replace: true })
             }, (error) => {
                 setStatus("error");
-                setMessage(error.mesage);
+                setMessage(error.message);
             })
     }
 
@@ -67,8 +67,8 @@ export default function LoginPage() {
                         No account? Register here
                     </Link>
                 </div>
+                {status === "error" && <p>{message}</p>}
             </form>
-            {status === "error" && <p>{message}</p>}
         </div>
   )
 }

@@ -17,7 +17,7 @@ import java.util.Optional;
 /**
  * Writes the seed images from {@code src/main/resources/images} into the
  * {@code picture} table, replacing the placeholder bytes that
- * {@code V2__seed_data.sql} inserts.
+ * {@code db/seed/R__demo_data.sql} inserts.
  *
  * <p>This exists because image data does not belong in a SQL migration file.
  * The migration owns the rows and their links, this owns the bytes.
