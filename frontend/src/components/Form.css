@@ -68,6 +68,13 @@
     resize: vertical; /* Allows dynamic height change safely */
 }
 
+/* Per-field validation message returned by the API */
+.field-error {
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: #b3261e;
+}
+
 /* Submit Button Interactions */
 .submit-btn {
     width: 100%;

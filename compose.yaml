@@ -1,14 +1,40 @@
 services:
+  db:
+    image: postgres:17-alpine
+    container_name: pawsandrequests-db
+    environment:
+      POSTGRES_DB: nyanbirds
+      POSTGRES_USER: nyanbirds
+      POSTGRES_PASSWORD: nyanbirds
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nyanbirds -d nyanbirds"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   backend:
     build: .
     container_name: pawsandrequests-backend
     ports:
       - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
     environment:
-      JWT_SECRET: ${JWT_SECRET}
-      DB_URL: ${DB_URL}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
+      # DEV ONLY. The real secret is set in the Azure App Service settings and
+      # must never be committed here.
+      JWT_SECRET: ${JWT_SECRET:-dev-only-jwt-secret-do-not-use-in-production}
+      DB_URL: jdbc:postgresql://db:5432/nyanbirds
+      DB_USERNAME: nyanbirds
+      DB_PASSWORD: nyanbirds
+      APP_SEEDPICTURES_ENABLED: "true"
+      # Adds db/seed, the demo shelters, accounts, animals and posts. Azure does
+      # not set this, so demo rows never reach the deployed database.
+      FLYWAY_LOCATIONS: "classpath:db/migration,classpath:db/seed"
 
   frontend:
     build: ./frontend
@@ -22,3 +48,7 @@ services:
       - /app/node_modules
     environment:
       - CHOKIDAR_USEPOLLING=true
+      - VITE_PROXY_TARGET=http://backend:8080
+
+volumes:
+  db-data:
