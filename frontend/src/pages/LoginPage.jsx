@@ -2,7 +2,6 @@ import {useState} from "react"
 import InputField from "../components/InputField"
 import {login} from "../services/authService.js"
 import {useLocation, useNavigate} from "react-router"
-import '../components/Button.css';
 import '../components/Form.css';
 
 export default function LoginPage() {
