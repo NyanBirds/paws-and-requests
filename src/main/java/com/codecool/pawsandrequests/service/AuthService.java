@@ -50,7 +50,7 @@ public class AuthService {
             if (!passwordEncoder.matches(
                     request.password(), user.getPassword())
             ) {
-                throw new BadCredentialsException("Invalid credentials");
+                throw new BadCredentialsException("Invalid email or password");
             }
 
             return TokenResponse.bearer(
@@ -58,7 +58,7 @@ public class AuthService {
                     jwtService.getExpirationMinutes() * SECONDS
             );
         } catch (UsernameNotFoundException e) {
-            throw new BadCredentialsException("Invalid credentials");
+            throw new BadCredentialsException("Invalid email or password");
         }
     }
 
