@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {getAllAdoptionForms} from "../services/adoptionformService.js";
-import {Box} from "../components/Box.jsx";
+import {AdoptionCard} from "../components/AdoptionCard.jsx";
 
 export function MyAdoptionFormsPage() {
     const [adoptionForms, setAdoptionForms] = useState([]);
@@ -23,12 +23,7 @@ export function MyAdoptionFormsPage() {
             <h1>All Adoption Forms</h1>
             {adoptionForms.length ? (
                 adoptionForms.map((adoption) => (
-                    <Box width="35%">
-                        <p><strong>Applicant:</strong> {adoption.firstName} {adoption.lastName}</p>
-                        <p><em>{adoption.email}</em></p>
-                        <p><strong>Application Text:</strong> {adoption.content}</p>
-                        <p><strong>Animal:</strong> {adoption.animalName} ({adoption.species})</p>
-                    </Box>
+                    <AdoptionCard id={adoption.id} adoption={adoption} />
                 ))
             ) : (
                 <p>There are currently no applications</p>
