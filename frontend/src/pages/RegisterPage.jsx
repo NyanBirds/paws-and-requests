@@ -2,8 +2,6 @@ import { useState } from "react"
 import InputField from "../components/InputField"
 import { register } from "../services/authService.js"
 import { useLocation, useNavigate } from "react-router"
-import { useNavigate } from "react-router"
-import '../components/Button.css';
 import '../components/Form.css';
 import ToggleButton from "../components/ToggleButton.jsx";
 

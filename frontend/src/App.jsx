@@ -1,9 +1,10 @@
 import './App.css'
-import {Link, NavLink, Outlet, useNavigate} from "react-router";
+import {Outlet, useNavigate} from "react-router";
 import {useEffect, useState} from "react";
-import logo from "./assets/logo_transparent.png"
 import CheckUser from "./components/CheckUser.jsx";
 import {fetchMe} from "./services/authService.js";
+import Navbar from "./components/Navbar.jsx";
+import Footer from "./components/Footer.jsx";
 
 const AUTH_TOKEN = "authToken";
 const AUTH_EVENT = "authorization-request";
@@ -15,7 +16,6 @@ function App() {
         () => Boolean(localStorage.getItem(AUTH_TOKEN))
     );
     const user = CheckUser(isLoggedIn);
-    const role = user?.role;
 
     useEffect(() => {
         if (Boolean(localStorage.getItem(AUTH_TOKEN))) {
