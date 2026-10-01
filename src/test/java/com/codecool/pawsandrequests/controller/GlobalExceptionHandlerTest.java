@@ -39,11 +39,11 @@ class GlobalExceptionHandlerTest {
     @DisplayName("maps bad credentials to 401 with the original message")
     void mapsBadCredentials() throws NoSuchMethodException {
         BadCredentialsException ex = new BadCredentialsException(
-                "Invalid credentials"
+                "Invalid email or password"
         );
 
         assertThat(handler.handleBadCredentials(ex))
-                .isEqualTo("Invalid credentials");
+                .isEqualTo("Invalid email or password");
         assertThat(statusOf("handleBadCredentials",
                 BadCredentialsException.class))
                 .isEqualTo(HttpStatus.UNAUTHORIZED);
@@ -76,7 +76,7 @@ class GlobalExceptionHandlerTest {
     @DisplayName("does not leak exception type names to the client")
     void hidesExceptionTypes() {
         assertThat(handler.handleBadCredentials(
-                new BadCredentialsException("Invalid credentials")))
+                new BadCredentialsException("Invalid email or password")))
                 .doesNotContain("Exception")
                 .doesNotContain("com.codecool");
     }
