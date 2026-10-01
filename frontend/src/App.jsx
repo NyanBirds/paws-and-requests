@@ -70,8 +70,6 @@ function App() {
                   </>
               ) : (
                   <>
-                  <NavLink to="/registration">Register</NavLink>
-                    {" | "}
                   <NavLink to="/login">Login</NavLink>
                   </>
               )}
