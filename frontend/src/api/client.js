@@ -5,9 +5,35 @@ function getToken() {
 }
 
 class ApiError extends Error {
-    constructor(status, message) {
+    constructor(status, message, body) {
         super(message);
         this.status = status;
+        // The parsed body when the server sent JSON, otherwise undefined. A 400
+        // from validation carries { code, message, fields }, where fields maps
+        // each offending input to its message so a form can mark them
+        // individually.
+        this.body = body;
+    }
+}
+
+// Endpoints return either a JSON error envelope or a bare string, depending on
+// the handler that produced it. Parse when we can and fall back to the raw
+// text, so a plain-text error still reads as its message.
+function toError(status, text) {
+    if (!text) {
+        return new ApiError(status, status === 404 ? "Not found" : text);
+    }
+    try {
+        const body = JSON.parse(text);
+        const isEnvelope = body !== null && typeof body === "object"
+            && typeof body.message === "string";
+        return new ApiError(
+            status,
+            isEnvelope ? body.message : text,
+            isEnvelope ? body : undefined,
+        );
+    } catch {
+        return new ApiError(status, text);
     }
 }
 
@@ -23,10 +49,10 @@ async function request(path, options = {}) {
     });
 
     if (!res.ok) {
-        const message = await res.text()
-        console.log(message);
+        const text = await res.text();
+        console.log(text);
 
-        throw new ApiError(res.status, message || res.statusText);
+        throw toError(res.status, text);
     }
 
     return res.status === 204 ? null : res.json();
@@ -51,10 +77,11 @@ async function requestForm(path, formData, method) {
         body: formData,
     });
 
-    if (!response.ok) {
-        const message = await response.text()
-        console.log(message);
-        throw new ApiError(response.status, message || response.statusText)
+if (!response.ok) {
+        const text = await response.text()
+        console.log(text);
+
+        throw toError(response.status, text)
     }
     return response.status === 204 ? null : response.json();
 }

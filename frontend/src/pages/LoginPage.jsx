@@ -1,8 +1,9 @@
 import {useState} from "react"
 import InputField from "../components/InputField"
 import {login} from "../services/authService.js"
-import {useLocation, useNavigate} from "react-router"
-import {Box} from "../components/Box.jsx";
+import {Link, useLocation, useNavigate} from "react-router"
+import '../components/Form.css';
+import styles from "./HomePage.module.css";
 
 export default function LoginPage() {
     const [formData, setFormData] = useState({})
@@ -33,17 +34,22 @@ export default function LoginPage() {
                 navigate(from, { replace: true })
             }, (error) => {
                 setStatus("error");
-                setMessage(error.mesage);
+                setMessage(error.message);
             })
     }
 
     return (
-    <div>
-        <Box width="30%">
-            <h3>Login</h3>
-            <form onSubmit={onSubmit}>
+        <div
+            className="form-container"
+        >
+            <form
+                className="custom-form"
+                onSubmit={onSubmit}
+            >
+                <h2>Login</h2>
                 {inputFields.map((inputField) => (
                     <InputField
+                        className="form-group"
                         key = {inputField.key}
                         name = {inputField.key}
                         type = {inputField.type}
@@ -51,12 +57,18 @@ export default function LoginPage() {
                         required = {inputField.required}
                         onChange = {onChange}/>
                 ))}
-                <button type="submit" disabled={status === "submitting"}>
-                    {status === "submitting" ? "Logging in..." : "Login"}
-                </button>
+                <div className="row">
+                    <button
+                        className="submit-btn"
+                        type="submit" disabled={status === "submitting"}>
+                        {status === "submitting" ? "Logging in..." : "Login"}
+                    </button>
+                    <Link to="/registration" className={styles.arrowLink}>
+                        No account? Register here
+                    </Link>
+                </div>
+                {status === "error" && <p>{message}</p>}
             </form>
-            {status === "error" && <p>{message}</p>}
-        </Box>
-    </div>
+        </div>
   )
 }

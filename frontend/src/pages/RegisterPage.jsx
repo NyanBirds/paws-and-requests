@@ -1,14 +1,23 @@
 import { useState } from "react"
 import InputField from "../components/InputField"
 import { register } from "../services/authService.js"
-import { useNavigate } from "react-router"
-import {Box} from "../components/Box.jsx";
+import { useLocation, useNavigate } from "react-router"
+import '../components/Form.css';
+import ToggleButton from "../components/ToggleButton.jsx";
 
 export default function RegistrationPage() {
     const [formData, setFormData] = useState({})
+    // Per-field messages from a 400, keyed by input name so each one can be
+    // rendered under its own input.
+    const [fieldErrors, setFieldErrors] = useState({})
+    // Anything that is not field-level, such as the 409 for an email that is
+    // already registered.
     const [error, setError] = useState("")
     const navigate = useNavigate();
-    const [shelterRegistration, setShelterRegistration] = useState(false)
+    const location = useLocation();
+    const [shelterRegistration, setShelterRegistration] = useState(
+        Boolean(location.state?.shelter)
+    )
 
     const inputFields = [
         {key: 'firstname', type: 'text', label: 'First name:', required: true},
@@ -23,46 +32,65 @@ export default function RegistrationPage() {
     ]
 
     function onChange(key, value) {
+        // Clear this field's message as soon as the user edits it, so the form
+        // stops showing complaints the user has already addressed.
+        setFieldErrors((previous) => {
+            if (!previous[key]) {
+                return previous
+            }
+            const next = {...previous}
+            delete next[key]
+            return next
+        })
         setFormData({...formData, [key]: value})
     }
 
     function onSubmit(event) {
         event.preventDefault()
+        setError("")
+        setFieldErrors({})
         register(formData)
             .then(res => {
                 localStorage.setItem("authToken", res.token)
                 window.dispatchEvent(new Event("authorization-request"))
                 navigate('/')
             }, (err) => {
-                setError(err)
+                const fields = err.body?.fields
+                if (fields && Object.keys(fields).length > 0) {
+                    setFieldErrors(fields)
+                } else {
+                    setError(err.message)
+                }
             })
     }
 
     const toInputField =
         (inputField) => (
                 <InputField
+                    className="form-group"
                     key = {inputField.key}
                     name = {inputField.key}
                     type = {inputField.type}
                     label = {inputField.label}
                     required = {inputField.required}
+                    error = {fieldErrors[inputField.key]}
                     onChange = {onChange}/>
             )
 
     return (
-    <div>
-        <Box width="30%">
-            <h3>Registration</h3>
-            <button
-                onClick={() => setShelterRegistration(!shelterRegistration)}
-            >{shelterRegistration ? (<span>User registration</span>) : (<span>Shelter registration</span>)}</button>
-            <form onSubmit={onSubmit}>
+    <div className="form-container">
+            <form className="custom-form" onSubmit={onSubmit}>
+                <h2>Sign up</h2>
+                <ToggleButton
+                    label="Shelter registration"
+                    isOn={shelterRegistration}
+                    onToggle={() => setShelterRegistration(!shelterRegistration)}/>
                 {inputFields.map(toInputField)}
                 {shelterRegistration && shelterFields.map(toInputField)}
-                <button type="submit">Register</button>
-                <p>{error.message}</p>
+                <button type="submit" className="submit-btn">Register</button>
+                {error && <p>{error}</p>}
             </form>
-        </Box>
+
     </div>
   )
 }

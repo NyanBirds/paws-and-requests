@@ -1,9 +1,10 @@
 import './App.css'
-import {Link, NavLink, Outlet, useNavigate} from "react-router";
+import {Outlet, useNavigate} from "react-router";
 import {useEffect, useState} from "react";
-import logo from "./assets/logo_transparent.png"
 import CheckUser from "./components/CheckUser.jsx";
 import {fetchMe} from "./services/authService.js";
+import Navbar from "./components/Navbar.jsx";
+import Footer from "./components/Footer.jsx";
 
 const AUTH_TOKEN = "authToken";
 const AUTH_EVENT = "authorization-request";
@@ -15,7 +16,6 @@ function App() {
         () => Boolean(localStorage.getItem(AUTH_TOKEN))
     );
     const user = CheckUser(isLoggedIn);
-    const role = user?.role;
 
     useEffect(() => {
         if (Boolean(localStorage.getItem(AUTH_TOKEN))) {
@@ -42,42 +42,11 @@ function App() {
 
   return (
     <>
-        <div className="row">
-        <Link to='/'>
-            <img
-                src={logo}
-                width="100"
-                style={{ padding: '20px' }}
-            />
-        </Link>
-          <nav>
-              <NavLink to="/posts">Posts</NavLink>
-              {" | "}
-              <NavLink to="/shelters">Shelters</NavLink>
-              {" | "}
-              {role === 'SHELTERUSER' && (
-                  <>
-                    <NavLink to="/post/new">Create post</NavLink>
-                    {" | "}
-                  </>
-              )}
-              {isLoggedIn ? (
-                  <>
-                    <span onClick={() => navigate("/me")}
-                    >Hello {user?.firstName}</span>
-                    {" | "}
-                    <button type="button" onClick={handleLogout}>Logout</button>
-                  </>
-              ) : (
-                  <>
-                  <NavLink to="/registration">Register</NavLink>
-                    {" | "}
-                  <NavLink to="/login">Login</NavLink>
-                  </>
-              )}
-          </nav>
-        </div>
-      <Outlet context={{ isLoggedIn, user }}/>
+      <Navbar isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout}/>
+      <main style={{ flex: 1 }}>
+        <Outlet context={{ isLoggedIn, user }}/>
+      </main>
+      <Footer/>
     </>
   )
 }

@@ -1,0 +1,45 @@
+/* Shared button styles. Use together: className="btn btn-primary" */
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn:focus-visible {
+    outline: 2px solid #516a4d;
+    outline-offset: 2px;
+}
+
+/* Main actions, same green as .submit-btn in Form.css */
+.btn-primary {
+    background-color: #516a4d;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: #435840;
+}
+
+/* Destructive actions, a muted brick red that sits well next to the green */
+.btn-danger {
+    background-color: #a8463b;
+}
+
+.btn-danger:hover:not(:disabled) {
+    background-color: #8c3a31;
+}
+
+.btn-danger:focus-visible {
+    outline-color: #a8463b;
+}

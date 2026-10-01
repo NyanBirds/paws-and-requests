@@ -129,7 +129,7 @@ class AuthServiceTest {
             assertThatThrownBy(() -> authService.login(
                     new LoginRequest(EMAIL, "wrong")))
                     .isInstanceOf(BadCredentialsException.class)
-                    .hasMessage("Invalid credentials");
+                    .hasMessage("Invalid email or password");
 
             verify(jwtService, never()).generateToken(any());
         }
@@ -143,7 +143,7 @@ class AuthServiceTest {
             assertThatThrownBy(() -> authService.login(
                     new LoginRequest(EMAIL, RAW_PASSWORD)))
                     .isInstanceOf(BadCredentialsException.class)
-                    .hasMessage("Invalid credentials");
+                    .hasMessage("Invalid email or password");
 
             verifyNoInteractions(jwtService);
         }

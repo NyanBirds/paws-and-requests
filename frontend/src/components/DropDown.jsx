@@ -1,5 +1,5 @@
-export default function DropDown({name, items = [], label, required = true, onChange}) {
-    return <div>
+export default function DropDown({className, name, items = [], label, required = true, onChange}) {
+    return <div className={className}>
         <label>{label}</label>
         <select
             required={required}

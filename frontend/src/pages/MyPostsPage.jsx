@@ -27,13 +27,15 @@ export function MyPostsPage() {
 
     return (
         <>
-            <h1>{user?.role === "ADMIN" ? "All posts" : "My posts"}</h1>
+            <div style={{padding: '0 24px 48px'}}>
+                <h1>{user?.role === "ADMIN" ? "All posts" : "My posts"}</h1>
 
-            {posts.length ? (
-                <CardGrid> {posts.map(post => <PostCard key={post.id} {...post}/>)} </CardGrid>
-            ) : (
-              <p>No posts yet</p>
-            )}
+                {posts.length ? (
+                    <CardGrid> {posts.map(post => <PostCard key={post.id} {...post}/>)} </CardGrid>
+                ) : (
+                <p>No posts yet</p>
+                )}
+            </div>
         </>
     );
 }

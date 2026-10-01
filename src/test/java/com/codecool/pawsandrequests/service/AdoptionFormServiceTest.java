@@ -93,7 +93,9 @@ class AdoptionFormServiceTest {
             when(postRepository.findById(target.getId()))
                     .thenReturn(Optional.of(target));
             when(adoptionFormMapper.toAdoptionFormResponse(form))
-                    .thenReturn(new AdoptionFormResponse(form.getContent(),
+                    .thenReturn(new AdoptionFormResponse(
+                            form.getId(),
+                            form.getContent(),
                             "Ada", "Lovelace", EMAIL,
                             target.getAnimal().getId(), "Maja", Species.DOG));
 
@@ -251,10 +253,10 @@ class AdoptionFormServiceTest {
             when(adoptionFormRepository.findAll())
                     .thenReturn(List.of(first, second));
             when(adoptionFormMapper.toAdoptionFormResponse(first))
-                    .thenReturn(new AdoptionFormResponse("one", "A", "B",
+                    .thenReturn(new AdoptionFormResponse(first.getId(), "one", "A", "B",
                             EMAIL, UUID.randomUUID(), "Maja", Species.DOG));
             when(adoptionFormMapper.toAdoptionFormResponse(second))
-                    .thenReturn(new AdoptionFormResponse("two", "C", "D",
+                    .thenReturn(new AdoptionFormResponse(second.getId(), "two", "C", "D",
                             EMAIL, UUID.randomUUID(), "Maja",  Species.DOG));
 
             assertThat(adoptionFormService.getAllForms(EMAIL)).hasSize(2);
@@ -274,7 +276,7 @@ class AdoptionFormServiceTest {
             when(adoptionFormRepository.findByPostUserShelterOrgNr(ORG_NR))
                     .thenReturn(List.of(form));
             when(adoptionFormMapper.toAdoptionFormResponse(form))
-                    .thenReturn(new AdoptionFormResponse("mine", "Ada",
+                    .thenReturn(new AdoptionFormResponse(form.getId(), "mine", "Ada",
                             "Lovelace", EMAIL, UUID.randomUUID(), "Maja", Species.DOG));
 
             assertThat(adoptionFormService.getAllForms(EMAIL)).hasSize(1);

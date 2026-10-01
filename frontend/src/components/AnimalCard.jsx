@@ -1,5 +1,6 @@
 import {deleteAnimal} from "../services/animalService.js";
 import {Box} from "./Box.jsx";
+import "./Button.css";
 
 export function AnimalCard( {id, name, age, gender, species} ) {
 
@@ -19,7 +20,13 @@ export function AnimalCard( {id, name, age, gender, species} ) {
                 <p>Gender: {gender}</p>
                 <p>Species: {species}</p>
             </div>
-            <button onClick={handleDelete}>Delete</button>
+            <button
+                className="btn btn-danger"
+                style={{ marginTop: "16px" }}
+                onClick={handleDelete}
+            >
+                Delete
+            </button>
         </Box>
     );
 }
