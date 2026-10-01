@@ -34,7 +34,7 @@ Live URL: The backend is published to Azure App Service
 | --- | --- |
 | Backend | Java 21, Spring Boot, Spring Web, Spring Data JPA, Spring Security, MapStruct, Lombok, Maven |
 | Frontend | React 19, Vite, React Router |
-| Database | PostgreSQL, schema and seed data managed by Flyway |
+| Database | PostgreSQL, schema and seed data managed by Flyway locally |
 | Build/CI | Maven, Docker, Docker Compose, GitHub Actions |
 
 ## Running locally
@@ -105,7 +105,13 @@ cd frontend && npm install && npm run dev   # frontend on :5173
 
 `mvn spring-boot:run` still needs a reachable database and a `JWT_SECRET`. It
 defaults to `jdbc:postgresql://localhost:5432/nyanbirds`, which is the compose
-database, so only `JWT_SECRET` has to be exported.
+database, so only `JWT_SECRET` has to be exported — plus `FLYWAY_ENABLED=true`,
+because Flyway is off by default and `compose.yaml` is the only thing that turns
+it on:
+
+```bash
+FLYWAY_ENABLED=true JWT_SECRET="$(openssl rand -base64 32)" mvn spring-boot:run
+```
 
 ## Tests
 
@@ -142,22 +148,27 @@ requests) are enforced in the service layer and mirrored in the frontend by comp
 handling; `src/services/*` holds one module per resource; `src/pages/*` holds the routed screens
 (home, posts, animal profile, adoption form, login/register, account, my posts/animals/requests, shelters).
 
-**Database** — PostgreSQL. Flyway owns the schema: `db/migration/V1__create_schema.sql`
-creates the tables, while Hibernate stays on
-`ddl-auto=validate` and only checks that the two agree. A fresh database is
-therefore reproducible from the repository alone — no setup steps, no data
-typed in by hand.
+**Database** — PostgreSQL, with two independent consumers of the schema.
+
+`db/migration/V1__create_schema.sql` is the definition, and Hibernate stays on
+`ddl-auto=validate` to check the entities against the live tables. A fresh local
+database is therefore reproducible from the repository alone — no setup steps,
+no data typed in by hand.
+
+Flyway itself is a **local tool and is off by default** (`spring.flyway.enabled`,
+line 9 of `application.properties`). `compose.yaml` sets `FLYWAY_ENABLED=true`;
+a run without Docker must export it too. A deployment runs no migrations at all
+— see [Deploying to Azure](#deploying-to-azure).
 
 Demo data lives apart from the schema, in `db/seed/R__demo_data.sql`, and
 Flyway only reads that directory when `spring.flyway.locations` lists it.
-`compose.yaml` lists it for local work; nothing else does. That separation is
-what stops a deployed database from being seeded, no matter how it is
-baselined.
+`compose.yaml` lists it for local work; nothing else does, so demo rows cannot
+reach the deployed database.
 
-Flyway's `baseline-on-migrate` is **off** by default, so an empty database
-always migrates from V1. Leaving it on would mark *any* non-empty schema as
-already current, which silently skips migrations on a stale local volume or a
-half-created database — a failure you find in the data, not in the logs.
+With Flyway enabled locally, `baseline-on-migrate` stays **off**, so an empty
+database always migrates from V1. Leaving it on would mark *any* non-empty
+schema as already current, which silently skips migrations on a stale local
+volume — a failure you find in the data, not in the logs.
 
 Image bytes are the one thing that does not live in a migration, so
 `SeedPictures` writes `picture.data` from `src/main/resources/images` on
@@ -166,24 +177,34 @@ that must not be overwritten; `compose.yaml` switches it on for local use.
 
 ### Deploying to Azure
 
-The deployed database predates Flyway: it has real data and no
-`flyway_schema_history`. It therefore needs two App Service settings, set once,
-before the first deploy of a Flyway-aware build:
+**The deployed app runs no migrations.** `spring.flyway.enabled` defaults to
+`false` and Azure does not set `FLYWAY_ENABLED`, so Flyway never starts. There
+is nothing to configure in the App Service settings, and the existing database
+is left exactly as it is.
 
-| Setting | Value | Why |
-| --- | --- | --- |
-| `FLYWAY_BASELINE_ON_MIGRATE` | `true` | The schema is non-empty, so Flyway would otherwise refuse to start |
-| `FLYWAY_BASELINE_VERSION` | `1` | Its tables already match V1, so V1 is recorded as applied rather than run again |
+This matters because that database predates Flyway: it holds real data and has
+no `flyway_schema_history` table. Flyway refuses to touch a non-empty schema
+without a history table and aborts startup, which is what happened on the first
+Flyway-aware deploy. Disabling it is the honest fix — baselining would write a
+history table claiming V1 had been applied, which was never true.
 
-With those set and nothing else, Azure runs V1+ migrations from V2 onwards and
-never sees the demo rows. `FLYWAY_LOCATIONS` is deliberately left unset there —
-that is what keeps `db/seed` out of scope.
+`ddl-auto=validate` still runs on every boot, and it is now the only schema
+guard in production. If an entity ever drifts from the live tables, the app
+refuses to start rather than serving a broken schema. That is the intended
+behaviour: a deployment should fail loudly, not quietly alter the database.
+
+The trade-off is that schema changes no longer reach production automatically.
+`db/migration` is the local development story only; applying a change to Azure
+is a manual, deliberate step.
 
 ### Changing the schema
 
 Add a `V2__...sql`, `V3__...sql` and so on to `db/migration`. Never edit an
 already-applied migration: Flyway checksums them and fails startup on a
 mismatch. Once a migration has run anywhere, its file is frozen.
+
+Because Azure does not run Flyway, adding `V2` here does not migrate the
+deployed database — it only affects local stacks.
 
 ### API overview
 
