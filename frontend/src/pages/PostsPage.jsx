@@ -1,10 +1,9 @@
 import {useEffect, useState} from "react";
-import {Box} from "../components/Box.jsx";
 import {Checkbox} from "../components/Checkbox.jsx";
 import {getPosts} from "../services/postService.js";
-import Divider from "../components/Divider.jsx";
 import CardGrid from "../components/CardGrid.jsx";
 import PostCard from "../components/PostCard.jsx";
+import styles from "./PostsPage.module.css";
 
 export default function PostsPage() {
 
@@ -52,42 +51,48 @@ export default function PostsPage() {
     if (loading) return <p>Loading...</p>
 
     return(
-        <div>
-            <h1>Look at all these cuties!</h1>
-            <div style={{ display: 'flex', gap: '10rem' }}>
+        <div className={styles.page}>
+            <h1 className={styles.pageHeading}>Animals up for adoption</h1>
+            <div className={styles.layout}>
+                <aside className={styles.filterPanel}>
+                    <p className={styles.filterTitle}>Filters</p>
+                    <div className={styles.filterGroups}>
+                        <fieldset className={styles.filterGroup}>
+                            <legend>Gender</legend>
+                            {filters.slice(0, 2).map(filter => (
+                                <Checkbox
+                                    key={filter.value}
+                                    id={filter.value}
+                                    label={filter.label}
+                                    checked={ checkboxes[filter.value] }
+                                    onChange={checkboxChange}
+                                />
+                            ))}
+                        </fieldset>
+                        <fieldset className={styles.filterGroup}>
+                            <legend>Species</legend>
+                            {filters.slice(2, 4).map(filter => (
+                                <Checkbox
+                                    key={filter.value}
+                                    id={filter.value}
+                                    label={filter.label}
+                                    checked={ checkboxes[filter.value] }
+                                    onChange={checkboxChange}
+                                />
+                            ))}
+                        </fieldset>
+                    </div>
+                </aside>
+
                 <div>
-                    <Box width="100%">
-                        <p><strong>Filters</strong></p>
-                        <p>Gender</p>
-                        {filters.slice(0, 2).map(filter => (
-                            <Checkbox
-                                key={filter.value}
-                                id={filter.value}
-                                label={filter.label}
-                                checked={ checkboxes[filter.value] }
-                                onChange={checkboxChange}
-                            />
-                        ))}
-                        <Divider/>
-                        <p>Species</p>
-                        {filters.slice(2, 4).map(filter => (
-                            <Checkbox
-                                key={filter.value}
-                                id={filter.value}
-                                label={filter.label}
-                                checked={ checkboxes[filter.value] }
-                                onChange={checkboxChange}
-                            />
-                        ))}
-                    </Box>
-                </div>
-                {posts.length ? (
-                    <ul>
+                    {posts.length ? (
                         <CardGrid> {posts.map(post => <PostCard key={post.id} {...post}/>)} </CardGrid>
-                    </ul>
-                ) : (
-                    <p>There are currently no animals up for adoption</p>
-                )}
+                    ) : (
+                        <p className={styles.emptyMessage}>
+                            There are currently no animals up for adoption
+                        </p>
+                    )}
+                </div>
             </div>
         </div>
     );
