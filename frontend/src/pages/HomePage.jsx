@@ -1,20 +1,9 @@
-import {useEffect, useState} from "react";
 import {Link, useOutletContext} from "react-router";
 import styles from "./HomePage.module.css"
 import ShelterCarousel from "../components/ShelterCarousel.jsx";
-import PostCard from "../components/PostCard.jsx";
-import {getPosts} from "../services/postService.js";
 
 export default function HomePage() {
     const { user } = useOutletContext();
-    const [latestPosts, setLatestPosts] = useState([]);
-
-    useEffect(() => {
-        getPosts("")
-            .then(posts => setLatestPosts(posts.slice(-3).reverse()))
-            .catch(error => console.log(error.message));
-    }, []);
-
     const isShelter = user?.role === "SHELTERUSER";
 
     return <>
