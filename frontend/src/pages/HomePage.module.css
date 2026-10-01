@@ -1,0 +1,136 @@
+.titleSection {
+    padding: 112px 24px 96px;
+    background: var(--bg);
+}
+
+.titleSection h1 {
+    margin: 0 0 40px;
+    font-size: 4rem;
+}
+
+.subtitle {
+    font-size: 1.4rem;
+    color: var(--text-h);
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+@media (max-width: 700px) {
+    .titleSection {
+        padding: 72px 20px 56px;
+    }
+
+    .titleSection h1 {
+        font-size: 2.5rem;
+    }
+}
+
+.shelterSection {
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sectionHeading {
+    margin-bottom: 0;
+}
+
+.twoColumns {
+    display: flex;
+    align-items: stretch;
+    border-top: 1px solid var(--border);
+}
+
+.column {
+    flex: 1;
+    padding: 40px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+.columnActions {
+    margin-top: auto;
+    min-height: 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.rightColumn {
+    border-left: 1px solid var(--border);
+}
+
+.columnIcon {
+    font-size: 2.5rem;
+    line-height: 1;
+}
+
+.recentlyAddedLabel {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-h);
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.recentPosts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    width: 100%;
+    font-size: 0.8rem;
+}
+
+.actionButton {
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 999px;
+    border: 1px solid #516a4d;
+    background: #516a4d;
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+}
+
+.actionButton:hover {
+    transform: translateY(-2px);
+    background: #435840;
+    box-shadow: var(--shadow);
+}
+
+.actionButton:focus-visible,
+.arrowLink:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.arrowLink {
+    color: var(--text-h);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.arrowLink:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 700px) {
+    .twoColumns {
+        flex-direction: column;
+    }
+
+    .rightColumn {
+        border-left: none;
+        border-top: 1px solid var(--border);
+    }
+
+    .recentPosts {
+        grid-template-columns: 1fr;
+    }
+}
