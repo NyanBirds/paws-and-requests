@@ -151,3 +151,28 @@
         border: 1px solid var(--border);
     }
 }
+
+.picture-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+}
+
+.picture-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.picture-item img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+}
+
+.picture-item .btn {
+    width: 100%;
+    padding: 8px;
+}
