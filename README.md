@@ -80,11 +80,21 @@ docker compose down -v
 docker compose up --build
 ```
 
+Do this after changing an already-applied migration. Flyway checksums what it
+has run, so editing `V1` on a volume that already applied it fails startup
+until the volume is thrown away. (The name is the contract: the demo database
+holds nothing but seeded rows and whatever you registered by hand.)
+
 The necessary environment variables read from the `.env` file:
 - `JWT_SECRET`
 - `DB_URL`
 - `DB_USERNAME`
 - `DB_PASSWORD`
+
+Write `JWT_SECRET` **unquoted**. Compose passes single quotes through
+literally, so `JWT_SECRET='abc'` reaches the backend with the quote characters
+still attached and startup dies with `Illegal base64 character` — the secret is
+base64-decoded before use. The value must also decode to at least 256 bits.
 
 Run the halves without Docker:
 
@@ -132,21 +142,48 @@ requests) are enforced in the service layer and mirrored in the frontend by comp
 handling; `src/services/*` holds one module per resource; `src/pages/*` holds the routed screens
 (home, posts, animal profile, adoption form, login/register, account, my posts/animals/requests, shelters).
 
-**Database** — PostgreSQL. Flyway owns the schema: `db/migration/V1` creates the
-tables and `db/migration/V2` seeds them, while Hibernate stays on
+**Database** — PostgreSQL. Flyway owns the schema: `db/migration/V1__create_schema.sql`
+creates the tables, while Hibernate stays on
 `ddl-auto=validate` and only checks that the two agree. A fresh database is
 therefore reproducible from the repository alone — no setup steps, no data
 typed in by hand.
+
+Demo data lives apart from the schema, in `db/seed/R__demo_data.sql`, and
+Flyway only reads that directory when `spring.flyway.locations` lists it.
+`compose.yaml` lists it for local work; nothing else does. That separation is
+what stops a deployed database from being seeded, no matter how it is
+baselined.
+
+Flyway's `baseline-on-migrate` is **off** by default, so an empty database
+always migrates from V1. Leaving it on would mark *any* non-empty schema as
+already current, which silently skips migrations on a stale local volume or a
+half-created database — a failure you find in the data, not in the logs.
 
 Image bytes are the one thing that does not live in a migration, so
 `SeedPictures` writes `picture.data` from `src/main/resources/images` on
 startup. It is off by default, because the deployed database holds real uploads
 that must not be overwritten; `compose.yaml` switches it on for local use.
 
-The Azure database predates Flyway. `spring.flyway.baseline-on-migrate` with
-`baseline-version=2` means an already-populated schema is recorded as
-"already at version 2" and neither migration runs again, so deploying never
-re-seeds or duplicates rows. Future `V3`+ migrations do reach Azure as normal.
+### Deploying to Azure
+
+The deployed database predates Flyway: it has real data and no
+`flyway_schema_history`. It therefore needs two App Service settings, set once,
+before the first deploy of a Flyway-aware build:
+
+| Setting | Value | Why |
+| --- | --- | --- |
+| `FLYWAY_BASELINE_ON_MIGRATE` | `true` | The schema is non-empty, so Flyway would otherwise refuse to start |
+| `FLYWAY_BASELINE_VERSION` | `1` | Its tables already match V1, so V1 is recorded as applied rather than run again |
+
+With those set and nothing else, Azure runs V1+ migrations from V2 onwards and
+never sees the demo rows. `FLYWAY_LOCATIONS` is deliberately left unset there —
+that is what keeps `db/seed` out of scope.
+
+### Changing the schema
+
+Add a `V2__...sql`, `V3__...sql` and so on to `db/migration`. Never edit an
+already-applied migration: Flyway checksums them and fails startup on a
+mismatch. Once a migration has run anywhere, its file is frozen.
 
 ### API overview
 
@@ -158,6 +195,31 @@ re-seeds or duplicates rows. Future `V3`+ migrations do reach Azure as normal.
 | `PUT`/`PATCH`/`DELETE` | `/posts/**`, `/animals/**`, `/shelters/{orgNr}`, `/users/{id}` | authenticated, owner-scoped |
 | `GET` | `/animals`, `/animals/{id}` | authenticated |
 | `POST`/`GET` | `/posts/{postId}/adoption` | authenticated |
+
+### Registration validation
+
+`POST /api/auth/registration` validates its body on the server, before any
+service or repository call. It requires first name, last name, email, phone
+number and password; requires the email to be email-shaped with a dotted
+domain; and requires the password to be at least 8 characters. Anything else
+returns `400` with one message per offending field:
+
+```json
+{
+  "code": "VALIDATION_FAILED",
+  "message": "Validation failed",
+  "fields": {
+    "email": "Email must include a domain, like name@example.com Email must be a well-formed email address",
+    "firstname": "First name is required",
+    "password": "Password must be between 8 and 255 characters"
+  }
+}
+```
+
+`fields` is sorted by field name, and a field that breaks two rules gets both
+messages. A well-formed request still returns `201` with a token; an address
+that is already registered returns `409`, which is unchanged and is not a
+validation failure.
 
 ### Deployment
 
@@ -181,7 +243,8 @@ as its own container from `frontend/Dockerfile` (`npm run dev --host` with the s
 │   ├── security/            # JWT filter
 │   └── service/             # business logic
 ├── src/main/resources/
-│   ├── db/migration/        # Flyway: V1 schema, V2 seed data
+│   ├── db/migration/        # Flyway: V1 schema
+│   ├── db/seed/             # Flyway: R__ demo data, local stack only
 │   ├── images/              # seed images for shelters, animals and posts
 │   └── application.properties
 ├── src/test/java/           # unit tests

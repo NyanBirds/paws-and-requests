@@ -7,6 +7,11 @@ import ToggleButton from "../components/ToggleButton.jsx";
 
 export default function RegistrationPage() {
     const [formData, setFormData] = useState({})
+    // Per-field messages from a 400, keyed by input name so each one can be
+    // rendered under its own input.
+    const [fieldErrors, setFieldErrors] = useState({})
+    // Anything that is not field-level, such as the 409 for an email that is
+    // already registered.
     const [error, setError] = useState("")
     const navigate = useNavigate();
     const location = useLocation();
@@ -27,18 +32,35 @@ export default function RegistrationPage() {
     ]
 
     function onChange(key, value) {
+        // Clear this field's message as soon as the user edits it, so the form
+        // stops showing complaints the user has already addressed.
+        setFieldErrors((previous) => {
+            if (!previous[key]) {
+                return previous
+            }
+            const next = {...previous}
+            delete next[key]
+            return next
+        })
         setFormData({...formData, [key]: value})
     }
 
     function onSubmit(event) {
         event.preventDefault()
+        setError("")
+        setFieldErrors({})
         register(formData)
             .then(res => {
                 localStorage.setItem("authToken", res.token)
                 window.dispatchEvent(new Event("authorization-request"))
                 navigate('/')
             }, (err) => {
-                setError(err)
+                const fields = err.body?.fields
+                if (fields && Object.keys(fields).length > 0) {
+                    setFieldErrors(fields)
+                } else {
+                    setError(err.message)
+                }
             })
     }
 
@@ -51,6 +73,7 @@ export default function RegistrationPage() {
                     type = {inputField.type}
                     label = {inputField.label}
                     required = {inputField.required}
+                    error = {fieldErrors[inputField.key]}
                     onChange = {onChange}/>
             )
 
@@ -65,7 +88,7 @@ export default function RegistrationPage() {
                 {inputFields.map(toInputField)}
                 {shelterRegistration && shelterFields.map(toInputField)}
                 <button type="submit" className="submit-btn">Register</button>
-                <p>{error.message}</p>
+                {error && <p>{error}</p>}
             </form>
 
     </div>
