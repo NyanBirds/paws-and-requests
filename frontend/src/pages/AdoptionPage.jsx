@@ -38,6 +38,7 @@ export function AdoptionPage() {
                     />
                     <p><em>Character Count:</em> {content.length}</p>
                     <button
+                        className="btn btn-primary"
                         type="submit"
                         disabled={status === "submitting"}
                         onClick={onSubmit}

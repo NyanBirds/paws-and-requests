@@ -1,5 +1,7 @@
 import {Box} from "./Box.jsx";
 import {deleteAdoptionForm} from "../services/adoptionformService.js";
+import "./Button.css";
+import styles from "./AdoptionCard.module.css";
 
 export function AdoptionCard( {id, adoption} ) {
 
@@ -12,14 +14,18 @@ export function AdoptionCard( {id, adoption} ) {
     }
 
     return (
-        <Box width="35%">
-            <div style={{ textAlign: "left", paddingLeft: "1rem" }}>
-                <p><strong>Applicant:</strong> {adoption.firstName} {adoption.lastName}</p>
-                <p><em>{adoption.email}</em></p>
-                <p><strong>Application Text:</strong> {adoption.content}</p>
-                <p><strong>Animal:</strong> {adoption.animalName} ({adoption.species})</p>
-            </div>
-            <button onClick={handleDelete}>Delete</button>
-        </Box>
+        <div className={styles.cardWrapper}>
+            <Box>
+                <div className={styles.cardContent}>
+                    <p><strong>Applicant:</strong> {adoption.firstName} {adoption.lastName}</p>
+                    <p><em>{adoption.email}</em></p>
+                    <p><strong>Application Text:</strong> {adoption.content}</p>
+                    <p><strong>Animal:</strong> {adoption.animalName} ({adoption.species})</p>
+                </div>
+                <button
+                    className={`btn btn-danger ${styles.deleteButton}`}
+                    onClick={handleDelete}>Delete</button>
+            </Box>
+        </div>
     );
 }
